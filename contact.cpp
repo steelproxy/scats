@@ -1,6 +1,5 @@
 #include <iostream>
 #include <sstream>
-#include <sstream>
 #include "contact.h"
 
 using namespace std;

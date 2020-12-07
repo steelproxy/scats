@@ -3,6 +3,7 @@
 #include <vector>
 #include <sstream>
 #include <cctype>
+#include "setting.h"
 #include "contact.h"
 #include "log.h"
 
@@ -20,6 +21,7 @@
     }
 
 #define DEFAULT_CONTACTS_FILE "contacts.txt"
+#define DEFAULT_SETTINGS_FILE "settings.txt"
 #define DEFAULT_LOG_FILE "log.txt"
 
 using namespace std;
@@ -46,16 +48,51 @@ void DisplayHelp()
 
 void loadContacts(fstream &contactsFile, vector<Contact> &contactsList)
 {
-    time_t timeInfo = time(0);
     string contactLine;
 
+    quickLog(INFO, "Loading contacts...");
     while (getline(contactsFile, contactLine))
     {
         if (contactLine != string())
             contactsList.push_back(Contact(contactLine));
     }
     contactsFile.close();
-    quickLog(INFO, "Finished loading contacts in " << timeInfo - time(0) << " seconds.");
+}
+
+void loadSettings(fstream &settingsFile, vector<Setting> &settingsList)
+{
+    string settingLine;
+
+    quickLog(INFO, "Loading settings...");
+    while (getline(settingsFile, settingLine))
+    {
+        if (settingLine != string())
+            settingsList.push_back(Setting(settingLine));
+    }
+    settingsFile.close();
+}
+
+void SetSetting(vector<Setting> &settingsList, string targetKey, string newValue)
+{
+    for (size_t index = 0; index < settingsList.size(); index++)
+    {
+        if (settingsList.at(index).GetKey() == targetKey)
+        {
+            settingsList.at(index).SetValue(newValue);
+        }
+    }
+}
+
+string GetSetting(vector<Setting> &settingsList, string targetKey)
+{
+    for (size_t index = 0; index < settingsList.size(); index++)
+    {
+        if (settingsList.at(index).GetKey() == targetKey)
+        {
+            return settingsList.at(index).GetValue();
+        }
+    }
+    return string();
 }
 
 bool isPrintStr(string str)
@@ -72,7 +109,9 @@ bool isPrintStr(string str)
 
 int main(int argc, char **argv)
 {
+    fstream settingDBFile;
     fstream contactDBFile;
+    vector<Setting> settingDB;
     vector<Contact> contactDB;
     string userInput;
     string userHandle;
@@ -84,16 +123,18 @@ int main(int argc, char **argv)
     {
         cout << "error: Unable to open log file!" << endl;
     }
-
-    if (logger.Open(DEFAULT_LOG_FILE) != 0)
-    {
-        cout << "error: Unable to open log file!" << endl;
-    }
-
     logger.SetPrint(false);
     logger.Truncate();
-
     quickPrintLog(INFO, "Starting scats...");
+
+    settingDBFile.open(DEFAULT_SETTINGS_FILE, ios::in);
+    if (settingDBFile.fail())
+    {
+        quickPrintLog(SEVERE, "Couldn't open settings file: " << DEFAULT_SETTINGS_FILE);
+        return 1;
+    }
+    quickPrintLog(INFO, "Loading settings...");
+    loadSettings(settingDBFile, settingDB);
 
     contactDBFile.open(DEFAULT_CONTACTS_FILE, ios::in);
     if (contactDBFile.fail())
@@ -101,7 +142,6 @@ int main(int argc, char **argv)
         quickPrintLog(SEVERE, "Couldn't open contacts file: " << DEFAULT_CONTACTS_FILE);
         return 1;
     }
-
     quickPrintLog(INFO, "Loading contacts list...");
     loadContacts(contactDBFile, contactDB);
 
@@ -139,7 +179,7 @@ int main(int argc, char **argv)
             cout << "Hostname: ";
             getline(cin, hostnameBuf);
             cout << "Port: ";
-            
+
             while (true)
             {
                 getline(cin, portBuf);
@@ -154,15 +194,42 @@ int main(int argc, char **argv)
                 }
             }
         }
+        else if (userInput == "newset")
+        {
+            cout << "Creating new setting." << endl;
+            cout << "Key: ";
+            settingDB.push_back(Setting());
+            getline(cin, userInput);
+            settingDB.at(settingDB.size() - 1).SetKey(userInput);
+            cout << "Value: ";
+            getline(cin, userInput);
+            settingDB.at(settingDB.size() - 1).SetValue(userInput);
+            cout << "Created setting (" << settingDB.at(settingDB.size() - 1).GetKey() << "=" << settingDB.at(settingDB.size() - 1).GetValue() << ")" << endl;
+        }
+        else if (userInput == "delset")
+        {
+            cout << "Deleting setting." << endl;
+            cout << "Key: ";
+            getline(cin, userInput);
+            for (size_t index = 0; index < settingDB.size(); index++)
+            {
+                if (settingDB.at(index).GetKey() == userInput)
+                {
+                    settingDB.erase(settingDB.begin() + index);
+                    cout << "Erased setting." << endl;
+                    break;
+                }
+            }
+        }
         else if (userInput == "delete")
         {
             quickPrintLog(INFO, "Deleting contact.");
             cout << "Alias (must be exact): ";
             getline(cin, userInput);
-            
-            for(size_t index = 0; index < contactDB.size(); index++)
+
+            for (size_t index = 0; index < contactDB.size(); index++)
             {
-                if(contactDB.at(index).getAlias() == userInput)
+                if (contactDB.at(index).getAlias() == userInput)
                 {
                     contactDB.erase(contactDB.begin() + index);
                     quickPrintLog(INFO, "Contact deleted.");
@@ -170,12 +237,42 @@ int main(int argc, char **argv)
                 }
             }
         }
-        else if(userInput == "save")
+        else if (userInput == "listset")
+        {
+            cout << "Settings: " << endl;
+            for (size_t index = 0; index < settingDB.size(); index++)
+            {
+                cout << settingDB.at(index).ToString() << endl;
+            }
+        }
+        else if (userInput == "saveset")
+        {
+            settingDBFile.close();
+            settingDBFile.open(DEFAULT_SETTINGS_FILE, ios::trunc | ios::out);
+            if (settingDBFile.fail())
+            {
+                quickPrintLog(ERROR, "Unable to open settings file!");
+                continue;
+            }
+
+            for (size_t index = 0; index < settingDB.size(); index++)
+            {
+                settingDBFile << settingDB.at(index).ToString() << endl;
+            }
+            settingDBFile.close();
+            settingDBFile.open(DEFAULT_SETTINGS_FILE, ios::in);
+            if (settingDBFile.fail())
+            {
+                quickPrintLog(ERROR, "Unable to open settings file!");
+                continue;
+            }
+        }
+        else if (userInput == "save")
         {
             quickPrintLog(INFO, "Saving contact file.");
             contactDBFile.close();
             contactDBFile.open(DEFAULT_CONTACTS_FILE, ios::trunc | ios::out);
-            for(size_t index = 0; index < contactDB.size(); index++)
+            for (size_t index = 0; index < contactDB.size(); index++)
             {
                 contactDBFile << contactDB.at(index).toString() << endl;
             }
