@@ -1,0 +1,9 @@
+(16:88:23) [info]: test1
+(16:88:23) [info]: test2
+(16:88:23) [info]: Starting scats...
+(16:88:23) [info]: Loading contacts list...
+(16:88:23) [info]: Finished loading contacts in 0 seconds.
+(16:88:41) [info]: Deleting contact.
+(16:88:47) [info]: Contact deleted.
+(16:88:52) [info]: Saving contact file.
+(16:88:54) [info]: Exiting scats...
