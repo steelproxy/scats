@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 #include <vector>
 #include <sstream>
@@ -6,6 +7,7 @@
 #include "setting.h"
 #include "contact.h"
 #include "log.h"
+#include "network.h"
 
 #define quickLog(level, message)                             \
     {                                                        \
@@ -27,15 +29,6 @@
 using namespace std;
 
 Log logger;
-
-void DisplayUsage(string path)
-{
-    cout << "Usage: " << path << " [port]" << endl;
-    cout << "Options: " << endl;
-    cout << "-c     Specify contacts file." << endl;
-    cout << "-u     Set username/handle." << endl;
-    cout << "-v     Enable verbose mode." << endl;
-}
 
 void DisplayHelp()
 {
@@ -118,60 +111,63 @@ int main(int argc, char **argv)
     string aliasBuf;
     string hostnameBuf;
     string portBuf;
+    string keyBuf;
+    string valueBuf;
+    string descriptionBuf;
 
-    if (logger.Open(DEFAULT_LOG_FILE))
+    // load logger
+    if (logger.Open(DEFAULT_LOG_FILE)) // initialize logger
     {
-        cout << "error: Unable to open log file!" << endl;
+        cout << "error: Unable to open log file!" << endl; // print error if fail
     }
-    logger.SetPrint(false);
-    logger.Truncate();
+    logger.SetPrint(false); // do not print log to cout
+    logger.Truncate(); // truncate log (new log every run)
     quickPrintLog(INFO, "Starting scats...");
 
-    settingDBFile.open(DEFAULT_SETTINGS_FILE, ios::in);
-    if (settingDBFile.fail())
+
+    // load settings
+    settingDBFile.open(DEFAULT_SETTINGS_FILE, ios::in); // open settings database file for reading
+    if (settingDBFile.fail()) // if it fails
     {
         quickPrintLog(SEVERE, "Couldn't open settings file: " << DEFAULT_SETTINGS_FILE);
-        return 1;
+        return 1; // return error
     }
     quickPrintLog(INFO, "Loading settings...");
-    loadSettings(settingDBFile, settingDB);
+    loadSettings(settingDBFile, settingDB); // load settings from database file into database
 
-    contactDBFile.open(DEFAULT_CONTACTS_FILE, ios::in);
-    if (contactDBFile.fail())
+
+    // load contacts
+    contactDBFile.open(DEFAULT_CONTACTS_FILE, ios::in); // open contacts database file for reading
+    if (contactDBFile.fail()) // if it fails
     {
         quickPrintLog(SEVERE, "Couldn't open contacts file: " << DEFAULT_CONTACTS_FILE);
-        return 1;
+        return 1; // return error
     }
     quickPrintLog(INFO, "Loading contacts list...");
-    loadContacts(contactDBFile, contactDB);
+    loadContacts(contactDBFile, contactDB); // load contacts from database file into database
 
+
+    // setup user handle
     cout << "Handle (max 16 characters, no special characters): ";
-    getline(cin, userHandle);
-    while (userHandle.length() > 16 || userHandle.length() < 1 || !isPrintStr(userHandle))
+    getline(cin, userHandle); // read user handle into userHandle
+    while (userHandle.length() > 16 || userHandle.length() < 1 || !isPrintStr(userHandle)) // must be less than 16 characters and be only printable characters
     {
         cout << "Handle is invalid. Please enter a new one: ";
-        getline(cin, userHandle);
+        getline(cin, userHandle); // read a new user handle into userHandle
     }
 
+
+    // interactive loop
     for (;;)
     {
-        cout << "[" << userHandle << "] > ";
-        getline(cin, userInput);
+        cout << "[" << userHandle << "] > "; // print prompt
+        getline(cin, userInput); // get user input
+
         if (userInput == "help")
         {
             DisplayHelp();
         }
-        else if (userInput == "list")
-        {
-            cout << "Contacts: " << endl;
-            for (size_t index = 0; index < contactDB.size(); index++)
-            {
-                cout << "[" << contactDB.at(index).getAlias() << "]" << endl;
-                cout << "   " << contactDB.at(index).getHostname() << endl;
-                cout << "   " << contactDB.at(index).getPort() << endl;
-            }
-        }
-        else if (userInput == "add")
+        else if (userInput == "add-contact")
         {
             quickPrintLog(INFO, "Adding new contact.");
             cout << "Alias: ";
@@ -194,19 +190,51 @@ int main(int argc, char **argv)
                 }
             }
         }
-        else if (userInput == "newset")
+        else if (userInput == "delete-contact")
         {
-            cout << "Creating new setting." << endl;
+            quickPrintLog(INFO, "Deleting contact.");
+            cout << "Alias (must be exact): ";
+            getline(cin, userInput);
+ 
+            for (size_t index = 0; index < contactDB.size(); index++)
+            {
+                if (contactDB.at(index).getAlias() == userInput)
+                {
+                    contactDB.erase(contactDB.begin() + index);
+                    quickPrintLog(INFO, "Contact deleted.");
+                    break;
+                }
+            }
+        }
+        else if (userInput == "list-contacts")
+        {
+            cout << "Contacts: " << endl;
+            for (size_t index = 0; index < contactDB.size(); index++)
+            {
+                cout << "[" << contactDB.at(index).getAlias() << "]" << endl;
+                cout << "   " << contactDB.at(index).getHostname() << endl;
+                cout << "   " << contactDB.at(index).getPort() << endl;
+            }
+        }
+        else if (userInput == "add-setting")
+        { 
+            cout << "Adding new setting." << endl;
             cout << "Key: ";
             settingDB.push_back(Setting());
-            getline(cin, userInput);
-            settingDB.at(settingDB.size() - 1).SetKey(userInput);
+            getline(cin, keyBuf);
+            settingDB.at(settingDB.size() - 1).SetKey(keyBuf);
+
             cout << "Value: ";
-            getline(cin, userInput);
-            settingDB.at(settingDB.size() - 1).SetValue(userInput);
-            cout << "Created setting (" << settingDB.at(settingDB.size() - 1).GetKey() << "=" << settingDB.at(settingDB.size() - 1).GetValue() << ")" << endl;
+            getline(cin, valueBuf);
+            settingDB.at(settingDB.size() - 1).SetValue(valueBuf);
+            
+            cout << "Description: ";
+            getline(cin, descriptionBuf);
+            settingDB.at(settingDB.size() - 1).SetDescription(descriptionBuf);
+
+            cout << "Created setting (" << settingDB.at(settingDB.size() - 1).GetKey() << "=" << settingDB.at(settingDB.size() - 1).GetValue() << ":" << settingDB.at(settingDB.size() - 1).GetDescription() << ")" << endl;
         }
-        else if (userInput == "delset")
+        else if (userInput == "delete-setting")
         {
             cout << "Deleting setting." << endl;
             cout << "Key: ";
@@ -221,31 +249,16 @@ int main(int argc, char **argv)
                 }
             }
         }
-        else if (userInput == "delete")
-        {
-            quickPrintLog(INFO, "Deleting contact.");
-            cout << "Alias (must be exact): ";
-            getline(cin, userInput);
-
-            for (size_t index = 0; index < contactDB.size(); index++)
-            {
-                if (contactDB.at(index).getAlias() == userInput)
-                {
-                    contactDB.erase(contactDB.begin() + index);
-                    quickPrintLog(INFO, "Contact deleted.");
-                    break;
-                }
-            }
-        }
-        else if (userInput == "listset")
+        else if (userInput == "list-settings")
         {
             cout << "Settings: " << endl;
             for (size_t index = 0; index < settingDB.size(); index++)
             {
-                cout << settingDB.at(index).ToString() << endl;
+                cout << settingDB.at(index).GetKey() << "=" << settingDB.at(index).GetValue() << endl;
+                cout << "    " << settingDB.at(index).GetDescription() << endl;
             }
         }
-        else if (userInput == "saveset")
+        else if (userInput == "save-settings")
         {
             settingDBFile.close();
             settingDBFile.open(DEFAULT_SETTINGS_FILE, ios::trunc | ios::out);
@@ -267,7 +280,7 @@ int main(int argc, char **argv)
                 continue;
             }
         }
-        else if (userInput == "save")
+        else if (userInput == "save-contacts")
         {
             quickPrintLog(INFO, "Saving contact file.");
             contactDBFile.close();

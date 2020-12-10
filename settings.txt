@@ -1,2 +1,1 @@
-this_is_a_test=1488
-bigdaddy=1969
+contactsPath=/home/anon/contacts:Path to contacts database file.

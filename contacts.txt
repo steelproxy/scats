@@ -1,2 +1,0 @@
-Development VPS,drippin.live,1000
-Jefe,jefe.live,1000
