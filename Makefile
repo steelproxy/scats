@@ -1,23 +1,25 @@
 CC=g++
-CFLAGS=-std=c++11 -Wall -Wpedantic -g
+CFLAGS=-std=c++11 -Wall -Wpedantic -g -lpthread
 
-all: scats.o setting.o contact.o log.o
-	$(CC) $(CFLAGS) -o scats scats.o setting.o contact.o log.o
+OBJDIR=obj
+SRCDIR=src
+BINDIR=bin
+TARGET=scats
 
-scats.o: scats.cpp
-	$(CC) $(CFLAGS) -c scats.cpp
+SOURCES  := $(wildcard $(SRCDIR)/*.cpp)
+INCLUDES := $(wildcard $(SRCDIR)/*.h)
+OBJECTS  := $(SOURCES:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)
 
-setting.o: setting.cpp
-	$(CC) $(CFLAGS) -c setting.cpp
+build: $(BINDIR)/$(TARGET)
 
-contact.o: contact.cpp
-	$(CC) $(CFLAGS) -c contact.cpp
+$(BINDIR)/$(TARGET): $(OBJECTS)
+	$(CC) $(CFLAGS) -o $@ $(OBJECTS)
 
-log.o: log.cpp
-	$(CC) $(CFLAGS) -c log.cpp
+$(OBJECTS): $(OBJDIR)/%.o : $(SRCDIR)/%.cpp
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
 clean:
-	rm *.o
+	rm $(OBJDIR)/*.o $(BINDIR)/$(TARGET)
 
 written:
-	wc *.cpp *.h
+	wc $(SRCDIR)/*.cpp $(SRCDIR)/*.h

@@ -1,1 +1,2 @@
 contactsPath=/home/anon/contacts:Path to contacts database file.
+userHandle=Collin:User identification handle.

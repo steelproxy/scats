@@ -9,7 +9,6 @@ using boost::asio::ip::tcp;
 class Server
 {
 public:
-    Server();
     Server(short port);
 
     void Listen();
@@ -17,11 +16,6 @@ public:
 
     void Write();
     void Read();
-
-    void Free();
-
-    void operator delete(void * p);
-
 private:
     friend int ValidData(Server *checkServer);
 
