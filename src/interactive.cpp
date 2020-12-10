@@ -44,15 +44,15 @@ void InteractiveAddContact(ContactDB &contactDatabase)
     cout << "Hostname: ";
     getline(cin, newEndpoint);
 
-    for(size_t index = 0; index < newAlias.length(); index++)
+    for (size_t index = 0; index < newAlias.length(); index++)
     {
-        if(newAlias.at(index) == ',' || !isprint(newAlias.at(index)))
+        if (newAlias.at(index) == ',' || !isprint(newAlias.at(index)))
             newAlias.at(index) = ' '; // sanitize ','
     }
 
-    for(size_t index = 0; index < newEndpoint.length(); index++)
+    for (size_t index = 0; index < newEndpoint.length(); index++)
     {
-        if(newEndpoint.at(index) == ',' || !isprint(newEndpoint.at(index)))
+        if (newEndpoint.at(index) == ',' || !isprint(newEndpoint.at(index)))
             newEndpoint.at(index) = ' '; // sanitize ','
     }
 
@@ -82,7 +82,7 @@ void InteractiveDeleteContact(ContactDB &contactDatabase)
     getline(cin, tarGetAlias);
 
     contactDatabase.DeleteContact(contactDatabase.SearchAlias(tarGetAlias));
-    if(contactDatabase.GetLength() < startingLen)
+    if (contactDatabase.GetLength() < startingLen)
         cout << "Contact deleted." << endl;
 }
 
@@ -92,29 +92,29 @@ void InteractiveAddSetting(SettingDB &settingDatabase)
     string newValue;
     string newDescription;
 
-    cout << "Adding new setting." << endl;
+    cout << "Adding new setting..." << endl;
     cout << "Key: ";
     getline(cin, newKey);
-    for(size_t index = 0; index < newKey.length(); index++)
+    for (size_t index = 0; index < newKey.length(); index++)
     {
-        if(newKey.at(index) == '=' || newKey.at(index) == ':' || !isprint(newKey.at(index)))
+        if (newKey.at(index) == '=' || newKey.at(index) == ':' || !isprint(newKey.at(index)))
             newKey.at(index) = ' ';
     }
 
     cout << "Value: ";
     getline(cin, newValue);
-    for(size_t index = 0; index < newValue.length(); index++)
+    for (size_t index = 0; index < newValue.length(); index++)
     {
-        if(newValue.at(index) == '=' || newValue.at(index) == ':' || !isprint(newValue.at(index)))
-           newValue.at(index) = ' ';
+        if (newValue.at(index) == '=' || newValue.at(index) == ':' || !isprint(newValue.at(index)))
+            newValue.at(index) = ' ';
     }
 
     cout << "Description: ";
     getline(cin, newDescription);
-    for(size_t index = 0; index < newDescription.length(); index++)
+    for (size_t index = 0; index < newDescription.length(); index++)
     {
-        if(newDescription.at(index) == '=' || newDescription.at(index) == ':' || !isprint(newDescription.at(index)))
-           newDescription.at(index) = ' ';
+        if (newDescription.at(index) == '=' || newDescription.at(index) == ':' || !isprint(newDescription.at(index)))
+            newDescription.at(index) = ' ';
     }
 
     settingDatabase.AddSetting(Setting(newKey, newValue, newDescription));
@@ -130,6 +130,36 @@ void InteractiveDeleteSetting(SettingDB &settingDatabase)
     getline(cin, targetKey);
 
     settingDatabase.DeleteSetting(settingDatabase.SearchKey(targetKey));
-    if(settingDatabase.GetLength() < startingLen)
+    if (settingDatabase.GetLength() < startingLen)
         cout << "Setting deleted." << endl;
+}
+
+void InteractiveChangeSetting(SettingDB &settingDatabase)
+{
+    Setting targetSetting;
+    string targetKey;
+    string newValue;
+    string oldDescription;
+
+    quickPrintLog(INFO, "Changing setting...");
+    cout << "Key: ";
+    getline(cin, targetKey);
+
+    targetSetting = settingDatabase.SearchKey(targetKey);
+
+    if (!targetSetting.Empty())
+    {
+        cout << targetSetting.GetKey() << "=" << targetSetting.GetValue() << endl;
+        cout << targetSetting.GetKey() << "=";
+
+        getline(cin, newValue);
+        for (size_t index = 0; index < newValue.length(); index++)
+        {
+            if (newValue.at(index) == '=' || newValue.at(index) == ':' || !isprint(newValue.at(index)))
+                newValue.at(index) = ' ';
+        }
+        oldDescription = targetSetting.GetDescription();
+        settingDatabase.DeleteSetting(targetSetting);
+        settingDatabase.AddSetting(Setting(targetKey, newValue, oldDescription));
+    }
 }

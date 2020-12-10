@@ -10,6 +10,8 @@
 #include "network.h"
 #include "interactive.h"
 
+#define IfSet(value, key) if ((value = settingDatabase.SearchKey(key).GetValue()) == string())
+
 #define DEFAULT_CONTACTS_FILE "contacts.txt"
 #define DEFAULT_SETTINGS_FILE "settings.txt"
 #define DEFAULT_LOG_FILE "log.txt"
@@ -33,12 +35,7 @@ int main(int argc, char **argv)
     SettingDB settingDatabase;
     string userInput;
     string userHandle;
-    string aliasBuf;
-    string hostnameBuf;
-    string portBuf;
-    string keyBuf;
-    string valueBuf;
-    string descriptionBuf;
+    string enableShell;
 
     // load logger
     if (logger.Open(DEFAULT_LOG_FILE)) // initialize logger
@@ -56,11 +53,10 @@ int main(int argc, char **argv)
         settingDatabase.Open(DEFAULT_SETTINGS_FILE);
         settingDatabase.Load();
     }
-    catch(const std::exception& e)
+    catch (const std::exception &e)
     {
         quickPrintLog(ERROR, "Unable to load settings database: " << e.what());
     }
-    
 
     // load contacts
     quickPrintLog(INFO, "Loading contacts database...");
@@ -74,13 +70,15 @@ int main(int argc, char **argv)
         quickPrintLog(ERROR, "Unable to load contacts database: " << e.what());
     }
 
-    // setup user handle
-    if ((userHandle = settingDatabase.SearchKey("userHandle").GetValue()) == string())
-        InteractiveSetUserHandle(userHandle);
-
     // interactive loop
     for (;;)
     {
+        // setup user handle
+        IfSet(userHandle, "userHandle")
+            InteractiveSetUserHandle(userHandle);
+        IfSet(enableShell, "enableShell")
+            enableShell = "false";
+
         cout << "[" << userHandle << "] > "; // print prompt
         getline(cin, userInput);             // get user input
 
@@ -128,6 +126,10 @@ int main(int argc, char **argv)
             quickPrintLog(INFO, "Saving settings file.");
             settingDatabase.Save();
         }
+        else if (userInput == "change-setting")
+        {
+            InteractiveChangeSetting(settingDatabase);
+        }
         else if (userInput == "save-contacts")
         {
             quickPrintLog(INFO, "Saving contact file.");
@@ -157,6 +159,8 @@ int main(int argc, char **argv)
         }
         else
         {
+            if (enableShell != "true")
+                continue;
             if (system(userInput.c_str()) < 0)
             {
                 cout << "Error: " << strerror(errno) << endl;

@@ -21,7 +21,7 @@ bool ContactDB::IsDuplicate(Contact testContact)
 
 void ContactDB::AddContact(Contact newContact)
 {
-    if (!newContact.empty())
+    if (!newContact.Empty())
     {
         if (!IsDuplicate(newContact))
             this->database.push_back(newContact);
@@ -36,7 +36,7 @@ void ContactDB::AddContact(std::string info)
 {
     Contact newContact(info);
 
-    if (!newContact.empty())
+    if (!newContact.Empty())
     {
         if (!IsDuplicate(newContact))
             this->database.push_back(newContact);

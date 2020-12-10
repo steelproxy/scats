@@ -12,5 +12,6 @@ void InteractiveDeleteContact(ContactDB &contactDatabase);
 
 void InteractiveAddSetting(SettingDB &settingDatabase);
 void InteractiveDeleteSetting(SettingDB &settingDatabase);
+void InteractiveChangeSetting(SettingDB &settingDatabase);
 
 #endif
