@@ -102,6 +102,7 @@ bool isPrintStr(string str)
 
 int main(int argc, char **argv)
 {
+    Server testServ;
     fstream settingDBFile;
     fstream contactDBFile;
     vector<Setting> settingDB;
@@ -121,13 +122,12 @@ int main(int argc, char **argv)
         cout << "error: Unable to open log file!" << endl; // print error if fail
     }
     logger.SetPrint(false); // do not print log to cout
-    logger.Truncate(); // truncate log (new log every run)
+    logger.Truncate();      // truncate log (new log every run)
     quickPrintLog(INFO, "Starting scats...");
-
 
     // load settings
     settingDBFile.open(DEFAULT_SETTINGS_FILE, ios::in); // open settings database file for reading
-    if (settingDBFile.fail()) // if it fails
+    if (settingDBFile.fail())                           // if it fails
     {
         quickPrintLog(SEVERE, "Couldn't open settings file: " << DEFAULT_SETTINGS_FILE);
         return 1; // return error
@@ -135,10 +135,9 @@ int main(int argc, char **argv)
     quickPrintLog(INFO, "Loading settings...");
     loadSettings(settingDBFile, settingDB); // load settings from database file into database
 
-
     // load contacts
     contactDBFile.open(DEFAULT_CONTACTS_FILE, ios::in); // open contacts database file for reading
-    if (contactDBFile.fail()) // if it fails
+    if (contactDBFile.fail())                           // if it fails
     {
         quickPrintLog(SEVERE, "Couldn't open contacts file: " << DEFAULT_CONTACTS_FILE);
         return 1; // return error
@@ -146,22 +145,20 @@ int main(int argc, char **argv)
     quickPrintLog(INFO, "Loading contacts list...");
     loadContacts(contactDBFile, contactDB); // load contacts from database file into database
 
-
     // setup user handle
     cout << "Handle (max 16 characters, no special characters): ";
-    getline(cin, userHandle); // read user handle into userHandle
+    getline(cin, userHandle);                                                              // read user handle into userHandle
     while (userHandle.length() > 16 || userHandle.length() < 1 || !isPrintStr(userHandle)) // must be less than 16 characters and be only printable characters
     {
         cout << "Handle is invalid. Please enter a new one: ";
         getline(cin, userHandle); // read a new user handle into userHandle
     }
 
-
     // interactive loop
     for (;;)
     {
         cout << "[" << userHandle << "] > "; // print prompt
-        getline(cin, userInput); // get user input
+        getline(cin, userInput);             // get user input
 
         if (userInput == "help")
         {
@@ -195,7 +192,7 @@ int main(int argc, char **argv)
             quickPrintLog(INFO, "Deleting contact.");
             cout << "Alias (must be exact): ";
             getline(cin, userInput);
- 
+
             for (size_t index = 0; index < contactDB.size(); index++)
             {
                 if (contactDB.at(index).getAlias() == userInput)
@@ -217,7 +214,7 @@ int main(int argc, char **argv)
             }
         }
         else if (userInput == "add-setting")
-        { 
+        {
             cout << "Adding new setting." << endl;
             cout << "Key: ";
             settingDB.push_back(Setting());
@@ -227,7 +224,7 @@ int main(int argc, char **argv)
             cout << "Value: ";
             getline(cin, valueBuf);
             settingDB.at(settingDB.size() - 1).SetValue(valueBuf);
-            
+
             cout << "Description: ";
             getline(cin, descriptionBuf);
             settingDB.at(settingDB.size() - 1).SetDescription(descriptionBuf);
@@ -291,6 +288,20 @@ int main(int argc, char **argv)
             }
             contactDBFile.close();
             contactDBFile.open(DEFAULT_CONTACTS_FILE, ios::in);
+        }
+        else if (userInput == "server")
+        {
+            cout << "What port would you like to start the server on? " << endl;
+            getline(cin, userInput);
+            testServ.Free();
+            testServ = Server(stoi(userInput));
+            cout << "Starting server on port: " << userInput << "..." << endl;
+            for(;;)
+            {
+                testServ.Listen();
+                cout << "Got conenction!" << endl;
+            }
+            quickPrintLog(INFO, "Starting server...");
         }
         else if (userInput == "exit")
         {

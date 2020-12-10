@@ -9,6 +9,7 @@ using boost::asio::ip::tcp;
 class Server
 {
 public:
+    Server();
     Server(short port);
 
     void Listen();
@@ -17,7 +18,13 @@ public:
     void Write();
     void Read();
 
+    void Free();
+
+    void operator delete(void * p);
+
 private:
+    friend int ValidData(Server *checkServer);
+
     boost::asio::io_context* io_context;  // io_context, used for communication between OS I/O services
     boost::asio::ip::tcp::socket* client_socket; // TCP socket, used as I/O object, forwards requests to io_context
     boost::asio::ip::tcp::acceptor* tcp_acceptor; // used to listen for new connections
