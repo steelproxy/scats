@@ -1,3 +1,10 @@
+/** 
+ *  @file   log.cpp
+ *  @brief  Implementation of Log class.
+ *  @author Collin Rodes
+ *  @date   2020-12-11
+ ***********************************************/
+
 #include <sstream>
 #include <iostream>
 #include "log.h"

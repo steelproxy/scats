@@ -1,3 +1,10 @@
+/** 
+ *  @file   contact.cpp
+ *  @brief  Contact definition file. 
+ *  @author Collin Rodes
+ *  @date   2020-12-11
+ ***********************************************/
+
 #ifndef CONTACT_H
 #define CONTACT_H
 

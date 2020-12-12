@@ -1,6 +1,14 @@
+/** 
+ *  @file   interactive.cpp
+ *  @brief  Interactive functions for command line.
+ *  @author Collin Rodes
+ *  @date   2020-12-11
+ ***********************************************/
+
 #include <iostream>
 #include <string>
 #include <vector>
+#include <curses.h>
 #include "contact.h"
 #include "log.h"
 #include "setting.h"
@@ -23,12 +31,12 @@ bool isPrintStr(string str)
 
 void InteractiveSetUserHandle(string &userHandle)
 {
-    cout << "Handle (max 16 characters, no special characters): ";
-    getline(cin, userHandle);                                                              // read user handle into userHandle
+    ncout("Handle (max 16 characters, no special characters): ");
+    ngetstr(userHandle);                                                          // read user handle into userHandle
     while (userHandle.length() > 16 || userHandle.length() < 1 || !isPrintStr(userHandle)) // must be less than 16 characters and be only printable characters
     {
-        cout << "Handle is invalid. Please enter a new one: ";
-        getline(cin, userHandle); // read a new user handle into userHandle
+        ncout("Handle is invalid. Please enter a new one: ");
+        ngetstr(userHandle); // read a new user handle into userHandle
     }
 }
 
@@ -38,11 +46,10 @@ void InteractiveAddContact(ContactDB &contactDatabase)
     string newEndpoint;
     string newPort;
 
-    quickPrintLog(INFO, "Adding new contact.");
-    cout << "Alias: ";
-    getline(cin, newAlias);
-    cout << "Hostname: ";
-    getline(cin, newEndpoint);
+    ncout("Alias: ");
+    ngetstr(newAlias);
+    ncout("Endpoint: ");
+    ngetstr(newEndpoint);
 
     for (size_t index = 0; index < newAlias.length(); index++)
     {
@@ -56,7 +63,7 @@ void InteractiveAddContact(ContactDB &contactDatabase)
             newEndpoint.at(index) = ' '; // sanitize ','
     }
 
-    cout << "Port: ";
+    ncout("Port: ");
     while (true)
     {
         getline(cin, newPort);
@@ -67,23 +74,24 @@ void InteractiveAddContact(ContactDB &contactDatabase)
         }
         catch (const std::exception &e)
         {
-            cout << "Unable to add contact: " << e.what() << endl;
+           ncoutln("Unable to add contact: " << e.what());
+            return;
         }
     }
+    quickPrintLog(INFO, "Added contact.");
 }
 
 void InteractiveDeleteContact(ContactDB &contactDatabase)
 {
-    string tarGetAlias;
+    string targetAlias;
     size_t startingLen = contactDatabase.GetLength();
 
-    quickPrintLog(INFO, "Deleting contact.");
-    cout << "Alias (must be exact): ";
-    getline(cin, tarGetAlias);
+    ncout("Alias (must be exact): ");
+    ngetstr(targetAlias);
 
-    contactDatabase.DeleteContact(contactDatabase.SearchAlias(tarGetAlias));
+    contactDatabase.DeleteContact(contactDatabase.SearchAlias(targetAlias));
     if (contactDatabase.GetLength() < startingLen)
-        cout << "Contact deleted." << endl;
+        quickPrintLog(INFO, "Contact deleted.");
 }
 
 void InteractiveAddSetting(SettingDB &settingDatabase)
@@ -92,25 +100,24 @@ void InteractiveAddSetting(SettingDB &settingDatabase)
     string newValue;
     string newDescription;
 
-    cout << "Adding new setting..." << endl;
-    cout << "Key: ";
-    getline(cin, newKey);
+    ncout("Key: ");
+    ngetstr(newKey);
     for (size_t index = 0; index < newKey.length(); index++)
     {
         if (newKey.at(index) == '=' || newKey.at(index) == ':' || !isprint(newKey.at(index)))
             newKey.at(index) = ' ';
     }
 
-    cout << "Value: ";
-    getline(cin, newValue);
+    ncout("Value: ");
+    ngetstr(newValue);
     for (size_t index = 0; index < newValue.length(); index++)
     {
         if (newValue.at(index) == '=' || newValue.at(index) == ':' || !isprint(newValue.at(index)))
             newValue.at(index) = ' ';
     }
 
-    cout << "Description: ";
-    getline(cin, newDescription);
+    ncout("Description: ");
+    ngetstr(newDescription);
     for (size_t index = 0; index < newDescription.length(); index++)
     {
         if (newDescription.at(index) == '=' || newDescription.at(index) == ':' || !isprint(newDescription.at(index)))
@@ -118,6 +125,7 @@ void InteractiveAddSetting(SettingDB &settingDatabase)
     }
 
     settingDatabase.AddSetting(Setting(newKey, newValue, newDescription));
+    quickPrintLog(INFO, "New setting added " << newKey << "=" << newValue << ":" << newDescription);
 }
 
 void InteractiveDeleteSetting(SettingDB &settingDatabase)
@@ -125,13 +133,12 @@ void InteractiveDeleteSetting(SettingDB &settingDatabase)
     string targetKey;
     size_t startingLen = settingDatabase.GetLength();
 
-    quickPrintLog(INFO, "Deleting setting...");
-    cout << "Key: ";
-    getline(cin, targetKey);
+    ncout("Key: ");
+    ngetstr(targetKey);
 
     settingDatabase.DeleteSetting(settingDatabase.SearchKey(targetKey));
     if (settingDatabase.GetLength() < startingLen)
-        cout << "Setting deleted." << endl;
+        quickPrintLog(INFO, "Setting deleted.");
 }
 
 void InteractiveChangeSetting(SettingDB &settingDatabase)
@@ -141,18 +148,16 @@ void InteractiveChangeSetting(SettingDB &settingDatabase)
     string newValue;
     string oldDescription;
 
-    quickPrintLog(INFO, "Changing setting...");
-    cout << "Key: ";
-    getline(cin, targetKey);
-
+    ncout("Key: ");
+    ngetstr(targetKey);
     targetSetting = settingDatabase.SearchKey(targetKey);
 
     if (!targetSetting.Empty())
     {
-        cout << targetSetting.GetKey() << "=" << targetSetting.GetValue() << endl;
-        cout << targetSetting.GetKey() << "=";
+        ncoutln(targetSetting.GetKey() << "=" << targetSetting.GetValue());
+        ncout(targetSetting.GetKey() << "=");
 
-        getline(cin, newValue);
+        ngetstr(newValue);
         for (size_t index = 0; index < newValue.length(); index++)
         {
             if (newValue.at(index) == '=' || newValue.at(index) == ':' || !isprint(newValue.at(index)))
@@ -161,5 +166,6 @@ void InteractiveChangeSetting(SettingDB &settingDatabase)
         oldDescription = targetSetting.GetDescription();
         settingDatabase.DeleteSetting(targetSetting);
         settingDatabase.AddSetting(Setting(targetKey, newValue, oldDescription));
+        quickPrintLog(INFO, "Changed setting: " << targetKey << "=" << newValue);
     }
 }

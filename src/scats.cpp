@@ -1,14 +1,23 @@
+/** 
+ *  @file   scats.cpp
+ *  @brief  Main program file.
+ *  @author Collin Rodes
+ *  @date   2020-12-11
+ ***********************************************/
+
 #include <iostream>
 #include <iomanip>
 #include <fstream>
 #include <vector>
 #include <sstream>
 #include <cctype>
+#include <pthread.h>
 #include "setting.h"
 #include "contact.h"
 #include "log.h"
 #include "network.h"
 #include "interactive.h"
+#include <curses.h>
 
 #define IfSet(value, key) if ((value = settingDatabase.SearchKey(key).GetValue()) == string())
 
@@ -19,28 +28,55 @@
 using namespace std;
 
 Log logger;
+WINDOW* root;
+int curX;
+int curY;
+
+template <class charT, class Traits=char_traits<charT> >
+class MyOstream : public basic_ostream<charT,Traits> {
+ public:
+   MyOstream(basic_streambuf<charT,Traits>* sb) 
+   : basic_ostream<charT,Traits>(sb) {}
+   // . . .
+};
 
 void DisplayHelp()
 {
-    cout << "Commands: " << endl;
-    cout << "help       Displays help page." << endl;
-    cout << "add        Adds a new contact." << endl;
-    cout << "list       Lists all contacts in contacts list." << endl;
-    cout << "connect    Connects to a contact." << endl;
+    ncoutln("Commands: ");
+    ncoutln("add-contact    Adds a new contact.");
+    ncoutln("add-setting    Adds a new setting.");
+    ncoutln("build          Rebuild and restart.");
+    ncoutln("change-setting Changes a setting");
+    ncoutln("delete-contact Deletes a contact.");
+    ncoutln("delete-setting Deletes a setting.");
+    ncoutln("exit           Exit scats.");
+    ncoutln("help           Displays help page.");
+    ncoutln("list-contacts  Lists all contacts.");
+    ncoutln("list-settings  Lists all settings.");
+    ncoutln("server         Starts server.");
 }
 
 int main(int argc, char **argv)
 {
     ContactDB contactDatabase;
     SettingDB settingDatabase;
+    string contactDatabasePath;
     string userInput;
     string userHandle;
     string enableShell;
+    string lastCommand;
+
+    root = initscr();
+    cbreak(); // don't require newline
+    keypad(root, true); // enable advanced key sequences
+    noecho(); // don't echo commands, we'll control that
+    scrollok(root, true); // enable scrolling
+
 
     // load logger
     if (logger.Open(DEFAULT_LOG_FILE)) // initialize logger
     {
-        cout << "error: Unable to open log file!" << endl; // print error if fail
+        ncoutln("error: Unable to open log file!"); // print error if fail
     }
     logger.SetPrint(false); // do not print log to cout
     logger.Truncate();      // truncate log (new log every run)
@@ -58,29 +94,46 @@ int main(int argc, char **argv)
         quickPrintLog(ERROR, "Unable to load settings database: " << e.what());
     }
 
+
     // load contacts
     quickPrintLog(INFO, "Loading contacts database...");
+    IfSet(contactDatabasePath, "contactDatabasePath")
+        contactDatabasePath = DEFAULT_CONTACTS_FILE;
     try
     {
-        contactDatabase.Open(DEFAULT_CONTACTS_FILE);
+        contactDatabase.Open(contactDatabasePath);
         contactDatabase.Load();
     }
-    catch (const std::exception &e)
+    catch (const std::string &e)
     {
-        quickPrintLog(ERROR, "Unable to load contacts database: " << e.what());
+        quickPrintLog(ERROR, "Unable to load contacts database: " << e);
     }
 
     // interactive loop
     for (;;)
     {
+        userInput = string();
         // setup user handle
         IfSet(userHandle, "userHandle")
             InteractiveSetUserHandle(userHandle);
         IfSet(enableShell, "enableShell")
             enableShell = "false";
 
-        cout << "[" << userHandle << "] > "; // print prompt
-        getline(cin, userInput);             // get user input
+        addstr("[");
+        addstr(userHandle.c_str());
+        addstr("] > "); // print prompt
+        userInput = getch();
+        refresh();
+        while(userInput.at(userInput.length() - 1) != '\n')
+        {
+            if(isprint(userInput.at(userInput.length() - 1)))
+                addch(userInput.at(userInput.length() - 1));
+            refresh();
+            userInput += getch();
+        }   
+
+        userInput.erase(userInput.end() - 1);
+        addch('\n');
 
         if (userInput == "help")
         {
@@ -88,10 +141,12 @@ int main(int argc, char **argv)
         }
         else if (userInput == "add-contact")
         {
+            quickPrintLog(INFO, "Adding new contact...");
             InteractiveAddContact(contactDatabase);
         }
         else if (userInput == "delete-contact")
         {
+            quickPrintLog(INFO, "Deleting contact...");
             InteractiveDeleteContact(contactDatabase);
         }
         else if (userInput == "list-contacts")
@@ -99,50 +154,53 @@ int main(int argc, char **argv)
             cout << "Contacts: " << endl;
             for (size_t index = 0; index < contactDatabase.GetLength(); index++)
             {
-                cout << "[" << contactDatabase.GetIndex(index).GetAlias() << "]" << endl;
-                cout << "   " << contactDatabase.GetIndex(index).GetEndpoint() << endl;
-                cout << "   " << contactDatabase.GetIndex(index).GetPort() << endl;
+                ncoutln("[" << contactDatabase.GetIndex(index).GetAlias() << "]");
+                ncoutln("   " << contactDatabase.GetIndex(index).GetEndpoint());
+                ncoutln("   " << contactDatabase.GetIndex(index).GetPort());
             }
         }
         else if (userInput == "add-setting")
         {
+            quickPrintLog(INFO, "Adding new setting...");
             InteractiveAddSetting(settingDatabase);
         }
         else if (userInput == "delete-setting")
         {
+            quickPrintLog(INFO, "Deleting setting...");
             InteractiveDeleteSetting(settingDatabase);
         }
         else if (userInput == "list-settings")
         {
-            cout << "Settings: " << endl;
+            ncoutln("Settings: ");
             for (size_t index = 0; index < settingDatabase.GetLength(); index++)
             {
-                cout << settingDatabase.GetIndex(index).GetKey() << "=" << settingDatabase.GetIndex(index).GetValue() << endl;
-                cout << "    " << settingDatabase.GetIndex(index).GetDescription() << endl;
+                ncoutln(settingDatabase.GetIndex(index).GetKey() << "=" << settingDatabase.GetIndex(index).GetValue());
+                ncoutln("    " << settingDatabase.GetIndex(index).GetDescription());
             }
         }
         else if (userInput == "save-settings")
         {
-            quickPrintLog(INFO, "Saving settings file.");
+            quickPrintLog(INFO, "Saving settings file...");
             settingDatabase.Save();
         }
         else if (userInput == "change-setting")
         {
+            quickPrintLog(INFO, "Changing settings...");
             InteractiveChangeSetting(settingDatabase);
         }
         else if (userInput == "save-contacts")
         {
-            quickPrintLog(INFO, "Saving contact file.");
+            quickPrintLog(INFO, "Saving contact file...");
             contactDatabase.Save();
         }
         else if (userInput == "server")
         {
-            cout << "What port would you like to start the server on? " << endl;
-            getline(cin, userInput);
+            ncoutln("What port would you like to start the server on? ");
+            ngetstr(userInput);
             Server testServ(stoi(userInput));
             quickPrintLog(INFO, "Starting server on port: " << userInput << "...");
             testServ.Listen();
-            cout << "Got conenction!" << endl;
+            ncoutln("Got conenction!");
         }
         else if (userInput == "exit")
         {

@@ -1,3 +1,10 @@
+/** 
+ *  @file   contact.cpp
+ *  @brief  Contact class implementation. 
+ *  @author Collin Rodes
+ *  @date   2020-12-11
+ ***********************************************/
+
 #include <iostream>
 #include <sstream>
 #include "contact.h"

@@ -1,3 +1,10 @@
+/** 
+ *  @file   settingdb.cpp
+ *  @brief  Implementation of SettingDB class.
+ *  @author Collin Rodes
+ *  @date   2020-12-11
+ ***********************************************/
+
 #include <iostream>
 #include <fstream>
 #include "setting.h"

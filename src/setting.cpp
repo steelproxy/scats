@@ -1,3 +1,10 @@
+/** 
+ *  @file   setting.cpp
+ *  @brief  Implementation of Setting class.
+ *  @author Collin Rodes
+ *  @date   2020-12-11
+ ***********************************************/
+
 #include <string>
 #include <iostream>
 #include <sstream>

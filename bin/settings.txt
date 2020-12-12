@@ -1,3 +1,3 @@
-contactsPath=/home/anon/contacts:Path to contacts database file.
 enableShell=false:Enables or disables forwarding commands to system shell.
-userHandle=Big Collin:User identification handle.
+contactDatabasePath=contacts.txt:Path to contact database.
+userHandle=YOUNG DAGGER DICK:User identification handle.
