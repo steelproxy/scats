@@ -7,8 +7,8 @@
 
 #define ncout(message)                                    \
     {                                                     \
-        getyx(root, curY, curX);                          \
-        if (curY == getmaxy(root))                        \
+        getyx(root, xPos, yPos);                          \
+        if (yPos == getmaxy(root))                        \
             scroll(root);                                 \
         logger.stringBuilder.str(string());               \
         logger.stringBuilder << message;                  \
@@ -21,8 +21,15 @@
         ncout(message << endl); \
     }
 
-void ngetstr(std::string &var);
+extern std::vector<std::string> commandHistory;
+extern std::vector<std::string> commands;
 
-extern std::vector<std::string> lastCommand;
+void StartCurses();
+void GetConsoleInput(std::string &out);
+void GetUserInput(std::string &out);
+
+extern WINDOW *root;
+extern int xPos;
+extern int yPos;
 
 #endif

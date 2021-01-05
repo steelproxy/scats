@@ -1,3 +1,103 @@
-(12:73:58)    [info]: Starting scats...
-(12:73:58)    [info]: Loading setting database...
-(12:73:58)    [info]: Loading contact database...
+(16:68:58)    [info]: Loading setting database...
+(16:68:58)    [info]: Loading contact database...
+(16:68:59) [verbose]: startingxpos=9 outpos=0 xpos=9 char='97'
+(16:68:59) [verbose]: startingxpos=9 outpos=1 xpos=10 char='10'
+(16:68:59) [verbose]: verbatim: "a"
+(16:69:00) [verbose]: startingxpos=9 outpos=0 xpos=9 char='98'
+(16:69:00) [verbose]: startingxpos=9 outpos=1 xpos=10 char='10'
+(16:69:00) [verbose]: verbatim: "b"
+(16:69:00) [verbose]: startingxpos=9 outpos=0 xpos=9 char='99'
+(16:69:00) [verbose]: startingxpos=9 outpos=1 xpos=10 char='10'
+(16:69:00) [verbose]: verbatim: "c"
+(16:69:00) [verbose]: startingxpos=9 outpos=0 xpos=9 char='100'
+(16:69:01) [verbose]: startingxpos=9 outpos=1 xpos=10 char='10'
+(16:69:01) [verbose]: verbatim: "d"
+(16:69:01) [verbose]: startingxpos=9 outpos=0 xpos=9 char='101'
+(16:69:02) [verbose]: startingxpos=9 outpos=1 xpos=10 char='10'
+(16:69:02) [verbose]: verbatim: "e"
+(16:69:03) [verbose]: startingxpos=9 outpos=0 xpos=9 char='259'
+(16:69:03) [verbose]: got up.
+(16:69:03) [verbose]: startingxpos=9 outpos=1 xpos=10 char='259'
+(16:69:03) [verbose]: got up.
+(16:69:04) [verbose]: startingxpos=9 outpos=1 xpos=10 char='259'
+(16:69:04) [verbose]: got up.
+(16:69:04) [verbose]: startingxpos=9 outpos=1 xpos=10 char='259'
+(16:69:04) [verbose]: got up.
+(16:69:04) [verbose]: startingxpos=9 outpos=1 xpos=10 char='259'
+(16:69:04) [verbose]: got up.
+(16:69:04) [verbose]: startingxpos=9 outpos=1 xpos=10 char='259'
+(16:69:04) [verbose]: got up.
+(16:69:04) [verbose]: startingxpos=9 outpos=1 xpos=10 char='259'
+(16:69:04) [verbose]: got up.
+(16:69:05) [verbose]: startingxpos=9 outpos=1 xpos=10 char='258'
+(16:69:05) [verbose]: got down.
+(16:69:06) [verbose]: startingxpos=9 outpos=1 xpos=10 char='258'
+(16:69:06) [verbose]: got down.
+(16:69:07) [verbose]: startingxpos=9 outpos=1 xpos=10 char='258'
+(16:69:07) [verbose]: got down.
+(16:69:07) [verbose]: startingxpos=9 outpos=1 xpos=10 char='258'
+(16:69:07) [verbose]: got down.
+(16:69:08) [verbose]: startingxpos=9 outpos=1 xpos=10 char='258'
+(16:69:08) [verbose]: got down.
+(16:69:09) [verbose]: startingxpos=9 outpos=0 xpos=9 char='122'
+(16:69:09) [verbose]: startingxpos=9 outpos=1 xpos=10 char='10'
+(16:69:09) [verbose]: verbatim: "z"
+(16:69:10) [verbose]: startingxpos=9 outpos=0 xpos=9 char='259'
+(16:69:10) [verbose]: got up.
+(16:69:10) [verbose]: startingxpos=9 outpos=1 xpos=10 char='259'
+(16:69:10) [verbose]: got up.
+(16:69:11) [verbose]: startingxpos=9 outpos=1 xpos=10 char='259'
+(16:69:11) [verbose]: got up.
+(16:69:12) [verbose]: startingxpos=9 outpos=1 xpos=10 char='259'
+(16:69:12) [verbose]: got up.
+(16:69:13) [verbose]: startingxpos=9 outpos=1 xpos=10 char='259'
+(16:69:13) [verbose]: got up.
+(16:69:13) [verbose]: startingxpos=9 outpos=1 xpos=10 char='259'
+(16:69:13) [verbose]: got up.
+(16:69:14) [verbose]: startingxpos=9 outpos=1 xpos=10 char='259'
+(16:69:14) [verbose]: got up.
+(16:69:15) [verbose]: startingxpos=9 outpos=1 xpos=10 char='258'
+(16:69:15) [verbose]: got down.
+(16:69:15) [verbose]: startingxpos=9 outpos=1 xpos=10 char='258'
+(16:69:15) [verbose]: got down.
+(16:69:15) [verbose]: startingxpos=9 outpos=1 xpos=10 char='258'
+(16:69:15) [verbose]: got down.
+(16:69:15) [verbose]: startingxpos=9 outpos=1 xpos=10 char='258'
+(16:69:15) [verbose]: got down.
+(16:69:15) [verbose]: startingxpos=9 outpos=1 xpos=10 char='258'
+(16:69:15) [verbose]: got down.
+(16:69:15) [verbose]: startingxpos=9 outpos=0 xpos=9 char='258'
+(16:69:15) [verbose]: got down.
+(16:69:15) [verbose]: startingxpos=9 outpos=0 xpos=9 char='258'
+(16:69:15) [verbose]: got down.
+(16:69:15) [verbose]: startingxpos=9 outpos=0 xpos=9 char='258'
+(16:69:15) [verbose]: got down.
+(16:69:15) [verbose]: startingxpos=9 outpos=0 xpos=9 char='258'
+(16:69:15) [verbose]: got down.
+(16:69:15) [verbose]: startingxpos=9 outpos=0 xpos=9 char='258'
+(16:69:15) [verbose]: got down.
+(16:69:15) [verbose]: startingxpos=9 outpos=0 xpos=9 char='258'
+(16:69:15) [verbose]: got down.
+(16:69:15) [verbose]: startingxpos=9 outpos=0 xpos=9 char='258'
+(16:69:15) [verbose]: got down.
+(16:69:15) [verbose]: startingxpos=9 outpos=0 xpos=9 char='258'
+(16:69:15) [verbose]: got down.
+(16:69:15) [verbose]: startingxpos=9 outpos=0 xpos=9 char='258'
+(16:69:15) [verbose]: got down.
+(16:69:15) [verbose]: startingxpos=9 outpos=0 xpos=9 char='258'
+(16:69:15) [verbose]: got down.
+(16:69:15) [verbose]: startingxpos=9 outpos=0 xpos=9 char='258'
+(16:69:15) [verbose]: got down.
+(16:69:16) [verbose]: startingxpos=9 outpos=0 xpos=9 char='258'
+(16:69:16) [verbose]: got down.
+(16:69:16) [verbose]: startingxpos=9 outpos=0 xpos=9 char='258'
+(16:69:16) [verbose]: got down.
+(16:69:16) [verbose]: startingxpos=9 outpos=0 xpos=9 char='258'
+(16:69:16) [verbose]: got down.
+(16:69:18) [verbose]: startingxpos=9 outpos=0 xpos=9 char='101'
+(16:69:18) [verbose]: startingxpos=9 outpos=1 xpos=10 char='120'
+(16:69:18) [verbose]: startingxpos=9 outpos=2 xpos=11 char='105'
+(16:69:18) [verbose]: startingxpos=9 outpos=3 xpos=12 char='116'
+(16:69:18) [verbose]: startingxpos=9 outpos=4 xpos=13 char='10'
+(16:69:18) [verbose]: verbatim: "exit"
+(16:69:18)    [info]: Exiting scats...

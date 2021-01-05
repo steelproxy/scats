@@ -33,11 +33,11 @@ bool isPrintStr(string str)
 void InteractiveSetUserHandle(SettingDB &database, string &userHandle)
 {
     ncout("Handle (max 16 characters, no special characters): ");
-    ngetstr(userHandle);                                                                   // read user handle into userHandle
+    GetUserInput(userHandle);                                                                   // read user handle into userHandle
     while (userHandle.length() > 16 || userHandle.length() < 1 || !isPrintStr(userHandle)) // must be less than 16 characters and be only printable characters
     {
         ncout("Handle is invalid. Please enter a new one: ");
-        ngetstr(userHandle); // read a new user handle into userHandle
+        GetUserInput(userHandle); // read a new user handle into userHandle
     }
     database.AddSetting(Setting("userHandle", userHandle, "Name used to identify yourself to others."));
 }
@@ -51,13 +51,13 @@ void InteractiveAddContact(ContactDB &contactDatabase)
     do
     {
         ncout("Alias: ");
-        ngetstr(newAlias);
+        GetUserInput(newAlias);
     } while (newAlias.empty());
 
     do
     {
         ncout("Endpoint: ");
-        ngetstr(newEndpoint);
+        GetUserInput(newEndpoint);
     } while (newEndpoint.empty());
 
     for (size_t index = 0; index < newAlias.length(); index++)
@@ -75,7 +75,7 @@ void InteractiveAddContact(ContactDB &contactDatabase)
     ncout("Port: ");
     while (true)
     {
-        ngetstr(newPort);
+        GetUserInput(newPort);
         try
         {
             contactDatabase.AddContact(Contact(newAlias, newEndpoint, stoi(newPort)));
@@ -98,7 +98,7 @@ void InteractiveDeleteContact(ContactDB &contactDatabase)
     do
     {
         ncout("Alias (must be exact): ");
-        ngetstr(targetAlias);
+        GetUserInput(targetAlias);
     } while (targetAlias.empty());
 
     try
@@ -122,7 +122,7 @@ void InteractiveAddSetting(SettingDB &settingDatabase)
     string newDescription;
 
     ncout("Key: ");
-    ngetstr(newKey);
+    GetUserInput(newKey);
     for (size_t index = 0; index < newKey.length(); index++)
     {
         if (newKey.at(index) == '=' || newKey.at(index) == ':' || !isprint(newKey.at(index)))
@@ -130,7 +130,7 @@ void InteractiveAddSetting(SettingDB &settingDatabase)
     }
 
     ncout("Value: ");
-    ngetstr(newValue);
+    GetUserInput(newValue);
     for (size_t index = 0; index < newValue.length(); index++)
     {
         if (newValue.at(index) == '=' || newValue.at(index) == ':' || !isprint(newValue.at(index)))
@@ -138,7 +138,7 @@ void InteractiveAddSetting(SettingDB &settingDatabase)
     }
 
     ncout("Description: ");
-    ngetstr(newDescription);
+    GetUserInput(newDescription);
     for (size_t index = 0; index < newDescription.length(); index++)
     {
         if (newDescription.at(index) == '=' || newDescription.at(index) == ':' || !isprint(newDescription.at(index)))
@@ -155,7 +155,7 @@ void InteractiveDeleteSetting(SettingDB &settingDatabase)
     size_t startingLen = settingDatabase.GetLength();
 
     ncout("Key: ");
-    ngetstr(targetKey);
+    GetUserInput(targetKey);
 
     settingDatabase.DeleteSetting(settingDatabase.SearchKey(targetKey));
     if (settingDatabase.GetLength() < startingLen)
@@ -170,7 +170,7 @@ void InteractiveChangeSetting(SettingDB &settingDatabase)
     string oldDescription;
 
     ncout("Key: ");
-    ngetstr(targetKey);
+    GetUserInput(targetKey);
     targetSetting = settingDatabase.SearchKey(targetKey);
 
     if (!targetSetting.Empty())
@@ -178,7 +178,7 @@ void InteractiveChangeSetting(SettingDB &settingDatabase)
         ncoutln(targetSetting.GetKey() << "=" << targetSetting.GetValue());
         ncout(targetSetting.GetKey() << "=");
 
-        ngetstr(newValue);
+        GetUserInput(newValue);
         for (size_t index = 0; index < newValue.length(); index++)
         {
             if (newValue.at(index) == '=' || newValue.at(index) == ':' || !isprint(newValue.at(index)))
