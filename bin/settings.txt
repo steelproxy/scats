@@ -1,3 +1,2 @@
-enableShell=false:Enables or disables forwarding commands to system shell.
-contactDatabasePath=contacts.txt:Path to contact database.
-userHandle=YOUNG DAGGER DICK:User identification handle.
+userHandle=anon:Name used to identify yourself to others.
+enableShell=false:Enables the shell duh.

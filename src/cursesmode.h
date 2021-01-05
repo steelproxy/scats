@@ -5,22 +5,24 @@
 #include <vector>
 #include <sstream>
 
-/*class CursesMode
-{
-public:
-    CursesMode();
-    virutal ~CursesMode(); // destruct
+#define ncout(message)                                    \
+    {                                                     \
+        getyx(root, curY, curX);                          \
+        if (curY == getmaxy(root))                        \
+            scroll(root);                                 \
+        logger.stringBuilder.str(string());               \
+        logger.stringBuilder << message;                  \
+        printw("%s", logger.stringBuilder.str().c_str()); \
+        refresh();                                        \
+    }
 
-    string ReadCmd();
-    void Clear();
+#define ncoutln(message)        \
+    {                           \
+        ncout(message << endl); \
+    }
 
+void ngetstr(std::string &var);
 
-private:
-    typedef std::vector<std::string> HistoryCmd;
+extern std::vector<std::string> lastCommand;
 
-    HistoryCmd _history;
-
-    WINDOW *_win;
-};
-*/
 #endif

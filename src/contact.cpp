@@ -20,8 +20,8 @@ Contact::Contact() // default constructor
 
 Contact::Contact(string info) // string constructor, meant from initializing from string containing csv's
 {
-    stringstream csv_stream(info); // used for extracting csv's from info, initialize with info
-    string portStr;                // used for storing the string equivalent port value extracted from csv_stream
+    stringstream csvstream(info); // used for extracting csv's from info, initialize with info
+    string portStr;                // used for storing the string equivalent port value extracted from csvstream
     unsigned int commaCount = 0;   // used for counting commas (error checking)
 
     for (size_t index = 0; index < info.length(); index++) // for all characters in info
@@ -38,9 +38,9 @@ Contact::Contact(string info) // string constructor, meant from initializing fro
         return;
     }
 
-    getline(csv_stream, this->alias, ',');    // extract alias, first csv
-    getline(csv_stream, this->endpoint, ','); // extract endpoint, second csv
-    getline(csv_stream, portStr);             // extract port number, third csv, ignore delim, read till end of line
+    getline(csvstream, this->alias, ',');    // extract alias, first csv
+    getline(csvstream, this->endpoint, ','); // extract endpoint, second csv
+    getline(csvstream, portStr);             // extract port number, third csv, ignore delim, read till end of line
     try                                       // exception handing for stoi(str)
     {
         this->port = stoi(portStr); // convert portStr to integer and store it as port

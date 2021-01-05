@@ -13,7 +13,7 @@
 #include "contact.h"
 #include "setting.h"
 
-void InteractiveSetUserHandle(std::string &userHandle);
+void InteractiveSetUserHandle(SettingDB &database, std::string &userHandle);
 
 void InteractiveAddContact(ContactDB &contactDatabase);
 void InteractiveDeleteContact(ContactDB &contactDatabase);
@@ -22,6 +22,6 @@ void InteractiveAddSetting(SettingDB &settingDatabase);
 void InteractiveDeleteSetting(SettingDB &settingDatabase);
 void InteractiveChangeSetting(SettingDB &settingDatabase);
 
-extern WINDOW* root;
+extern WINDOW *root;
 
 #endif

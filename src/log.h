@@ -14,7 +14,6 @@
 #include <string>
 #include <sstream>
 
-
 #define quickLog(level, message)                             \
     {                                                        \
         logger.stringBuilder.str(string());                  \
@@ -28,38 +27,9 @@
         quickLog(level, message);     \
     }
 
-#define ncout(message)                                    \
-    {                                                     \
-        getyx(root, curY, curX);                          \
-        if (curY == getmaxy(root))                        \
-            scroll(root);                                 \
-        logger.stringBuilder.str(string());               \
-        logger.stringBuilder << message;                  \
-        printw("%s", logger.stringBuilder.str().c_str()); \
-        refresh();                                        \
-    }
-
-#define ncoutln(message)        \
-    {                           \
-        ncout(message << endl); \
-    }
-
-#define ngetstr(var)                               \
-    {                                              \
-        var = getch();                             \
-        refresh();                                 \
-        while (var.at(var.length() - 1) != '\n')   \
-        {                                          \
-            if (isprint(var.at(var.length() - 1))) \
-                addch(var.at(var.length() - 1));   \
-            refresh();                             \
-            var += getch();                        \
-        }                                          \
-        var.erase(var.end() - 1);                  \
-        addch('\n');                               \
-    }
 typedef enum
 {
+    VERBOSE,
     INFO,
     WARNING,
     ERROR,
@@ -76,16 +46,16 @@ public:
     void Close();
 
     int WriteLine(logLevel level, std::string message);
+    void SetLevel(int logLevel);
 
-    void SetPrint(bool newPrint);
     int Truncate();
 
     std::ostringstream stringBuilder;
 
 private:
+    int level;
     std::ofstream file;
     std::string path;
-    bool print;
 };
 
 extern WINDOW *root;

@@ -11,7 +11,7 @@
 #include <fstream>
 #include <vector>
 
-/// 
+///
 /// @brief   Class for managing user settings, contains key, value, and description of object.
 ///
 class Setting /* @brief   Class for managing user settings, contains key, value, and description of object. */
@@ -57,7 +57,7 @@ public:
     /// @param[in] New value.
     ///
     void SetValue(std::string newValue);
-    
+
     /// @brief Sets a new description.
     /// @param[in] New description
     ///
@@ -89,7 +89,7 @@ private:
     ///
     std::string value;
 
-    /// 
+    ///
     /// @brief String containing
     ///
     std::string description;
@@ -114,21 +114,21 @@ public:
     ///
     /// @brief Adds a new Setting (newSetting), to the database.
     /// @details Will not add if newSetting contains empty data.
-    void AddSetting(Setting newSetting);
+    int AddSetting(Setting newSetting);
 
     ///
     /// @brief Creates and adds a new setting by parsing the information provided in newSettingLine
     /// @details Will not add Setting if newSettingLine contains invalid data.
-    void AddSetting(std::string newSettingLine);
+    int AddSetting(std::string newSettingLine);
 
     ///
     /// @brief Deletes a setting from the database.
     /// @details Will not delete if not found in database, use GetLength() to check for success.
-    void DeleteSetting(Setting targetSetting);
+    int DeleteSetting(Setting targetSetting);
 
     ///
     /// @brief Deletes a setting from the database provided the information in targetSettingLine.
-    void DeleteSetting(std::string targetSettingLine);
+    int DeleteSetting(std::string targetSettingLine);
 
     Setting SearchKey(std::string targetKey);
     std::vector<Setting> SearchValue(std::string targetValue);
@@ -137,15 +137,17 @@ public:
     Setting GetIndex(size_t index);
     size_t GetLength();
 
-    void Open(std::string newPath);
-    void Load();
+    int Open(std::string newPath);
+    int Load();
     void Clear();
-    void Save();
+    int Save();
 
 private:
     std::vector<Setting> database;
     std::string path;
     std::fstream database_file;
 };
+
+bool FileExists(std::string path);
 
 #endif

@@ -1,0 +1,4 @@
+contactDatabasePath=contacts.txt:Path to contact database.
+userHandle=ADOLF HITLER, THE DARKNESS ELIMINATOR:User identification handle.
+logLevel=error:Logging level.
+enableShell=true:Enables or disables forwarding commands to system shell.

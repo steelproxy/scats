@@ -26,20 +26,21 @@ bool ContactDB::IsDuplicate(Contact testContact)
     return false;
 }
 
-void ContactDB::AddContact(Contact newContact)
+int ContactDB::AddContact(Contact newContact)
 {
     if (!newContact.Empty())
     {
         if (!IsDuplicate(newContact))
             this->database.push_back(newContact);
         else
-            throw "Duplicate contact alias!";
+            return 1;
     }
     else
-        throw "Contact empty!";
+        return 1;
+    return 0;
 }
 
-void ContactDB::AddContact(std::string info)
+int ContactDB::AddContact(std::string info)
 {
     Contact newContact(info);
 
@@ -48,13 +49,14 @@ void ContactDB::AddContact(std::string info)
         if (!IsDuplicate(newContact))
             this->database.push_back(newContact);
         else
-            throw "Duplicate contact alias!";
+            return 1;
     }
     else
-        throw "Contact empty!";
+        return 1;
+    return 0;
 }
 
-void ContactDB::DeleteContact(Contact targetContact)
+int ContactDB::DeleteContact(Contact targetContact)
 {
     size_t startingSize = this->database.size();
 
@@ -67,10 +69,11 @@ void ContactDB::DeleteContact(Contact targetContact)
         }
     }
     if (startingSize <= this->database.size())
-        throw "Contact not found!";
+        return 1;
+    return 0;
 }
 
-void ContactDB::DeleteContact(string targetInfo)
+int ContactDB::DeleteContact(string targetInfo)
 {
     size_t startingSize = this->database.size();
 
@@ -83,9 +86,9 @@ void ContactDB::DeleteContact(string targetInfo)
         }
     }
     if (startingSize <= this->database.size())
-        throw "Contact not found!";
+        return 1;
+    return 0;
 }
-
 
 Contact ContactDB::SearchAlias(string tarGetAlias)
 {
@@ -122,7 +125,7 @@ std::vector<Contact> ContactDB::SearchPort(std::string tarGetPort)
     }
     catch (const std::exception &e)
     {
-        throw "Invalid port!";
+        return results;
     }
 
     for (size_t index = 0; index < this->database.size(); index++)
@@ -149,22 +152,23 @@ std::vector<Contact> ContactDB::SearchPort(short tarGetPort)
     return results;
 }
 
-void ContactDB::Open(string newPath)
+int ContactDB::Open(string newPath)
 {
     this->database_file.open(newPath, ios::in);
     if (this->database_file.fail())
-        throw "Failed to open contact database file!";
+        return 1;
     this->path = newPath;
     this->database_file.close();
+    return 0;
 }
 
-void ContactDB::Load()
+int ContactDB::Load()
 {
     string contactLine;
 
     this->database_file.open(this->path, ios::in);
     if (this->database_file.fail())
-        throw "Failed to open contact database file!";
+        return 1;
 
     this->database_file.seekg(ios::beg);
 
@@ -174,6 +178,7 @@ void ContactDB::Load()
             this->database.push_back(Contact(contactLine));
     }
     this->database_file.close();
+    return 0;
 }
 
 void ContactDB::Clear()
@@ -181,17 +186,18 @@ void ContactDB::Clear()
     this->database.clear();
 }
 
-void ContactDB::Save()
+int ContactDB::Save()
 {
     this->database_file.open(path, ios::trunc | ios::out);
     if (this->database_file.fail())
-        throw "Failed to open contact database file!";
+        return 1;
 
     for (size_t index = 0; index < this->database.size(); index++)
     {
         this->database_file << this->database.at(index).ToString() << endl;
     }
     this->database_file.close();
+    return 0;
 }
 
 Contact ContactDB::GetIndex(size_t targetIndex)

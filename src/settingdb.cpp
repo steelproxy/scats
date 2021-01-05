@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <sys/stat.h>
 #include "setting.h"
 
 using namespace std;
@@ -26,33 +27,38 @@ bool SettingDB::IsDuplicate(Setting testSetting)
     return false;
 }
 
-void SettingDB::AddSetting(Setting newSetting)
+int SettingDB::AddSetting(Setting newSetting)
 {
     if (!newSetting.Empty())
     {
         if (!IsDuplicate(newSetting))
             this->database.push_back(newSetting);
         else
-            throw "Duplicate key!";
+            return 1;
     }
     else
-        throw "Setting empty!";
+        return 1;
+    return 1;
 }
 
-void SettingDB::AddSetting(string newSettingLine)
+int SettingDB::AddSetting(string newSettingLine)
 {
-    if (!newSettingLine.empty())
+    Setting newSetting;
+
+    newSetting = Setting(newSettingLine);
+    if (!newSetting.Empty())
     {
-        if (!IsDuplicate(Setting(newSettingLine)))
-            this->database.push_back(Setting(newSettingLine));
+        if (!IsDuplicate(newSetting))
+            this->database.push_back(newSetting);
         else
-            throw "Duplicate key!";
+            return 1;
     }
     else
-        throw "Setting empty!";
+        return 1;
+    return 0;
 }
 
-void SettingDB::DeleteSetting(Setting targetSetting)
+int SettingDB::DeleteSetting(Setting targetSetting)
 {
     size_t startingSize = this->database.size();
 
@@ -65,10 +71,11 @@ void SettingDB::DeleteSetting(Setting targetSetting)
         }
     }
     if (startingSize <= this->database.size())
-        throw "Contact not found!";
+        return 1;
+    return 0;
 }
 
-void SettingDB::DeleteSetting(string targetSettingLine)
+int SettingDB::DeleteSetting(string targetSettingLine)
 {
     size_t startingSize = this->database.size();
 
@@ -81,7 +88,8 @@ void SettingDB::DeleteSetting(string targetSettingLine)
         }
     }
     if (startingSize <= this->database.size())
-        throw "Contact not found!";
+        return 1;
+    return 0;
 }
 
 Setting SettingDB::SearchKey(string targetKey)
@@ -123,7 +131,7 @@ vector<Setting> SettingDB::SearchDescription(string targetDescription)
 
 Setting SettingDB::GetIndex(size_t index)
 {
-    if(index < this->database.size())
+    if (index < this->database.size())
         return this->database.at(index);
     return Setting();
 }
@@ -133,22 +141,23 @@ size_t SettingDB::GetLength()
     return this->database.size();
 }
 
-void SettingDB::Open(string newPath)
+int SettingDB::Open(string newPath)
 {
     this->database_file.open(newPath, ios::in);
     if (this->database_file.fail())
-        throw "Failed to open contact database file!";
+        return 1;
     this->path = newPath;
     this->database_file.close();
+    return 0;
 }
 
-void SettingDB::Load()
+int SettingDB::Load()
 {
     string settingLine;
 
     this->database_file.open(this->path, ios::in);
     if (this->database_file.fail())
-        throw "Failed to open contact database file!";
+        return 1;
 
     this->database_file.seekg(ios::beg);
 
@@ -158,6 +167,7 @@ void SettingDB::Load()
             this->database.push_back(Setting(settingLine));
     }
     this->database_file.close();
+    return 0;
 }
 
 void SettingDB::Clear()
@@ -165,15 +175,29 @@ void SettingDB::Clear()
     this->database.clear();
 }
 
-void SettingDB::Save()
+int SettingDB::Save()
 {
-    this->database_file.open(path, ios::trunc | ios::out);
+    struct stat buffer;
+    if (stat(this->path.c_str(), &buffer) == 0)
+        this->database_file.open(this->path, ios::trunc | ios::out);
+    else
+        this->database_file.open(this->path, ios::out);
+
     if (this->database_file.fail())
-        throw "Failed to open contact database file!";
+        return 1;
 
     for (size_t index = 0; index < this->database.size(); index++)
     {
         this->database_file << this->database.at(index).ToString() << endl;
     }
     this->database_file.close();
+    return 0;
+}
+
+bool FileExists(string path)
+{
+    struct stat buffer;
+    if (stat(path.c_str(), &buffer) == 0)
+        return true;
+    return false;
 }

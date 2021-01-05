@@ -31,7 +31,7 @@ public:
 
     bool Empty();
 
-    friend bool operator ==(const Contact &c1, const Contact &c2);
+    friend bool operator==(const Contact &c1, const Contact &c2);
 
 private:
     std::string alias;
@@ -46,11 +46,11 @@ public:
 
     bool IsDuplicate(Contact testContact);
 
-    void AddContact(Contact newContact);
-    void AddContact(std::string info);
+    int AddContact(Contact newContact);
+    int AddContact(std::string info);
 
-    void DeleteContact(Contact targetContact);
-    void DeleteContact(std::string targetInfo);
+    int DeleteContact(Contact targetContact);
+    int DeleteContact(std::string targetInfo);
 
     Contact SearchAlias(std::string tarGetAlias);
     std::vector<Contact> SearchEndpoint(std::string tarGetEndpoint);
@@ -60,16 +60,15 @@ public:
     Contact GetIndex(size_t index);
     size_t GetLength();
 
-    void Open(std::string newPath);
-    void Load();
+    int Open(std::string newPath);
+    int Load();
     void Clear();
-    void Save();
+    int Save();
 
 private:
     std::vector<Contact> database;
     std::string path;
     std::fstream database_file;
 };
-
 
 #endif

@@ -12,6 +12,7 @@
 #include "contact.h"
 #include "log.h"
 #include "setting.h"
+#include "cursesmode.h"
 
 using namespace std;
 
@@ -29,15 +30,16 @@ bool isPrintStr(string str)
     return true;
 }
 
-void InteractiveSetUserHandle(string &userHandle)
+void InteractiveSetUserHandle(SettingDB &database, string &userHandle)
 {
     ncout("Handle (max 16 characters, no special characters): ");
-    ngetstr(userHandle);                                                          // read user handle into userHandle
+    ngetstr(userHandle);                                                                   // read user handle into userHandle
     while (userHandle.length() > 16 || userHandle.length() < 1 || !isPrintStr(userHandle)) // must be less than 16 characters and be only printable characters
     {
         ncout("Handle is invalid. Please enter a new one: ");
         ngetstr(userHandle); // read a new user handle into userHandle
     }
+    database.AddSetting(Setting("userHandle", userHandle, "Name used to identify yourself to others."));
 }
 
 void InteractiveAddContact(ContactDB &contactDatabase)
@@ -46,10 +48,17 @@ void InteractiveAddContact(ContactDB &contactDatabase)
     string newEndpoint;
     string newPort;
 
-    ncout("Alias: ");
-    ngetstr(newAlias);
-    ncout("Endpoint: ");
-    ngetstr(newEndpoint);
+    do
+    {
+        ncout("Alias: ");
+        ngetstr(newAlias);
+    } while (newAlias.empty());
+
+    do
+    {
+        ncout("Endpoint: ");
+        ngetstr(newEndpoint);
+    } while (newEndpoint.empty());
 
     for (size_t index = 0; index < newAlias.length(); index++)
     {
@@ -66,7 +75,7 @@ void InteractiveAddContact(ContactDB &contactDatabase)
     ncout("Port: ");
     while (true)
     {
-        getline(cin, newPort);
+        ngetstr(newPort);
         try
         {
             contactDatabase.AddContact(Contact(newAlias, newEndpoint, stoi(newPort)));
@@ -74,7 +83,7 @@ void InteractiveAddContact(ContactDB &contactDatabase)
         }
         catch (const std::exception &e)
         {
-           ncoutln("Unable to add contact: " << e.what());
+            quickPrintLog(ERROR, "Unable to add contact: " << e.what());
             return;
         }
     }
@@ -86,10 +95,22 @@ void InteractiveDeleteContact(ContactDB &contactDatabase)
     string targetAlias;
     size_t startingLen = contactDatabase.GetLength();
 
-    ncout("Alias (must be exact): ");
-    ngetstr(targetAlias);
+    do
+    {
+        ncout("Alias (must be exact): ");
+        ngetstr(targetAlias);
+    } while (targetAlias.empty());
 
-    contactDatabase.DeleteContact(contactDatabase.SearchAlias(targetAlias));
+    try
+    {
+        contactDatabase.DeleteContact(contactDatabase.SearchAlias(targetAlias));
+    }
+    catch (const char *e)
+    {
+        quickPrintLog(ERROR, e);
+        return;
+    }
+
     if (contactDatabase.GetLength() < startingLen)
         quickPrintLog(INFO, "Contact deleted.");
 }
