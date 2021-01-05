@@ -2,3 +2,5 @@ bin/scats
 obj/*
 .vscode/*
 docs/*
+bin/log.txt
+bin/scats
