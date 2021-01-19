@@ -19,19 +19,10 @@
 #include "setting.h"
 #include "contact.h"
 #include "log.h"
-#include "network.h"
+#include "server.h"
 #include "interactive.h"
 #include "cursesmode.h"
 #include <curses.h>
-
-#define IfSet(value, key) if ((value = settingDatabase.SearchKey(key).GetValue()) == string())
-
-#define DefSet(value, key, default, description)                         \
-    if ((value = settingDatabase.SearchKey(key).GetValue()) == string()) \
-    {                                                                    \
-        value = default;                                                 \
-        settingDatabase.AddSetting(Setting(key, default, description));  \
-    }
 
 #define DEFAULT_CONTACTS_FILE "contacts.txt"
 #define DEFAULT_SETTINGS_FILE "settings.txt"
@@ -43,15 +34,22 @@
 
 using namespace std;
 
+// initialize command list
+const std::string commands[] = {"add-contact", "add-setting", "build", "change-setting",
+                "chat", "clear", "delete-contact", "delete-setting", "exit", "help",
+                "list-contacts", "list-settings", "nuke", "save-contacts", "save-settings"};
+const size_t commandsLen = 15;
+
+WINDOW* root;
 Log logger;
-sigjmp_buf begin_loop;
+sigjmp_buf sigintJumpPoint;
 
 void SignalHandler(int sig)
 {
     if (sig == SIGINT)
     {
         quickPrintLog(INFO, "Sigint recieved.");
-        siglongjmp(begin_loop, 1);
+        siglongjmp(sigintJumpPoint, 1);
     }
 }
 
@@ -72,26 +70,10 @@ void DisplayHelp()
     ncoutln("nuke           Erases all user files and exits.");
 }
 
-int LevelToI(string level)
-{
-    if (level == "verbose")
-        return VERBOSE;
-    else if (level == "info")
-        return INFO;
-    else if (level == "warning")
-        return WARNING;
-    else if (level == "error")
-        return ERROR;
-    else if (level == "severe")
-        return SEVERE;
-    else
-        return INFO;
-}
-
 void Cleanup()
 {
-    endwin(); // end curses mode
-    logger.Close(); // close log file
+    endwin();       // end curses mode
+    logger.close(); // close log file
 }
 
 int main(int argc, char **argv)
@@ -102,11 +84,6 @@ int main(int argc, char **argv)
     // start curses mode
     StartCurses();
 
-    // initialize command list
-    commands = {"add-contact", "add-setting", "build", "change-setting",
-                "chat", "clear", "delete-contact", "delete-setting", "exit", "help",
-                "list-contacts", "list-settings", "nuke", "save-contacts", "save-settings"};
-
     // create log file if necessary
     if (!FileExists(DEFAULT_LOG_FILE))
     {
@@ -115,20 +92,25 @@ int main(int argc, char **argv)
         ncoutln("Creating log file...");
         logFile.open(DEFAULT_LOG_FILE, ios::out);
         if (logFile.fail())
+        {
             ncoutln("Unable to create log file!");
+        }
         logFile.close();
     }
 
     // initialize logger
-    if (logger.Open(DEFAULT_LOG_FILE)) 
+    try
     {
-        ncoutln("error: Unable to open log file!"); // print error if fail
+        logger.open(DEFAULT_LOG_FILE);
+        logger.truncate();
     }
-    logger.Truncate();
+    catch (const char *msg)
+    {
+        ncoutln("Unable to open log file!"); // print error if fail
+    }
 
     // start scats
     ncoutln("Starting scats...");
-
 
     // create settings file if necessary
     bool newSettingFile = false;
@@ -145,31 +127,49 @@ int main(int argc, char **argv)
             quickPrintLog(ERROR, "Unable to create setting database!");
         }
         else
+        {
             newSettingFile = true;
+        }
         settingFile.close();
-    } 
+    }
 
     // load settings
     SettingDB settingDatabase;
     string contactDatabasePath;
     string enableShell;
-    string logLevel;
+    string LogLevel;
     string userHandle;
-    if (settingDatabase.Open(DEFAULT_SETTINGS_FILE) ||
-        settingDatabase.Load())
+    try
+    {
+        settingDatabase.open(DEFAULT_SETTINGS_FILE);
+        settingDatabase.load();
+    }
+    catch (const char *msg)
+    {
         quickPrintLog(ERROR, "Unable to load setting database!");
+        exceptionLog(ERROR, msg);
+    }
 
     // apply settings
     DefSet(contactDatabasePath, "contactDatabasePath", DEFAULT_CONTACTS_FILE, "Path to contact database.");
     DefSet(enableShell, "enableShell", DEFAULT_ENABLE_SHELL, "Enable shell access from within scats.");
-    DefSet(logLevel, "logLevel", DEFAULT_LOG_LEVEL, "Minimum severity level to print to log.");
-    logger.SetLevel(LevelToI(logLevel));
+    DefSet(LogLevel, "LogLevel", DEFAULT_LOG_LEVEL, "Minimum severity level to print to log.");
+    logger.setLevel(LevelToI(LogLevel));
     IfSet(userHandle, "userHandle")
+    {
         InteractiveSetUserHandle(settingDatabase, userHandle);
+    }
     if (newSettingFile)
     {
-        if (settingDatabase.Save())
+        try
+        {
+            settingDatabase.save();
+        }
+        catch (const char *msg)
+        {
             quickPrintLog(ERROR, "Unable to save settings database!");
+            exceptionLog(ERROR, msg);
+        }
     }
 
     // create contacts file if necessary
@@ -180,16 +180,25 @@ int main(int argc, char **argv)
         quickPrintLog(INFO, "Creating contact database.");
         contactFile.open(contactDatabasePath, ios::out);
         if (contactFile.fail())
+        {
             quickPrintLog(ERROR, "Unable to create contact database!");
+        }
         contactFile.close();
     }
 
     // load contacts
     ContactDB contactDatabase;
     quickPrintLog(INFO, "Loading contact database...");
-    if (contactDatabase.Open(contactDatabasePath) ||
-        contactDatabase.Load())
+    try
+    {
+        contactDatabase.open(contactDatabasePath);
+        contactDatabase.load();
+    }
+    catch (const char *msg)
+    {
         quickPrintLog(ERROR, "Unable to load contact database!");
+        quickLog(ERROR, "Exception caught:" << msg);
+    }
 
     signal(SIGINT, SignalHandler);
 
@@ -198,7 +207,7 @@ int main(int argc, char **argv)
     {
         string userInput;
 
-        while (sigsetjmp(begin_loop, 1) != 0)
+        while (sigsetjmp(sigintJumpPoint, 1) != 0)
             ; // set jump to beginning of loop
 
         userInput = string(); // clear string
@@ -208,6 +217,16 @@ int main(int argc, char **argv)
         addstr(userHandle.c_str());
         addstr("] > ");
         GetConsoleInput(userInput);
+
+        if (commandHistory.size() < DEFAULT_HISTORY_LEN) // if there is room left in the history vector
+        {
+            commandHistory.push_back(userInput); // push back last command
+        }
+        else
+        {
+            commandHistory.erase(commandHistory.begin()); // erase first command in history vector
+            commandHistory.push_back(userInput); // push back last command
+        }
 
         if (userInput == "help") // display help
         {
@@ -226,11 +245,11 @@ int main(int argc, char **argv)
         else if (userInput == "list-contacts") // list all contacts
         {
             ncoutln("Contacts: ");
-            for (size_t index = 0; index < contactDatabase.GetLength(); index++) // read contacts from database
+            for (size_t index = 0; index < contactDatabase.getLength(); index++) // read contacts from database
             {
-                ncoutln("[" << contactDatabase.GetIndex(index).GetAlias() << "]");
-                ncoutln("   " << contactDatabase.GetIndex(index).GetEndpoint());
-                ncoutln("   " << contactDatabase.GetIndex(index).GetPort());
+                ncoutln("[" << contactDatabase.getIndex(index).getAlias() << "]");
+                ncoutln("   " << contactDatabase.getIndex(index).getEndpoint());
+                ncoutln("   " << contactDatabase.getIndex(index).getPort());
             }
         }
         else if (userInput == "add-setting") // add a new setting
@@ -246,10 +265,10 @@ int main(int argc, char **argv)
         else if (userInput == "list-settings") // list all settings
         {
             ncoutln("Settings: ");
-            for (size_t index = 0; index < settingDatabase.GetLength(); index++) // read settings from database
+            for (size_t index = 0; index < settingDatabase.getLength(); index++) // read settings from database
             {
-                ncoutln(settingDatabase.GetIndex(index).GetKey() << "=" << settingDatabase.GetIndex(index).GetValue());
-                ncoutln("    " << settingDatabase.GetIndex(index).GetDescription());
+                ncoutln(settingDatabase.getIndex(index).getKey() << "=" << settingDatabase.getIndex(index).getValue());
+                ncoutln("    " << settingDatabase.getIndex(index).getDescription());
             }
         }
         else if (userInput == "nuke") // nuke files
@@ -261,22 +280,28 @@ int main(int argc, char **argv)
             {
                 ncoutln("Deleting log file...");
                 if (remove(DEFAULT_LOG_FILE) != 0) // delete log
+                {
                     ncoutln("Unable to delete log file!");
+                }
 
                 ncoutln("Deleting setting database file...");
                 if (remove(DEFAULT_SETTINGS_FILE) != 0) // delete settings
+                {
                     ncoutln("Unable to delete setting database!");
+                }
 
                 ncoutln("Deleting contact database...");
                 if (remove(contactDatabasePath.c_str()) != 0) // delete contact database
+                {
                     ncoutln("Unable to delete contact database!");
+                }
             }
             return 0; // exit
         }
         else if (userInput == "save-settings") // save settings
         {
             quickPrintLog(INFO, "Saving settings file...");
-            settingDatabase.Save();
+            settingDatabase.save();
         }
         else if (userInput == "change-setting") // change a setting
         {
@@ -290,18 +315,17 @@ int main(int argc, char **argv)
         else if (userInput == "save-contacts") // save contacts
         {
             quickPrintLog(INFO, "Saving contact file...");
-            contactDatabase.Save();
+            contactDatabase.save();
         }
         else if (userInput == "chat") // start chat server
         {
+            boost::asio::io_service ioService;
             // boost::asio::streambuf readBuf;
             ncoutln("What port would you like to start the server on? ");
             GetUserInput(userInput);
-            //  Server testServ(stoi(userInput));
             quickPrintLog(INFO, "Starting server on port: " << userInput << "...");
-            // testServ.Listen();
-            ncoutln("Got conenction!");
-            // testServ.Read(readBuf);
+            ChatServer testSrv(ioService, 25565);
+            for(;;);
         }
         else if (userInput == "exit") // exit scats
         {
@@ -324,13 +348,6 @@ int main(int argc, char **argv)
             {
                 ncoutln("Error: " << strerror(errno));
             }
-        }
-        if(commandHistory.size() < DEFAULT_HISTORY_LEN)
-            commandHistory.push_back(userInput);
-        else
-        {
-            commandHistory.erase(commandHistory.begin());
-            commandHistory.push_back(userInput);
         }
     }
 }

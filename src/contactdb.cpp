@@ -15,48 +15,46 @@ ContactDB::ContactDB()
 {
 }
 
-bool ContactDB::IsDuplicate(Contact testContact)
+bool ContactDB::checkDuplicate(Contact testContact)
 {
     for (size_t index = 0; index < this->database.size(); index++)
     {
-        if (this->database.at(index).GetAlias() == testContact.GetAlias())
+        if (this->database.at(index).getAlias() == testContact.getAlias())
             return true;
     }
 
     return false;
 }
 
-int ContactDB::AddContact(Contact newContact)
+void ContactDB::addContact(Contact newContact)
 {
-    if (!newContact.Empty())
+    if (!newContact.empty())
     {
-        if (!IsDuplicate(newContact))
+        if (!checkDuplicate(newContact))
             this->database.push_back(newContact);
         else
-            return 1;
+            throw "Duplicate Contact!";
     }
     else
-        return 1;
-    return 0;
+        throw "Contact is empty!";
 }
 
-int ContactDB::AddContact(std::string info)
+void ContactDB::addContact(std::string info)
 {
     Contact newContact(info);
 
-    if (!newContact.Empty())
+    if (!newContact.empty())
     {
-        if (!IsDuplicate(newContact))
+        if (!checkDuplicate(newContact))
             this->database.push_back(newContact);
         else
-            return 1;
+            throw "Duplicate Contact!";
     }
     else
-        return 1;
-    return 0;
+        throw "Contact is empty!";
 }
 
-int ContactDB::DeleteContact(Contact targetContact)
+void ContactDB::deleteContact(Contact targetContact)
 {
     size_t startingSize = this->database.size();
 
@@ -69,59 +67,57 @@ int ContactDB::DeleteContact(Contact targetContact)
         }
     }
     if (startingSize <= this->database.size())
-        return 1;
-    return 0;
+        throw "Contact not found!";
 }
 
-int ContactDB::DeleteContact(string targetInfo)
+void ContactDB::deleteContact(string targetInfo)
 {
     size_t startingSize = this->database.size();
 
     for (size_t index = 0; index < this->database.size(); index++)
     {
-        if (this->database.at(index).ToString() == targetInfo)
+        if (this->database.at(index).toString() == targetInfo)
         {
             this->database.erase(this->database.begin() + index);
             break;
         }
     }
     if (startingSize <= this->database.size())
-        return 1;
-    return 0;
+        throw "Contact not found!";
 }
 
-Contact ContactDB::SearchAlias(string tarGetAlias)
+Contact ContactDB::searchAlias(string targetAlias)
 {
     for (size_t index = 0; index < this->database.size(); index++)
     {
-        if (this->database.at(index).GetAlias() == tarGetAlias)
+        if (this->database.at(index).getAlias() == targetAlias)
             return this->database.at(index);
     }
 
     return Contact();
 }
 
-std::vector<Contact> ContactDB::SearchEndpoint(std::string tarGetEndpoint)
+std::vector<Contact> ContactDB::searchEndpoint(std::string targetEndpoint)
 {
     std::vector<Contact> results;
 
     for (size_t index = 0; index < this->database.size(); index++)
     {
-        if (this->database.at(index).GetEndpoint() == tarGetEndpoint)
+        if (this->database.at(index).getEndpoint() == targetEndpoint)
             results.push_back(this->database.at(index));
     }
 
     return results;
 }
 
-std::vector<Contact> ContactDB::SearchPort(std::string tarGetPort)
+std::vector<Contact> ContactDB::searchPort(std::string targetPort)
 {
     std::vector<Contact> results;
-    short tarGetPortBuf;
+    short targetPortBuf;
 
     try
     {
-        tarGetPortBuf = stoi(tarGetPort);
+        targetPortBuf = stoi(targetPort);
     }
     catch (const std::exception &e)
     {
@@ -130,20 +126,20 @@ std::vector<Contact> ContactDB::SearchPort(std::string tarGetPort)
 
     for (size_t index = 0; index < this->database.size(); index++)
     {
-        if (this->database.at(index).GetPort() == tarGetPortBuf)
+        if (this->database.at(index).getPort() == targetPortBuf)
             results.push_back(this->database.at(index));
     }
 
     return results;
 }
 
-std::vector<Contact> ContactDB::SearchPort(short tarGetPort)
+std::vector<Contact> ContactDB::searchPort(short targetPort)
 {
     std::vector<Contact> results;
 
     for (size_t index = 0; index < this->database.size(); index++)
     {
-        if (this->database.at(index).GetPort() == tarGetPort)
+        if (this->database.at(index).getPort() == targetPort)
         {
             results.push_back(this->database.at(index));
         }
@@ -152,23 +148,22 @@ std::vector<Contact> ContactDB::SearchPort(short tarGetPort)
     return results;
 }
 
-int ContactDB::Open(string newPath)
+void ContactDB::open(string newPath)
 {
     this->database_file.open(newPath, ios::in);
     if (this->database_file.fail())
-        return 1;
+        throw "Unable to open file!";
     this->path = newPath;
     this->database_file.close();
-    return 0;
 }
 
-int ContactDB::Load()
+void ContactDB::load()
 {
     string contactLine;
 
     this->database_file.open(this->path, ios::in);
     if (this->database_file.fail())
-        return 1;
+        throw "Unable to open file!";
 
     this->database_file.seekg(ios::beg);
 
@@ -178,36 +173,34 @@ int ContactDB::Load()
             this->database.push_back(Contact(contactLine));
     }
     this->database_file.close();
-    return 0;
 }
 
-void ContactDB::Clear()
+void ContactDB::clear()
 {
     this->database.clear();
 }
 
-int ContactDB::Save()
+void ContactDB::save()
 {
     this->database_file.open(path, ios::trunc | ios::out);
     if (this->database_file.fail())
-        return 1;
+        throw "Unable to open file!";
 
     for (size_t index = 0; index < this->database.size(); index++)
     {
-        this->database_file << this->database.at(index).ToString() << endl;
+        this->database_file << this->database.at(index).toString() << endl;
     }
     this->database_file.close();
-    return 0;
 }
 
-Contact ContactDB::GetIndex(size_t targetIndex)
+Contact ContactDB::getIndex(size_t targetIndex)
 {
     if (targetIndex < this->database.size())
         return this->database.at(targetIndex);
     return Contact();
 }
 
-size_t ContactDB::GetLength()
+size_t ContactDB::getLength()
 {
     return this->database.size();
 }

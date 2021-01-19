@@ -58,37 +58,37 @@ Contact::Contact(string newAlias, string newEndpoint, short newPort) // construc
     this->port = newPort;
 }
 
-void Contact::SetAlias(string newAlias) // set alias
+void Contact::setAlias(string newAlias) // set alias
 {
     this->alias = newAlias;
 }
 
-void Contact::SetEndpoint(string newEndpoint) // set endpoint
+void Contact::setEndpoint(string newEndpoint) // set endpoint
 {
     this->endpoint = newEndpoint;
 }
 
-void Contact::SetPort(int newPort) // set port
+void Contact::setPort(int newPort) // set port
 {
     this->port = newPort;
 }
 
-string Contact::GetAlias() // get alias
+string Contact::getAlias() // get alias
 {
     return this->alias;
 }
 
-string Contact::GetEndpoint() // get endpoint
+string Contact::getEndpoint() // get endpoint
 {
     return this->endpoint;
 }
 
-short Contact::GetPort() // get port
+short Contact::getPort() // get port
 {
     return this->port;
 }
 
-string Contact::ToString()
+string Contact::toString()
 {
     ostringstream stringBuilder;
 
@@ -99,9 +99,9 @@ string Contact::ToString()
     return stringBuilder.str();
 }
 
-bool Contact::Empty()
+bool Contact::empty()
 {
-    if (this->GetAlias().empty() || this->GetEndpoint().empty() || this->GetPort() == 0)
+    if (this->getAlias().empty() || this->getEndpoint().empty() || this->getPort() == 0)
         return true;
     return false;
 }

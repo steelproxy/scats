@@ -1,5 +1,5 @@
 /** 
- *  @file   setting.h
+ *  @file   Setting.h
  *  @brief  Setting and SettingDB class definitions.
  *  @author Collin Rodes
  *  @date   2020-12-11
@@ -12,91 +12,95 @@
 #include <vector>
 
 ///
-/// @brief   Class for managing user settings, contains key, value, and description of object.
+/// @brief Macro for quick config changes.
 ///
-class Setting /* @brief   Class for managing user settings, contains key, value, and description of object. */
+#define IfSet(value, key) if ((value = settingDatabase.searchKey(key).getValue()) == string())
+
+///
+/// @brief Macro for quick default setting.
+///
+#define DefSet(value, key, default, description)                         \
+    if ((value = settingDatabase.searchKey(key).getValue()) == string()) \
+    {                                                                    \
+        value = default;                                                 \
+        settingDatabase.addSetting(Setting(key, default, description));  \
+    }
+
+///
+///
+/// @brief   Class for managing user Settings, contains key, value, and description of object.
+class Setting /* @brief   Class for managing user Settings, contains key, value, and description of object. */
 {
 public:
     ///
-    /// @details Default constructor, initializes all values to string() by default.
     ///
+    /// @details Default constructor, initializes all values to string() by default.
     Setting();
 
-    /// @details String constructor, initializes all values to those parsed from string argument.
-    /// @param[in] newSetting String containing all information to initialize Setting object, stored in format "<key>=<value>:<description>".
     ///
+    /// @details String constructor, initializes all values to those parsed from string argument.
+    /// @param newSetting String containing all information to initialize Setting object, stored in format "<key>=<value>:<description>".
     Setting(std::string newSetting);
 
     /// @details Full constructor, initalizes all values to those provided by arguments.
-    /// @param[in] newKey New key.
-    /// @param[in] newValue New value.
-    /// @param[in] newDescription New description.
+    /// @param newKey New key.
+    /// @param newValue New value.
+    /// @param newDescription New description.
     Setting(std::string newKey, std::string newValue, std::string newDescription);
 
-    /// @brief Gets setting key.
+    ///
+    /// @brief Gets Setting key.
     /// @return Returns key string.
-    ///
-    std::string GetKey();
+    std::string getKey();
 
-    /// @brief Gets setting value;
+    ///
+    /// @brief Gets Setting value;
     /// @return Returns value string.
-    ///
-    std::string GetValue();
+    std::string getValue();
 
-    /// @brief Gets setting description.
+    ///
+    /// @brief Gets Setting description.
     /// @return Returns description string.
-    ///
-    std::string GetDescription();
+    std::string getDescription();
 
+    ///
     /// @brief Sets a new key.
-    /// @param[in] New key.
-    ///
-    void SetKey(std::string newKey);
+    /// @param New key.
+    void setKey(std::string newKey);
 
+    ///
     /// @brief Sets a new value.
     /// @param[in] New value.
-    ///
-    void SetValue(std::string newValue);
+    void setValue(std::string newValue);
 
-    /// @brief Sets a new description.
-    /// @param[in] New description
     ///
-    void SetDescription(std::string newDescription);
+    /// @brief Sets a new description.
+    /// @param New description.
+    void setDescription(std::string newDescription);
 
     /// @brief Creates a string containing all object info.
     /// @details String in format "<key>=<value>:<description>."
     /// @return Returns string contatining all object info.
-    std::string ToString();
+    std::string toString();
 
-    /// @brief Checks if object is empty
-    /// @return true if empty, false if not.
     ///
-    bool Empty();
+    /// @brief Checks if object is empty
+    /// @return Returns true if empty, false if otherwise.
+    bool empty();
 
     /// @brief == operator overload for comparing two Setting objects.
-    /// @param[in] s1 First operand.
-    /// @param[in] s2 Second operand.
+    /// @param s1 First operand.
+    /// @param s2 Second operand.
     friend bool operator==(Setting s1, Setting s2);
 
 private:
-    ///
-    /// @brief String containing key.
-    ///
     std::string key;
-
-    ///
-    /// @brief String containing value.
-    ///
     std::string value;
-
-    ///
-    /// @brief String containing
-    ///
     std::string description;
 };
 
 ///
-/// @brief Class for managing a database of Settings.
+/// @brief Class for managing a database of Setting objects.
 ///
 class SettingDB
 {
@@ -107,40 +111,90 @@ public:
     SettingDB();
 
     ///
-    /// @brief Checks if testSetting is in databse.
+    /// @brief Checks if Setting is in database.
     /// @return true if duplicate is found, false otherwise.
-    bool IsDuplicate(Setting testSetting);
+    /// @param testSetting Setting to search for duplicates with.
+    /// @return Returns true if duplicate found, false if otherwise.
+    bool checkDuplicate(Setting testSetting);
 
     ///
     /// @brief Adds a new Setting (newSetting), to the database.
-    /// @details Will not add if newSetting contains empty data.
-    int AddSetting(Setting newSetting);
+    /// @details Will not add if Setting contains invalid data.
+    /// @param newSetting Setting to add to database.
+    /// @exception "Setting is empty!" Provided Setting is empty or invalid.
+    /// @exception "Duplicate Setting!" Provided Setting is a duplicate.
+    void addSetting(Setting newSetting);
 
     ///
-    /// @brief Creates and adds a new setting by parsing the information provided in newSettingLine
-    /// @details Will not add Setting if newSettingLine contains invalid data.
-    int AddSetting(std::string newSettingLine);
+    /// @brief Creates and adds a new Setting by parsing the information provided a string.
+    /// @details Will not add if Setting contains invalid data.
+    /// @param newSettingLine Line containing key, value, and description of Setting.
+    /// @exception "Setting is empty!" Provided Setting is empty or invalid.
+    /// @exception "Duplicate Setting!" Provided Setting is a duplicate.
+    void addSetting(std::string newSettingLine);
 
     ///
-    /// @brief Deletes a setting from the database.
+    /// @brief Deletes a Setting from the database.
     /// @details Will not delete if not found in database, use GetLength() to check for success.
-    int DeleteSetting(Setting targetSetting);
+    /// @param targetSetting Setting to be deleted.
+    /// @exception "Setting not found!" Unable to find matching Setting.
+    void deleteSetting(Setting targetSetting);
 
     ///
-    /// @brief Deletes a setting from the database provided the information in targetSettingLine.
-    int DeleteSetting(std::string targetSettingLine);
+    /// @brief Deletes a Setting from the database provided a string.
+    /// @param targetSettingLine Line containing key, value, and description of Setting.
+    /// @exception "Setting not found!" Unable to find matching Setting.
+    void deleteSetting(std::string targetSettingLine);
 
-    Setting SearchKey(std::string targetKey);
-    std::vector<Setting> SearchValue(std::string targetValue);
-    std::vector<Setting> SearchDescription(std::string targetDescription);
+    ///
+    /// @brief Deletes a Setting from the database provided the key of said Setting(s).
+    /// @param targetKey Key of Setting.
+    /// @return Returns Setting with matching key, or Setting() if none found.
+    Setting searchKey(std::string targetKey);
 
-    Setting GetIndex(size_t index);
-    size_t GetLength();
+    ///
+    /// @brief Searches for a Setting with value matching argument.
+    /// @param targetValue Sequence to search for.
+    /// @return Returns vector of Settings with matching values.
+    std::vector<Setting> searchValue(std::string targetValue);
 
-    int Open(std::string newPath);
-    int Load();
-    void Clear();
-    int Save();
+    ///
+    /// @brief Searches for a Setting with description matching argument.
+    /// @param targetDescription Sequence to search for.
+    /// @return Returns vector of Settings with matching descriptions.
+    std::vector<Setting> searchDescription(std::string targetDescription);
+
+    ///
+    /// @brief Gets Setting at index in database.
+    /// @param index Index of Setting.
+    /// @return Returns Setting at index in database, or Setting() if none found.
+    /// @exception "Out of bounds!" Index is out of bounds.
+    Setting getIndex(size_t index);
+
+    ///
+    /// @brief Gets length of database.
+    /// @return Returns length of database.
+    size_t getLength();
+
+    ///
+    /// @brief Opens Setting database.
+    /// @param newPath Path to Setting databse.
+    /// @exception "Unable to open file!" Unable to open database file.
+    void open(std::string newPath);
+
+    ///
+    /// @brief Loads Settings from database.
+    /// @exception "Unable to open file!" Unable to open database file.
+    void load();
+
+    ///
+    /// @brief Clears all Settings from database.
+    void clear();
+
+    ///
+    /// @brief Save all Settings in database to file.
+    /// @exception "Unable to open file!" Unable to open database file.
+    void save();
 
 private:
     std::vector<Setting> database;
@@ -148,6 +202,10 @@ private:
     std::fstream database_file;
 };
 
+///
+/// @brief Checks if a file exists at given path.
+/// @param path Path to file.
+/// @return Returns true if file exists, false if otherwise.
 bool FileExists(std::string path);
 
 #endif

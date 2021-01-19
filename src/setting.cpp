@@ -30,7 +30,9 @@ Setting::Setting(string newSetting)
     for (size_t index = 0; index < newSetting.length(); index++)
     {
         if (newSetting.at(index) == '=' || newSetting.at(index) == ':')
+        {
             specialCount++;
+        }
     }
 
     getline(stringBuilder, keyBuf, '=');
@@ -58,44 +60,44 @@ Setting::Setting(string newKey, string newValue, string newDescription)
     this->description = newDescription;
 }
 
-string Setting::GetKey()
+string Setting::getKey()
 {
     return this->key;
 }
 
-string Setting::GetValue()
+string Setting::getValue()
 {
     return this->value;
 }
 
-string Setting::GetDescription()
+string Setting::getDescription()
 {
     return this->description;
 }
 
-void Setting::SetKey(string newKey)
+void Setting::setKey(string newKey)
 {
     this->key = newKey;
 }
 
-void Setting::SetValue(string newValue)
+void Setting::setValue(string newValue)
 {
     this->value = newValue;
 }
 
-void Setting::SetDescription(string newDescription)
+void Setting::setDescription(string newDescription)
 {
     this->description = newDescription;
 }
 
-string Setting::ToString()
+string Setting::toString()
 {
     ostringstream stringBuilder;
     stringBuilder << this->key << "=" << this->value << ":" << this->description;
     return stringBuilder.str();
 }
 
-bool Setting::Empty()
+bool Setting::empty()
 {
     if(this -> key.empty() || this -> value.empty() || this -> description.empty())
         return true;
@@ -107,6 +109,8 @@ bool operator ==(Setting s1, Setting s2)
     if(s1.key == s2.key &&
        s1.value == s2.value &&
        s1.description == s2.description)
+    {
        return true;
+    }
     return false;
 }

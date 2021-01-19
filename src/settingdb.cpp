@@ -16,49 +16,61 @@ SettingDB::SettingDB()
 {
 }
 
-bool SettingDB::IsDuplicate(Setting testSetting)
+bool SettingDB::checkDuplicate(Setting testSetting)
 {
     for (size_t index = 0; index < this->database.size(); index++)
     {
-        if (this->database.at(index).GetKey() == testSetting.GetKey())
+        if (this->database.at(index).getKey() == testSetting.getKey())
+        {
             return true;
+        }
     }
 
     return false;
 }
 
-int SettingDB::AddSetting(Setting newSetting)
+void SettingDB::addSetting(Setting newSetting)
 {
-    if (!newSetting.Empty())
+    if (!newSetting.empty())
     {
-        if (!IsDuplicate(newSetting))
+        if (!checkDuplicate(newSetting))
+        {
             this->database.push_back(newSetting);
+        }
         else
-            return 1;
+        {
+            throw "Duplicate Setting!";
+        }
     }
     else
-        return 1;
-    return 1;
+    {
+        throw "Setting is empty!";
+    }
 }
 
-int SettingDB::AddSetting(string newSettingLine)
+void SettingDB::addSetting(string newSettingLine)
 {
     Setting newSetting;
 
     newSetting = Setting(newSettingLine);
-    if (!newSetting.Empty())
+    if (!newSetting.empty())
     {
-        if (!IsDuplicate(newSetting))
+        if (!checkDuplicate(newSetting))
+        {
             this->database.push_back(newSetting);
+        }
         else
-            return 1;
+        {
+            throw "Duplicate Setting!";
+        }
     }
     else
-        return 1;
-    return 0;
+    {
+        throw "Setting is empty!";
+    }
 }
 
-int SettingDB::DeleteSetting(Setting targetSetting)
+void SettingDB::deleteSetting(Setting targetSetting)
 {
     size_t startingSize = this->database.size();
 
@@ -70,134 +82,160 @@ int SettingDB::DeleteSetting(Setting targetSetting)
             break;
         }
     }
+
     if (startingSize <= this->database.size())
-        return 1;
-    return 0;
+    {
+        throw "Setting not found!";
+    }
 }
 
-int SettingDB::DeleteSetting(string targetSettingLine)
+void SettingDB::deleteSetting(string targetSettingLine)
 {
     size_t startingSize = this->database.size();
 
     for (size_t index = 0; index < this->database.size(); index++)
     {
-        if (this->database.at(index).ToString() == targetSettingLine)
+        if (this->database.at(index).toString() == targetSettingLine)
         {
             this->database.erase(this->database.begin() + index);
             break;
         }
     }
+
     if (startingSize <= this->database.size())
-        return 1;
-    return 0;
+    {
+        throw "Setting not found!";
+    }
 }
 
-Setting SettingDB::SearchKey(string targetKey)
+Setting SettingDB::searchKey(string targetKey)
 {
     for (size_t index = 0; index < this->database.size(); index++)
     {
-        if (this->database.at(index).GetKey() == targetKey)
+        if (this->database.at(index).getKey() == targetKey)
+        {
             return this->database.at(index);
+        }
     }
 
     return Setting();
 }
 
-vector<Setting> SettingDB::SearchValue(string targetValue)
+vector<Setting> SettingDB::searchValue(string targetValue)
 {
     vector<Setting> results;
 
     for (size_t index = 0; index < this->database.size(); index++)
     {
-        if (this->database.at(index).GetValue() == targetValue)
+        if (this->database.at(index).getValue() == targetValue)
+        {
             results.push_back(this->database.at(index));
+        }
     }
 
     return results;
 }
 
-vector<Setting> SettingDB::SearchDescription(string targetDescription)
+vector<Setting> SettingDB::searchDescription(string targetDescription)
 {
     vector<Setting> results;
 
     for (size_t index = 0; index < this->database.size(); index++)
     {
-        if (this->database.at(index).GetDescription() == targetDescription)
+        if (this->database.at(index).getDescription() == targetDescription)
+        {
             results.push_back(this->database.at(index));
+        }
     }
 
     return results;
 }
 
-Setting SettingDB::GetIndex(size_t index)
+Setting SettingDB::getIndex(size_t index)
 {
     if (index < this->database.size())
+    {
         return this->database.at(index);
+    }
+
     return Setting();
 }
 
-size_t SettingDB::GetLength()
+size_t SettingDB::getLength()
 {
     return this->database.size();
 }
 
-int SettingDB::Open(string newPath)
+void SettingDB::open(string newPath)
 {
     this->database_file.open(newPath, ios::in);
     if (this->database_file.fail())
-        return 1;
+    {
+        throw "Unable to open file!";
+    }
     this->path = newPath;
     this->database_file.close();
-    return 0;
 }
 
-int SettingDB::Load()
+void SettingDB::load()
 {
     string settingLine;
 
     this->database_file.open(this->path, ios::in);
     if (this->database_file.fail())
-        return 1;
+    {
+        throw "Unable to open file!";
+    }
 
     this->database_file.seekg(ios::beg);
 
     while (getline(this->database_file, settingLine))
     {
         if (settingLine != string())
+        {
             this->database.push_back(Setting(settingLine));
+        }
     }
     this->database_file.close();
-    return 0;
 }
 
-void SettingDB::Clear()
+void SettingDB::clear()
 {
     this->database.clear();
 }
 
-int SettingDB::Save()
+void SettingDB::save()
 {
     struct stat buffer;
     if (stat(this->path.c_str(), &buffer) == 0)
+    {
         this->database_file.open(this->path, ios::trunc | ios::out);
+    }
     else
+    {
         this->database_file.open(this->path, ios::out);
+    }
 
     if (this->database_file.fail())
-        return 1;
+    {
+        throw "Unable to open file!";
+    }
 
     for (size_t index = 0; index < this->database.size(); index++)
     {
-        this->database_file << this->database.at(index).ToString() << endl;
+        this->database_file << this->database.at(index).toString() << endl;
     }
+
     this->database_file.close();
-    return 0;
 }
 
 bool FileExists(string path)
 {
     struct stat buffer;
     if (stat(path.c_str(), &buffer) == 0)
+    {
         return true;
+    }
+    
     return false;
 }

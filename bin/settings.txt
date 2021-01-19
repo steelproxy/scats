@@ -1,5 +1,4 @@
 contactDatabasePath=contacts.txt:Path to contact database.
 enableShell=false:Enable shell access from within scats.
-userHandle=anon:Name used to identify yourself to others.
-logLevel=verbose:Minimum severity level to print to log.
-truncateLog=true:Truncate log files, such that they are overwritten by new launches.
+LogLevel=info:Minimum severity level to print to log.
+userHandle=Anon:Name used to identify yourself to others.
