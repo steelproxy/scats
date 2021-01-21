@@ -1,7 +1,122 @@
-(18:69:02)    [info]: Loading setting database...
-(18:69:02)    [info]: Loading contact database...
-(18:69:03) [verbose]: startingxpos=9 outpos=0 _xPos=9 char='27'
-(18:69:03) [verbose]: got escape.
-(18:69:04) [verbose]: startingxpos=9 outpos=0 _xPos=9 char='27'
-(18:69:04) [verbose]: got escape.
-(18:69:09) [verbose]: startingxpos=9 outpos=0 _xPos=9 char='410'
+(20:52:06)    [info]: Loading setting database...
+(20:52:06)    [info]: Loading contact database...
+(20:52:08) [verbose]: startingxpos=9 outpos=0 _xPos=9 char='116'
+(20:52:08) [verbose]: startingxpos=9 outpos=1 _xPos=10 char='101'
+(20:52:09) [verbose]: startingxpos=9 outpos=2 _xPos=11 char='115'
+(20:52:09) [verbose]: startingxpos=9 outpos=3 _xPos=12 char='116'
+(20:52:09) [verbose]: startingxpos=9 outpos=4 _xPos=13 char='1'
+(20:52:09) [verbose]: got ctrl+a.
+(20:52:11) [verbose]: startingxpos=9 outpos=0 _xPos=9 char='10'
+(20:52:11) [verbose]: got non-printable character: 10
+(20:52:11) [verbose]: verbatim: "test"
+(20:52:11)   [error]: Not connected to chat!
+(20:52:12) [verbose]: startingxpos=9 outpos=0 _xPos=9 char='47'
+(20:52:12) [verbose]: startingxpos=9 outpos=1 _xPos=10 char='116'
+(20:52:13) [verbose]: startingxpos=9 outpos=2 _xPos=11 char='101'
+(20:52:13) [verbose]: startingxpos=9 outpos=3 _xPos=12 char='115'
+(20:52:13) [verbose]: startingxpos=9 outpos=4 _xPos=13 char='116'
+(20:52:14) [verbose]: startingxpos=9 outpos=5 _xPos=14 char='1'
+(20:52:14) [verbose]: got ctrl+a.
+(20:52:17) [verbose]: startingxpos=9 outpos=0 _xPos=9 char='261'
+(20:52:17) [verbose]: got right.
+(20:52:17) [verbose]: startingxpos=9 outpos=1 _xPos=10 char='261'
+(20:52:17) [verbose]: got right.
+(20:52:17) [verbose]: startingxpos=9 outpos=2 _xPos=11 char='101'
+(20:52:18) [verbose]: startingxpos=9 outpos=3 _xPos=12 char='260'
+(20:52:18) [verbose]: got left.
+(20:52:19) [verbose]: startingxpos=9 outpos=2 _xPos=11 char='260'
+(20:52:19) [verbose]: got left.
+(20:52:19) [verbose]: startingxpos=9 outpos=1 _xPos=10 char='97'
+(20:52:20) [verbose]: startingxpos=9 outpos=2 _xPos=11 char='1'
+(20:52:20) [verbose]: got ctrl+a.
+(20:52:20) [verbose]: startingxpos=9 outpos=0 _xPos=9 char='261'
+(20:52:20) [verbose]: got right.
+(20:52:21) [verbose]: startingxpos=9 outpos=1 _xPos=10 char='110'
+(20:52:21) [verbose]: startingxpos=9 outpos=2 _xPos=11 char='98'
+(20:52:21) [verbose]: startingxpos=9 outpos=3 _xPos=12 char='10'
+(20:52:21) [verbose]: got non-printable character: 10
+(20:52:21) [verbose]: verbatim: "/nbateest"
+(20:52:22) [verbose]: startingxpos=9 outpos=0 _xPos=9 char='259'
+(20:52:22) [verbose]: got up.
+(20:52:22) [verbose]: startingxpos=9 outpos=9 _xPos=18 char='259'
+(20:52:22) [verbose]: got up.
+(20:52:23) [verbose]: startingxpos=9 outpos=9 _xPos=18 char='259'
+(20:52:23) [verbose]: got up.
+(20:52:23) [verbose]: startingxpos=9 outpos=9 _xPos=18 char='259'
+(20:52:23) [verbose]: got up.
+(20:52:23) [verbose]: startingxpos=9 outpos=9 _xPos=18 char='258'
+(20:52:23) [verbose]: got down.
+(20:52:24) [verbose]: startingxpos=9 outpos=0 _xPos=9 char='259'
+(20:52:24) [verbose]: got up.
+(20:52:24) [verbose]: startingxpos=9 outpos=9 _xPos=18 char='259'
+(20:52:24) [verbose]: got up.
+(20:52:24) [verbose]: startingxpos=9 outpos=9 _xPos=18 char='258'
+(20:52:24) [verbose]: got down.
+(20:52:25) [verbose]: startingxpos=9 outpos=0 _xPos=9 char='259'
+(20:52:25) [verbose]: got up.
+(20:52:26) [verbose]: startingxpos=9 outpos=9 _xPos=18 char='258'
+(20:52:26) [verbose]: got down.
+(20:52:26) [verbose]: startingxpos=9 outpos=0 _xPos=9 char='259'
+(20:52:26) [verbose]: got up.
+(20:52:26) [verbose]: startingxpos=9 outpos=9 _xPos=18 char='258'
+(20:52:26) [verbose]: got down.
+(20:52:27) [verbose]: startingxpos=9 outpos=0 _xPos=9 char='259'
+(20:52:27) [verbose]: got up.
+(20:52:27) [verbose]: startingxpos=9 outpos=9 _xPos=18 char='259'
+(20:52:27) [verbose]: got up.
+(20:52:27) [verbose]: startingxpos=9 outpos=9 _xPos=18 char='259'
+(20:52:27) [verbose]: got up.
+(20:52:27) [verbose]: startingxpos=9 outpos=9 _xPos=18 char='258'
+(20:52:27) [verbose]: got down.
+(20:52:28) [verbose]: startingxpos=9 outpos=0 _xPos=9 char='259'
+(20:52:28) [verbose]: got up.
+(20:52:29) [verbose]: startingxpos=9 outpos=9 _xPos=18 char='258'
+(20:52:29) [verbose]: got down.
+(20:52:29) [verbose]: startingxpos=9 outpos=0 _xPos=9 char='47'
+(20:52:30) [verbose]: startingxpos=9 outpos=1 _xPos=10 char='98'
+(20:52:30) [verbose]: startingxpos=9 outpos=2 _xPos=11 char='111'
+(20:52:30) [verbose]: startingxpos=9 outpos=3 _xPos=12 char='111'
+(20:52:31) [verbose]: startingxpos=9 outpos=4 _xPos=13 char='112'
+(20:52:32) [verbose]: startingxpos=9 outpos=5 _xPos=14 char='10'
+(20:52:32) [verbose]: got non-printable character: 10
+(20:52:32) [verbose]: verbatim: "/boop"
+(20:52:32) [verbose]: startingxpos=9 outpos=0 _xPos=9 char='259'
+(20:52:32) [verbose]: got up.
+(20:52:32) [verbose]: startingxpos=9 outpos=5 _xPos=14 char='259'
+(20:52:32) [verbose]: got up.
+(20:52:33) [verbose]: startingxpos=9 outpos=9 _xPos=18 char='258'
+(20:52:33) [verbose]: got down.
+(20:52:33) [verbose]: startingxpos=9 outpos=5 _xPos=14 char='259'
+(20:52:33) [verbose]: got up.
+(20:52:34) [verbose]: startingxpos=9 outpos=5 _xPos=14 char='259'
+(20:52:34) [verbose]: got up.
+(20:52:34) [verbose]: startingxpos=9 outpos=9 _xPos=18 char='258'
+(20:52:34) [verbose]: got down.
+(20:52:34) [verbose]: startingxpos=9 outpos=5 _xPos=14 char='258'
+(20:52:34) [verbose]: got down.
+(20:52:35) [verbose]: startingxpos=9 outpos=0 _xPos=9 char='258'
+(20:52:35) [verbose]: got down.
+(20:52:35) [verbose]: startingxpos=9 outpos=0 _xPos=9 char='46'
+(20:52:35) [verbose]: startingxpos=9 outpos=1 _xPos=10 char='47'
+(20:52:36) [verbose]: startingxpos=9 outpos=2 _xPos=11 char='263'
+(20:52:36) [verbose]: got backspace.
+(20:52:36) [verbose]: startingxpos=9 outpos=1 _xPos=10 char='263'
+(20:52:36) [verbose]: got backspace.
+(20:52:36) [verbose]: startingxpos=9 outpos=0 _xPos=9 char='47'
+(20:52:37) [verbose]: startingxpos=9 outpos=1 _xPos=10 char='99'
+(20:52:37) [verbose]: startingxpos=9 outpos=2 _xPos=11 char='108'
+(20:52:37) [verbose]: startingxpos=9 outpos=3 _xPos=12 char='101'
+(20:52:37) [verbose]: startingxpos=9 outpos=4 _xPos=13 char='97'
+(20:52:37) [verbose]: startingxpos=9 outpos=5 _xPos=14 char='114'
+(20:52:37) [verbose]: startingxpos=9 outpos=6 _xPos=15 char='10'
+(20:52:37) [verbose]: got non-printable character: 10
+(20:52:37) [verbose]: verbatim: "/clear"
+(20:52:39) [verbose]: startingxpos=9 outpos=0 _xPos=9 char='47'
+(20:52:39) [verbose]: startingxpos=9 outpos=1 _xPos=10 char='101'
+(20:52:39) [verbose]: startingxpos=9 outpos=2 _xPos=11 char='120'
+(20:52:39) [verbose]: startingxpos=9 outpos=3 _xPos=12 char='105'
+(20:52:39) [verbose]: startingxpos=9 outpos=4 _xPos=13 char='116'
+(20:52:39) [verbose]: startingxpos=9 outpos=5 _xPos=14 char='10'
+(20:52:39) [verbose]: got non-printable character: 10
+(20:52:39) [verbose]: verbatim: "/exit"
+(20:52:39)    [info]: Exiting scats...

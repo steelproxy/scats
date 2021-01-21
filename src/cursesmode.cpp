@@ -3,12 +3,7 @@
 #include "cursesmode.h"
 #include "log.h"
 
-#define KEY_ESCAPE 27
-#define ctrl(x) ((x)&0x1f)
-
 using namespace std;
-
-vector<string> commandHistory;
 
 bool checkPrintable(int test)
 {
@@ -26,7 +21,7 @@ void StartCurses()
     scrollok(root, true); // enable scrolling
 }
 
-void GetConsoleInput(string &out)
+void GetConsoleInput(WINDOW* win, string &out)
 {
     int charBuf = 0;
     int startingXPos, _xPos, _yPos;
@@ -36,20 +31,20 @@ void GetConsoleInput(string &out)
     bool historyScrollUp = false;
     bool historyScrollDown = false;
 
-    getyx(root, _yPos, startingXPos); //
+    getyx(win, _yPos, startingXPos); //
 
     while (charBuf != '\n')
     {
-        getyx(root, _yPos, _xPos);
-        refresh();
-        charBuf = getch();
+        getyx(win, _yPos, _xPos);
+        wrefresh(win);
+        charBuf = wgetch(win);
 
         quickLog(VERBOSE, "startingxpos=" << startingXPos << " outpos=" << outPos << " _xPos=" << _xPos << " char='" << (isprint((char)charBuf) ? (char)charBuf : charBuf) << "'");
 
         if (checkPrintable(charBuf))
         {
-            insch(charBuf);         // insert character left of current cursor pos
-            move(_yPos, _xPos + 1); // move cursor forward one
+            winsch(win, charBuf);         // insert character left of current cursor pos
+            wmove(win, _yPos, _xPos + 1); // move cursor forward one
             outPos++;
         }
         else
@@ -61,7 +56,7 @@ void GetConsoleInput(string &out)
                 quickLog(VERBOSE, "got backspace.");
                 if (out.length() >= 1 && _xPos != startingXPos) // if not at beginning
                 {
-                    mvdelch(_yPos, _xPos - 1);           // move to and erase previous character
+                    mvwdelch(win, _yPos, _xPos - 1);           // move to and erase previous character
                     out.erase(out.begin() + (--outPos)); // erase character from string buffer
                     continue;
                 }
@@ -76,7 +71,7 @@ void GetConsoleInput(string &out)
                     continue;
                 }
                 outPos--;               // move back one character in string buffer
-                move(_yPos, _xPos - 1); // move cursor back one
+                wmove(win, _yPos, _xPos - 1); // move cursor back one
                 continue;
             }
 
@@ -88,21 +83,23 @@ void GetConsoleInput(string &out)
                     continue;
                 }
                 outPos++;               // move forward one character in string buffer
-                move(_yPos, _xPos + 1); // move cursor forward one
+                wmove(win, _yPos, _xPos + 1); // move cursor forward one
                 continue;
             }
 
             case KEY_UP:
             {
                 quickLog(VERBOSE, "got up.");
-                historyScrollDown = false;  // cancel first-time scroll down feature
+                historyScrollDown = false;  // cancel first-time scroll down feature                
                 if (commandHistory.empty()) // if command history is empty
                 {
                     continue;
                 }
+
                 out.clear();                  // clear string buffer
-                move(_yPos, startingXPos);    // move to beginning of line
-                clrtoeol();                   // clear to end of line
+                wmove(win, _yPos, startingXPos);    // move to beginning of line
+                wclrtoeol(win);                   // clear to end of line
+
                 if (historyScrollUp == false) // if first time scrolling up
                 {
                     out = commandHistory.at(commandHistoryIndex); // set string buffer to current command in commandHistory
@@ -116,9 +113,10 @@ void GetConsoleInput(string &out)
                 {
                     out = commandHistory.at(commandHistoryIndex); // set string buffer to current command in commandHistory
                 }
-                out.insert(out.begin(), '/');
-                addstr(out.c_str());                      // print selected string
-                move(_yPos, startingXPos + out.length()); // move cursor to end of string
+
+                out.insert(out.begin(), '/');             // insert '/' denoting command
+                waddstr(win, out.c_str());                      // print selected string
+                wmove(win, _yPos, startingXPos + out.length()); // move cursor to end of string
                 outPos = out.length();                    // update position in string buffer to end
                 historyScrollDown = true;
                 continue;
@@ -132,20 +130,10 @@ void GetConsoleInput(string &out)
                 {
                     continue;
                 }
-                // if (commandHistoryIndex == commandHistory.size()) // if
-                // {
-                //     out.clear();
-                //     move(_yPos, startingXPos);
-                //     clrtoeol();
-                //     out = "";
-                //     addstr(out.c_str());
-                //     move(_yPos, startingXPos + out.length());
-                //     outPos = out.length();
-                //     continue;
-                // }
+
                 out.clear();               // clear string buffer
-                move(_yPos, startingXPos); // move to beginning of line
-                clrtoeol();                // clear to end of line
+                wmove(win, _yPos, startingXPos); // move to beginning of line
+                wclrtoeol(win);                // clear to end of line
 
                 if (historyScrollDown == false) // if at end of history and first-time
                 {
@@ -160,42 +148,24 @@ void GetConsoleInput(string &out)
                 {
                     out = commandHistory.at(++commandHistoryIndex);
                 }
+
                 if (out != "")
+                {
                     out.insert(out.begin(), '/');
-                addstr(out.c_str());
-                move(_yPos, startingXPos + out.length());
+                }
+                waddstr(win, out.c_str());
+                wmove(win, _yPos, startingXPos + out.length());
                 outPos = out.length();
                 continue;
             }
 
             case '\t':
             {
-                //bool found = false;
-
                 if (out.size() <= 1 || out.at(0) != '/')
                     continue;
 
                 out.erase(out.begin());
 
-                /*                for (string command : commandHistory)
-                {
-                    if (command.find(out, 0) != string::npos)
-                    {
-                        quickLog(VERBOSE, "found command in history matching query: " << out << "~=" << command);
-                        out.clear();
-                        move(_yPos, startingXPos);
-                        clrtoeol();
-                        out += '/';
-                        out += command;
-                        addstr(out.c_str());
-                        move(_yPos, startingXPos + out.length());
-                        outPos = out.length();
-                        found = true;
-                        break;
-                    }
-                }
-                if (found)
-                    continue;*/
                 for (size_t commandIndex = 0; commandIndex < commandsLen; commandIndex++)
                 {
                     string command = commands[commandIndex];
@@ -203,12 +173,12 @@ void GetConsoleInput(string &out)
                     {
                         quickLog(VERBOSE, "found command matching query: " << out << "~=" << command);
                         out.clear();
-                        move(_yPos, startingXPos);
-                        clrtoeol();
+                        wmove(win, _yPos, startingXPos);
+                        wclrtoeol(win);
                         out += '/';
                         out += command;
-                        addstr(out.c_str());
-                        move(_yPos, startingXPos + out.length());
+                        waddstr(win, out.c_str());
+                        wmove(win, _yPos, startingXPos + out.length());
                         outPos = out.length();
                         break;
                     }
@@ -218,23 +188,17 @@ void GetConsoleInput(string &out)
 
             case ctrl('a'):
             {
-                move(_yPos, startingXPos);
-                outPos = 0;
                 quickLog(VERBOSE, "got ctrl+a.");
+                wmove(win, _yPos, startingXPos);
+                outPos = 0;
                 continue;
             }
 
             case ctrl('e'):
             {
-                move(_yPos, startingXPos + out.length());
-                outPos = out.length();
                 quickLog(VERBOSE, "got ctrl+e.");
-                continue;
-            }
-
-            case ctrl('r'):
-            {
-                quickLog(VERBOSE, "got ctrl+r.");
+                wmove(win, _yPos, startingXPos + out.length());
+                outPos = out.length();
                 continue;
             }
 
@@ -245,7 +209,10 @@ void GetConsoleInput(string &out)
             }
 
             default:
+            {
+                quickLog(VERBOSE, "got non-printable character: " << charBuf);
                 continue;
+            }
             }
         }
 
@@ -255,8 +222,8 @@ void GetConsoleInput(string &out)
         }
     }
 
-    move(_yPos, startingXPos + out.length());
-    addch('\n');
+    wmove(win, _yPos, startingXPos + out.length());
+    waddch(win, '\n');
     quickLog(VERBOSE, "verbatim: \"" << out << "\"");
 }
 
@@ -319,28 +286,25 @@ void GetUserInput(string &out)
 
             case ctrl('a'):
             {
+                quickLog(VERBOSE, "got ctrl+a.");
                 move(_yPos, startingXPos);
                 outPos = 0;
-                quickLog(VERBOSE, "got ctrl+a.");
                 continue;
             }
 
             case ctrl('e'):
             {
+                quickLog(VERBOSE, "got ctrl+e.");
                 move(_yPos, startingXPos + out.length());
                 outPos = out.length();
-                quickLog(VERBOSE, "got ctrl+e.");
-                continue;
-            }
-
-            case ctrl('r'):
-            {
-                quickLog(VERBOSE, "got ctrl+r.");
                 continue;
             }
 
             default:
+            {
+                quickLog(VERBOSE, "got non-printable character: " << charBuf);
                 continue;
+            }
             }
         }
 

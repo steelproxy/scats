@@ -5,6 +5,9 @@
 #include <vector>
 #include <sstream>
 
+#define KEY_ESCAPE 27
+#define ctrl(x) ((x)&0x1f)
+
 ///
 /// @brief Macro for formatting and printing message to root ncurses window.
 /// @param message Message to be printed to root ncurses window.
@@ -41,7 +44,7 @@ void StartCurses();
 /// 
 /// @brief Gets user input, with command history and line editing.
 /// @param out Reference to string that will be filled with user input.
-void GetConsoleInput(std::string &out);
+void GetConsoleInput(WINDOW* win, std::string &out);
 
 ///
 /// @brief Gets user input with line editing.
@@ -49,5 +52,7 @@ void GetConsoleInput(std::string &out);
 void GetUserInput(std::string &out);
 
 extern WINDOW *root;
+
+extern std::vector<std::string> commandHistory;
 
 #endif

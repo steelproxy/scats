@@ -39,6 +39,7 @@ const std::string commands[] = {"add-contact", "add-setting", "build", "change-s
                 "chat", "clear", "delete-contact", "delete-setting", "exit", "help",
                 "list-contacts", "list-settings", "nuke", "save-contacts", "save-settings"};
 const size_t commandsLen = 15;
+vector<string> commandHistory;
 
 WINDOW* root;
 Log logger;
@@ -211,7 +212,7 @@ int main(int argc, char **argv)
         addstr("[");
         addstr(getSet(settingDatabase, "userHandle").c_str());
         addstr("] > ");
-        GetConsoleInput(userInput);
+        GetConsoleInput(root, userInput);
         
         // extract command substring
         string commandSubStr;
