@@ -114,3 +114,9 @@ bool operator ==(Setting s1, Setting s2)
     }
     return false;
 }
+
+std::string getSet(SettingDB &database, std::string targetKey)
+{
+    std::string result = database.searchKey(targetKey).getValue();
+    return result;
+}

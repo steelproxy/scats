@@ -14,15 +14,14 @@
 ///
 /// @brief Macro for quick config changes.
 ///
-#define IfSet(value, key) if ((value = settingDatabase.searchKey(key).getValue()) == string())
+#define IfSet(key) if (settingDatabase.searchKey(key).getValue() == string())
 
 ///
 /// @brief Macro for quick default setting.
 ///
-#define DefSet(value, key, default, description)                         \
-    if ((value = settingDatabase.searchKey(key).getValue()) == string()) \
+#define DefSet(key, default, description)                         \
+    if (settingDatabase.searchKey(key).getValue() == string()) \
     {                                                                    \
-        value = default;                                                 \
         settingDatabase.addSetting(Setting(key, default, description));  \
     }
 
@@ -207,5 +206,7 @@ private:
 /// @param path Path to file.
 /// @return Returns true if file exists, false if otherwise.
 bool FileExists(std::string path);
+
+std::string getSet(SettingDB &database, std::string targetKey);
 
 #endif

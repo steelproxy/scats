@@ -135,10 +135,6 @@ int main(int argc, char **argv)
 
     // load settings
     SettingDB settingDatabase;
-    string contactDatabasePath;
-    string enableShell;
-    string LogLevel;
-    string userHandle;
     try
     {
         settingDatabase.open(DEFAULT_SETTINGS_FILE);
@@ -151,13 +147,13 @@ int main(int argc, char **argv)
     }
 
     // apply settings
-    DefSet(contactDatabasePath, "contactDatabasePath", DEFAULT_CONTACTS_FILE, "Path to contact database.");
-    DefSet(enableShell, "enableShell", DEFAULT_ENABLE_SHELL, "Enable shell access from within scats.");
-    DefSet(LogLevel, "LogLevel", DEFAULT_LOG_LEVEL, "Minimum severity level to print to log.");
-    logger.setLevel(LevelToI(LogLevel));
-    IfSet(userHandle, "userHandle")
+    DefSet("contactDatabasePath", DEFAULT_CONTACTS_FILE, "Path to contact database.");
+    DefSet("enableShell", DEFAULT_ENABLE_SHELL, "Enable shell access from within scats.");
+    DefSet("logLevel", DEFAULT_LOG_LEVEL, "Minimum severity level to print to log.");
+    logger.setLevel(LevelToI(getSet(settingDatabase, "logLevel")));
+    IfSet("userHandle")
     {
-        InteractiveSetUserHandle(settingDatabase, userHandle);
+        InteractiveSetUserHandle(settingDatabase);
     }
     if (newSettingFile)
     {
@@ -173,12 +169,12 @@ int main(int argc, char **argv)
     }
 
     // create contacts file if necessary
-    if (!FileExists(contactDatabasePath))
+    if (!FileExists(getSet(settingDatabase, "contactDatabasePath")))
     {
         ofstream contactFile;
         quickPrintLog(WARNING, "Contact database does not exist!");
         quickPrintLog(INFO, "Creating contact database.");
-        contactFile.open(contactDatabasePath, ios::out);
+        contactFile.open(getSet(settingDatabase, "contactDatabasePath"), ios::out);
         if (contactFile.fail())
         {
             quickPrintLog(ERROR, "Unable to create contact database!");
@@ -191,7 +187,7 @@ int main(int argc, char **argv)
     quickPrintLog(INFO, "Loading contact database...");
     try
     {
-        contactDatabase.open(contactDatabasePath);
+        contactDatabase.open(getSet(settingDatabase, "contactDatabasePath"));
         contactDatabase.load();
     }
     catch (const char *msg)
@@ -200,49 +196,57 @@ int main(int argc, char **argv)
         quickLog(ERROR, "Exception caught:" << msg);
     }
 
+    // capture SIGINT's
     signal(SIGINT, SignalHandler);
 
     // interactive loop
     for (;;)
     {
-        string userInput;
-
         while (sigsetjmp(sigintJumpPoint, 1) != 0)
             ; // set jump to beginning of loop
 
+        // user prompt
+        string userInput;
         userInput = string(); // clear string
-
-        // print and prompt
         addstr("[");
-        addstr(userHandle.c_str());
+        addstr(getSet(settingDatabase, "userHandle").c_str());
         addstr("] > ");
         GetConsoleInput(userInput);
+        
+        // extract command substring
+        string commandSubStr;
+        if(userInput.empty() || userInput.at(0) != '/') // check if input is a command
+        {
+            quickPrintLog(ERROR, "Not connected to chat!");
+            continue;
+        }
+        commandSubStr = userInput.substr(1); // extract command after '/'
 
         if (commandHistory.size() < DEFAULT_HISTORY_LEN) // if there is room left in the history vector
         {
-            commandHistory.push_back(userInput); // push back last command
+            commandHistory.push_back(commandSubStr); // push back last command
         }
         else
         {
             commandHistory.erase(commandHistory.begin()); // erase first command in history vector
-            commandHistory.push_back(userInput); // push back last command
+            commandHistory.push_back(commandSubStr); // push back last command
         }
 
-        if (userInput == "help") // display help
+        if (commandSubStr == "help") // display help
         {
             DisplayHelp();
         }
-        else if (userInput == "add-contact") // add a contact
+        else if (commandSubStr == "add-contact") // add a contact
         {
             quickPrintLog(INFO, "Adding new contact...");
             InteractiveAddContact(contactDatabase);
         }
-        else if (userInput == "delete-contact") // delete a contact
+        else if (commandSubStr == "delete-contact") // delete a contact
         {
             quickPrintLog(INFO, "Deleting contact...");
             InteractiveDeleteContact(contactDatabase);
         }
-        else if (userInput == "list-contacts") // list all contacts
+        else if (commandSubStr == "list-contacts") // list all contacts
         {
             ncoutln("Contacts: ");
             for (size_t index = 0; index < contactDatabase.getLength(); index++) // read contacts from database
@@ -252,17 +256,17 @@ int main(int argc, char **argv)
                 ncoutln("   " << contactDatabase.getIndex(index).getPort());
             }
         }
-        else if (userInput == "add-setting") // add a new setting
+        else if (commandSubStr == "add-setting") // add a new setting
         {
             quickPrintLog(INFO, "Adding new setting...");
             InteractiveAddSetting(settingDatabase);
         }
-        else if (userInput == "delete-setting") // delete a setting
+        else if (commandSubStr == "delete-setting") // delete a setting
         {
             quickPrintLog(INFO, "Deleting setting...");
             InteractiveDeleteSetting(settingDatabase);
         }
-        else if (userInput == "list-settings") // list all settings
+        else if (commandSubStr == "list-settings") // list all settings
         {
             ncoutln("Settings: ");
             for (size_t index = 0; index < settingDatabase.getLength(); index++) // read settings from database
@@ -271,7 +275,7 @@ int main(int argc, char **argv)
                 ncoutln("    " << settingDatabase.getIndex(index).getDescription());
             }
         }
-        else if (userInput == "nuke") // nuke files
+        else if (commandSubStr == "nuke") // nuke files
         {
             string nukePrompt;
             ncout("Would you like to delete your user files? (y/n): ");
@@ -291,48 +295,48 @@ int main(int argc, char **argv)
                 }
 
                 ncoutln("Deleting contact database...");
-                if (remove(contactDatabasePath.c_str()) != 0) // delete contact database
+                if (remove(getSet(settingDatabase, "contactDatabasePath").c_str()) != 0) // delete contact database
                 {
                     ncoutln("Unable to delete contact database!");
                 }
+                return 0; // exit
             }
-            return 0; // exit
         }
-        else if (userInput == "save-settings") // save settings
+        else if (commandSubStr == "save-settings") // save settings
         {
             quickPrintLog(INFO, "Saving settings file...");
             settingDatabase.save();
         }
-        else if (userInput == "change-setting") // change a setting
+        else if (commandSubStr == "change-setting") // change a setting
         {
             quickPrintLog(INFO, "Changing settings...");
             InteractiveChangeSetting(settingDatabase);
         }
-        else if (userInput == "clear") // clear screen
+        else if (commandSubStr == "clear") // clear screen
         {
             clear();
         }
-        else if (userInput == "save-contacts") // save contacts
+        else if (commandSubStr == "save-contacts") // save contacts
         {
             quickPrintLog(INFO, "Saving contact file...");
             contactDatabase.save();
         }
-        else if (userInput == "chat") // start chat server
+        else if (commandSubStr == "chat") // start chat server
         {
             boost::asio::io_service ioService;
             // boost::asio::streambuf readBuf;
             ncoutln("What port would you like to start the server on? ");
-            GetUserInput(userInput);
-            quickPrintLog(INFO, "Starting server on port: " << userInput << "...");
+            GetUserInput(commandSubStr);
+            quickPrintLog(INFO, "Starting server on port: " << commandSubStr << "...");
             ChatServer testSrv(ioService, 25565);
             for(;;);
         }
-        else if (userInput == "exit") // exit scats
+        else if (commandSubStr == "exit") // exit scats
         {
             quickPrintLog(INFO, "Exiting scats...");
             return 0;
         }
-        else if (userInput == "build") // rebuild scats
+        else if (commandSubStr == "build") // rebuild scats
         {
             quickPrintLog(INFO, "Exiting, rebuilding, and relaunching scats...");
             system("cd ..; make; cd bin; ./scats");
@@ -340,14 +344,7 @@ int main(int argc, char **argv)
         }
         else
         {
-            if (enableShell != "true")
-            {
-                ncoutln("Unknown command!");
-            }
-            else if (system(userInput.c_str()) < 0)
-            {
-                ncoutln("Error: " << strerror(errno));
-            }
+            ncoutln("Unknown command!");
         }
     }
 }

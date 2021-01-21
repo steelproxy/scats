@@ -17,7 +17,7 @@
 /// @brief Interactive function for setting user handle.
 /// @param database Reference to SettingDB that user handle setting will be added to.
 /// @param userHandle Reference to user handle.
-void InteractiveSetUserHandle(SettingDB &database, std::string &userHandle);
+void InteractiveSetUserHandle(SettingDB &database);
 
 ///
 /// @brief Interactive function for adding contact to ContactDB.

@@ -30,8 +30,9 @@ bool isPrintStr(string str)
     return true;
 }
 
-void InteractiveSetUserHandle(SettingDB &database, string &userHandle)
+void InteractiveSetUserHandle(SettingDB &database)
 {
+    string userHandle;
     ncout("Handle (max 16 characters, no special characters): ");
     GetUserInput(userHandle);                                                              // read user handle into userHandle
     while (userHandle.length() > 16 || userHandle.length() < 1 || !isPrintStr(userHandle)) // must be less than 16 characters and be only printable characters

@@ -3,13 +3,18 @@
 #include "cursesmode.h"
 #include "log.h"
 
+#define KEY_ESCAPE 27
+#define ctrl(x) ((x)&0x1f)
+
 using namespace std;
 
 vector<string> commandHistory;
 
-bool isCoolBro(int test)
+bool checkPrintable(int test)
 {
-    
+    if (test >= 32 && test <= 126)
+        return true;
+    return false;
 }
 
 void StartCurses()
@@ -39,11 +44,11 @@ void GetConsoleInput(string &out)
         refresh();
         charBuf = getch();
 
-        quickLog(VERBOSE, "startingxpos=" << startingXPos << " outpos=" << outPos << " _xPos=" << _xPos << " char='" << (isprint((char) charBuf) ? (char) charBuf : charBuf) << "'");
+        quickLog(VERBOSE, "startingxpos=" << startingXPos << " outpos=" << outPos << " _xPos=" << _xPos << " char='" << (isprint((char)charBuf) ? (char)charBuf : charBuf) << "'");
 
-        if (isprint(charBuf))
+        if (checkPrintable(charBuf))
         {
-            insch(charBuf);       // insert character left of current cursor pos
+            insch(charBuf);         // insert character left of current cursor pos
             move(_yPos, _xPos + 1); // move cursor forward one
             outPos++;
         }
@@ -56,7 +61,7 @@ void GetConsoleInput(string &out)
                 quickLog(VERBOSE, "got backspace.");
                 if (out.length() >= 1 && _xPos != startingXPos) // if not at beginning
                 {
-                    mvdelch(_yPos, _xPos - 1);             // move to and erase previous character
+                    mvdelch(_yPos, _xPos - 1);           // move to and erase previous character
                     out.erase(out.begin() + (--outPos)); // erase character from string buffer
                     continue;
                 }
@@ -70,7 +75,7 @@ void GetConsoleInput(string &out)
                 {
                     continue;
                 }
-                outPos--;             // move back one character in string buffer
+                outPos--;               // move back one character in string buffer
                 move(_yPos, _xPos - 1); // move cursor back one
                 continue;
             }
@@ -82,7 +87,7 @@ void GetConsoleInput(string &out)
                 {
                     continue;
                 }
-                outPos++;             // move forward one character in string buffer
+                outPos++;               // move forward one character in string buffer
                 move(_yPos, _xPos + 1); // move cursor forward one
                 continue;
             }
@@ -96,14 +101,14 @@ void GetConsoleInput(string &out)
                     continue;
                 }
                 out.clear();                  // clear string buffer
-                move(_yPos, startingXPos);     // move to beginning of line
+                move(_yPos, startingXPos);    // move to beginning of line
                 clrtoeol();                   // clear to end of line
                 if (historyScrollUp == false) // if first time scrolling up
                 {
                     out = commandHistory.at(commandHistoryIndex); // set string buffer to current command in commandHistory
                     historyScrollUp = true;                       // disable first-time scroll up feature
                 }
-                else if (commandHistoryIndex != 0)                  // if not at beginning of history
+                else if (commandHistoryIndex != 0) // if not at beginning of history
                 {
                     out = commandHistory.at(--commandHistoryIndex); // decrement index and set string buffer to previous command
                 }
@@ -111,9 +116,10 @@ void GetConsoleInput(string &out)
                 {
                     out = commandHistory.at(commandHistoryIndex); // set string buffer to current command in commandHistory
                 }
-                addstr(out.c_str());                              // print selected string
-                move(_yPos, startingXPos + out.length());          // move cursor to end of string
-                outPos = out.length();                            // update position in string buffer to end
+                out.insert(out.begin(), '/');
+                addstr(out.c_str());                      // print selected string
+                move(_yPos, startingXPos + out.length()); // move cursor to end of string
+                outPos = out.length();                    // update position in string buffer to end
                 historyScrollDown = true;
                 continue;
             }
@@ -137,11 +143,11 @@ void GetConsoleInput(string &out)
                 //     outPos = out.length();
                 //     continue;
                 // }
-                out.clear();              // clear string buffer
+                out.clear();               // clear string buffer
                 move(_yPos, startingXPos); // move to beginning of line
-                clrtoeol();               // clear to end of line
+                clrtoeol();                // clear to end of line
 
-                if (commandHistoryIndex == commandHistory.size() - 1 && historyScrollDown == false) // if at end of history and first-time
+                if (historyScrollDown == false) // if at end of history and first-time
                 {
                     out = commandHistory.at(commandHistoryIndex); // set string buffer to current command in commandHistory
                     historyScrollDown = true;                     // disable first-time scroll down feature
@@ -154,6 +160,8 @@ void GetConsoleInput(string &out)
                 {
                     out = commandHistory.at(++commandHistoryIndex);
                 }
+                if (out != "")
+                    out.insert(out.begin(), '/');
                 addstr(out.c_str());
                 move(_yPos, startingXPos + out.length());
                 outPos = out.length();
@@ -162,7 +170,14 @@ void GetConsoleInput(string &out)
 
             case '\t':
             {
-                for (string command : commandHistory)
+                //bool found = false;
+
+                if (out.size() <= 1 || out.at(0) != '/')
+                    continue;
+
+                out.erase(out.begin());
+
+                /*                for (string command : commandHistory)
                 {
                     if (command.find(out, 0) != string::npos)
                     {
@@ -170,14 +185,18 @@ void GetConsoleInput(string &out)
                         out.clear();
                         move(_yPos, startingXPos);
                         clrtoeol();
-                        out = command;
+                        out += '/';
+                        out += command;
                         addstr(out.c_str());
                         move(_yPos, startingXPos + out.length());
                         outPos = out.length();
-                        continue;
+                        found = true;
+                        break;
                     }
                 }
-                for(size_t commandIndex = 0; commandIndex < commandsLen; commandIndex++)
+                if (found)
+                    continue;*/
+                for (size_t commandIndex = 0; commandIndex < commandsLen; commandIndex++)
                 {
                     string command = commands[commandIndex];
                     if (command.find(out, 0) != string::npos)
@@ -186,15 +205,47 @@ void GetConsoleInput(string &out)
                         out.clear();
                         move(_yPos, startingXPos);
                         clrtoeol();
-                        out = command;
+                        out += '/';
+                        out += command;
                         addstr(out.c_str());
                         move(_yPos, startingXPos + out.length());
                         outPos = out.length();
-                        continue;
+                        break;
                     }
                 }
                 continue;
             }
+
+            case ctrl('a'):
+            {
+                move(_yPos, startingXPos);
+                outPos = 0;
+                quickLog(VERBOSE, "got ctrl+a.");
+                continue;
+            }
+
+            case ctrl('e'):
+            {
+                move(_yPos, startingXPos + out.length());
+                outPos = out.length();
+                quickLog(VERBOSE, "got ctrl+e.");
+                continue;
+            }
+
+            case ctrl('r'):
+            {
+                quickLog(VERBOSE, "got ctrl+r.");
+                continue;
+            }
+
+            case KEY_ESCAPE:
+            {
+                quickLog(VERBOSE, "got escape.");
+                continue;
+            }
+
+            default:
+                continue;
             }
         }
 
@@ -223,9 +274,9 @@ void GetUserInput(string &out)
         refresh();
         charBuf = getch();
 
-        if (isprint(charBuf))
+        if ((charBuf))
         {
-            insch(charBuf);       // insert character left of current cursor pos
+            insch(charBuf);         // insert character left of current cursor pos
             move(_yPos, _xPos + 1); // move cursor forward one
             outPos++;
         }
@@ -237,7 +288,7 @@ void GetUserInput(string &out)
             {
                 if (out.length() >= 1 && _xPos != startingXPos) // if not at beginning
                 {
-                    mvdelch(_yPos, _xPos - 1);             // move to and erase previous character
+                    mvdelch(_yPos, _xPos - 1);           // move to and erase previous character
                     out.erase(out.begin() + (--outPos)); // erase character from string buffer
                     continue;
                 }
@@ -250,7 +301,7 @@ void GetUserInput(string &out)
                 {
                     continue;
                 }
-                outPos--;             // move back one character in string buffer
+                outPos--;               // move back one character in string buffer
                 move(_yPos, _xPos - 1); // move cursor back one
                 continue;
             }
@@ -261,14 +312,39 @@ void GetUserInput(string &out)
                 {
                     continue;
                 }
-                outPos++;             // move forward one character in string buffer
+                outPos++;               // move forward one character in string buffer
                 move(_yPos, _xPos + 1); // move cursor forward one
                 continue;
             }
+
+            case ctrl('a'):
+            {
+                move(_yPos, startingXPos);
+                outPos = 0;
+                quickLog(VERBOSE, "got ctrl+a.");
+                continue;
+            }
+
+            case ctrl('e'):
+            {
+                move(_yPos, startingXPos + out.length());
+                outPos = out.length();
+                quickLog(VERBOSE, "got ctrl+e.");
+                continue;
+            }
+
+            case ctrl('r'):
+            {
+                quickLog(VERBOSE, "got ctrl+r.");
+                continue;
+            }
+
+            default:
+                continue;
             }
         }
 
-        quickLog(VERBOSE, "startingxpos=" << startingXPos << " outpos=" << outPos << " _xPos=" << _xPos << " char='" << (isprint((char) charBuf) ? (char) charBuf : charBuf) << "'");
+        quickLog(VERBOSE, "startingxpos=" << startingXPos << " outpos=" << outPos << " _xPos=" << _xPos << " char='" << (isprint((char)charBuf) ? (char)charBuf : charBuf) << "'");
 
         // print character
         if (charBuf != '\n')
