@@ -44,12 +44,7 @@ void StartCurses();
 /// 
 /// @brief Gets user input, with command history and line editing.
 /// @param out Reference to string that will be filled with user input.
-void GetConsoleInput(WINDOW* win, std::string &out);
-
-///
-/// @brief Gets user input with line editing.
-///
-void GetUserInput(std::string &out);
+void GetConsoleInput(WINDOW* win, bool lineEdit, std::string &out);
 
 extern WINDOW *root;
 

@@ -34,11 +34,11 @@ void InteractiveSetUserHandle(SettingDB &database)
 {
     string userHandle;
     ncout("Handle (max 16 characters, no special characters): ");
-    GetUserInput(userHandle);                                                              // read user handle into userHandle
+    GetConsoleInput(root, false, userHandle);                                                              // read user handle into userHandle
     while (userHandle.length() > 16 || userHandle.length() < 1 || !isPrintStr(userHandle)) // must be less than 16 characters and be only printable characters
     {
         ncout("Handle is invalid. Please enter a new one: ");
-        GetUserInput(userHandle); // read a new user handle into userHandle
+        GetConsoleInput(root, false, userHandle); // read a new user handle into userHandle
     }
     try
     {
@@ -57,14 +57,14 @@ void InteractiveAddContact(ContactDB &contactDatabase)
     do
     {
         ncout("Alias: ");
-        GetUserInput(newAlias);
+        GetConsoleInput(root, false, newAlias);
     } while (newAlias.empty());
 
     string newEndpoint;
     do
     {
         ncout("Endpoint: ");
-        GetUserInput(newEndpoint);
+        GetConsoleInput(root, false, newEndpoint);
     } while (newEndpoint.empty());
 
     for (size_t index = 0; index < newAlias.length(); index++)
@@ -87,7 +87,7 @@ void InteractiveAddContact(ContactDB &contactDatabase)
     ncout("Port: ");
     while (true)
     {
-        GetUserInput(newPort);
+        GetConsoleInput(root, false, newPort);
         try
         {
             contactDatabase.addContact(Contact(newAlias, newEndpoint, stoi(newPort)));
@@ -111,7 +111,7 @@ void InteractiveDeleteContact(ContactDB &contactDatabase)
     do
     {
         ncout("Alias (must be exact): ");
-        GetUserInput(targetAlias);
+        GetConsoleInput(root, false, targetAlias);
     } while (targetAlias.empty());
 
     try
@@ -135,7 +135,7 @@ void InteractiveAddSetting(SettingDB &settingDatabase)
 {
     string newKey;
     ncout("Key: ");
-    GetUserInput(newKey);
+    GetConsoleInput(root, false, newKey);
     for (size_t index = 0; index < newKey.length(); index++)
     {
         if (newKey.at(index) == '=' || newKey.at(index) == ':' || !isprint(newKey.at(index)))
@@ -146,7 +146,7 @@ void InteractiveAddSetting(SettingDB &settingDatabase)
 
     string newValue;
     ncout("Value: ");
-    GetUserInput(newValue);
+    GetConsoleInput(root, false, newValue);
     for (size_t index = 0; index < newValue.length(); index++)
     {
         if (newValue.at(index) == '=' || newValue.at(index) == ':' || !isprint(newValue.at(index)))
@@ -157,7 +157,7 @@ void InteractiveAddSetting(SettingDB &settingDatabase)
 
     string newDescription;
     ncout("Description: ");
-    GetUserInput(newDescription);
+    GetConsoleInput(root, false, newDescription);
     for (size_t index = 0; index < newDescription.length(); index++)
     {
         if (newDescription.at(index) == '=' || newDescription.at(index) == ':' || !isprint(newDescription.at(index)))
@@ -186,7 +186,7 @@ void InteractiveDeleteSetting(SettingDB &settingDatabase)
     size_t startingLen = settingDatabase.getLength();
 
     ncout("Key: ");
-    GetUserInput(targetKey);
+    GetConsoleInput(root, false, targetKey);
 
     try
     {
@@ -213,7 +213,7 @@ void InteractiveChangeSetting(SettingDB &settingDatabase)
     string oldDescription;
 
     ncout("Key: ");
-    GetUserInput(targetKey);
+    GetConsoleInput(root, false, targetKey);
     targetSetting = settingDatabase.searchKey(targetKey);
 
     if (!targetSetting.empty())
@@ -221,7 +221,7 @@ void InteractiveChangeSetting(SettingDB &settingDatabase)
         ncoutln(targetSetting.getKey() << "=" << targetSetting.getValue());
         ncout(targetSetting.getKey() << "=");
 
-        GetUserInput(newValue);
+        GetConsoleInput(root, false, newValue);
         for (size_t index = 0; index < newValue.length(); index++)
         {
             if (newValue.at(index) == '=' || newValue.at(index) == ':' || !isprint(newValue.at(index)))

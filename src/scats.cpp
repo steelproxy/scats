@@ -212,7 +212,7 @@ int main(int argc, char **argv)
         addstr("[");
         addstr(getSet(settingDatabase, "userHandle").c_str());
         addstr("] > ");
-        GetConsoleInput(root, userInput);
+        GetConsoleInput(root, true, userInput);
         
         // extract command substring
         string commandSubStr;
@@ -280,7 +280,7 @@ int main(int argc, char **argv)
         {
             string nukePrompt;
             ncout("Would you like to delete your user files? (y/n): ");
-            GetUserInput(nukePrompt);
+            GetConsoleInput(root, false, nukePrompt);
             if (nukePrompt == "y")
             {
                 ncoutln("Deleting log file...");
@@ -327,7 +327,7 @@ int main(int argc, char **argv)
             boost::asio::io_service ioService;
             // boost::asio::streambuf readBuf;
             ncoutln("What port would you like to start the server on? ");
-            GetUserInput(commandSubStr);
+            GetConsoleInput(root, false, commandSubStr);
             quickPrintLog(INFO, "Starting server on port: " << commandSubStr << "...");
             ChatServer testSrv(ioService, 25565);
             for(;;);
