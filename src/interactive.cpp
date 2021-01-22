@@ -22,7 +22,7 @@ bool isPrintStr(string str)
 {
     for (size_t index = 0; index < str.length(); index++)
     {
-        if (!isprint(str.at(index)))
+        if (!checkPrintable(str.at(index)))
         {
             return false;
         }

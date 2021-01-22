@@ -129,7 +129,7 @@ void GetConsoleInput(WINDOW* win, bool lineEdit, string &out)
 
             case KEY_DOWN:
             {
-                if(lineEdit)
+                if(!lineEdit)
                 {
                     continue;
                 }

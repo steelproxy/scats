@@ -20,7 +20,7 @@
             scroll(root);                                 \
         logger.stringBuilder.str(string());               \
         logger.stringBuilder << message;                  \
-        printw("%s", logger.stringBuilder.str().c_str()); \
+        wprintw(root, "%s", logger.stringBuilder.str().c_str()); \
         refresh();                                        \
     }
 
@@ -45,6 +45,8 @@ void StartCurses();
 /// @brief Gets user input, with command history and line editing.
 /// @param out Reference to string that will be filled with user input.
 void GetConsoleInput(WINDOW* win, bool lineEdit, std::string &out);
+
+bool checkPrintable(int test);
 
 extern WINDOW *root;
 

@@ -30,18 +30,18 @@
 #define DEFAULT_LOG_LEVEL "info"
 #define DEFAULT_LOG_FILE "log.txt"
 #define DEFAULT_TRUNCATE_LOG "false"
-#define DEFAULT_HISTORY_LEN 64
+#define DEFAULT_HISTORY_LEN "64"
 
 using namespace std;
 
 // initialize command list
 const std::string commands[] = {"add-contact", "add-setting", "build", "change-setting",
-                "chat", "clear", "delete-contact", "delete-setting", "exit", "help",
-                "list-contacts", "list-settings", "nuke", "save-contacts", "save-settings"};
+                                "chat", "clear", "delete-contact", "delete-setting", "exit", "help",
+                                "list-contacts", "list-settings", "nuke", "save-contacts", "save-settings"};
 const size_t commandsLen = 15;
 vector<string> commandHistory;
 
-WINDOW* root;
+WINDOW *root;
 Log logger;
 sigjmp_buf sigintJumpPoint;
 
@@ -151,6 +151,7 @@ int main(int argc, char **argv)
     DefSet("contactDatabasePath", DEFAULT_CONTACTS_FILE, "Path to contact database.");
     DefSet("enableShell", DEFAULT_ENABLE_SHELL, "Enable shell access from within scats.");
     DefSet("logLevel", DEFAULT_LOG_LEVEL, "Minimum severity level to print to log.");
+    DefSet("commandHistoryLength", DEFAULT_HISTORY_LEN, "Maximum number of commands to be kept in history.");
     logger.setLevel(LevelToI(getSet(settingDatabase, "logLevel")));
     IfSet("userHandle")
     {
@@ -213,24 +214,46 @@ int main(int argc, char **argv)
         addstr(getSet(settingDatabase, "userHandle").c_str());
         addstr("] > ");
         GetConsoleInput(root, true, userInput);
-        
+
         // extract command substring
         string commandSubStr;
-        if(userInput.empty() || userInput.at(0) != '/') // check if input is a command
+        if (userInput.empty() || userInput.at(0) != '/') // check if input is a command
         {
             quickPrintLog(ERROR, "Not connected to chat!");
             continue;
         }
         commandSubStr = userInput.substr(1); // extract command after '/'
 
-        if (commandHistory.size() < DEFAULT_HISTORY_LEN) // if there is room left in the history vector
+        // TODO fix resize
+        // get command history vector length
+        size_t commandHistoryLen = 0;
+        try
+        {
+            commandHistoryLen = stoi(getSet(settingDatabase, "commandHistoryLength"));
+        }
+        catch (const std::exception &e)
+        {
+            quickLog(ERROR, "Invalid value for commandHistoryLength!");
+            exceptionLog(ERROR, "Exception caught: " << e.what());
+            settingDatabase.searchKey("commandHistoryLength").setValue(DEFAULT_HISTORY_LEN);
+            commandHistoryLen = stoi(DEFAULT_HISTORY_LEN);
+        }
+
+        // handle sudden changes
+        if(commandHistory.size() >= commandHistoryLen)
+        {
+            commandHistory.clear();
+        }
+
+        // push command history
+        if (commandHistory.size() < commandHistoryLen) // if there is room left in the history vector
         {
             commandHistory.push_back(commandSubStr); // push back last command
         }
         else
         {
             commandHistory.erase(commandHistory.begin()); // erase first command in history vector
-            commandHistory.push_back(commandSubStr); // push back last command
+            commandHistory.push_back(commandSubStr);      // push back last command
         }
 
         if (commandSubStr == "help") // display help
@@ -330,7 +353,8 @@ int main(int argc, char **argv)
             GetConsoleInput(root, false, commandSubStr);
             quickPrintLog(INFO, "Starting server on port: " << commandSubStr << "...");
             ChatServer testSrv(ioService, 25565);
-            for(;;);
+            for (;;)
+                ;
         }
         else if (commandSubStr == "exit") // exit scats
         {

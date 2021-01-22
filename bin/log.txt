@@ -1,44 +1,250 @@
-(20:65:13)    [info]: Loading setting database...
-(20:65:13)    [info]: Loading contact database...
-(20:65:15) [verbose]: startingxpos=9 outpos=0 _xPos=9 char='111'
-(20:65:15) [verbose]: startingxpos=9 outpos=1 _xPos=10 char='111'
-(20:65:15) [verbose]: startingxpos=9 outpos=2 _xPos=11 char='98'
-(20:65:15) [verbose]: startingxpos=9 outpos=3 _xPos=12 char='97'
-(20:65:15) [verbose]: startingxpos=9 outpos=4 _xPos=13 char='32'
-(20:65:16) [verbose]: startingxpos=9 outpos=5 _xPos=14 char='100'
-(20:65:16) [verbose]: startingxpos=9 outpos=6 _xPos=15 char='111'
-(20:65:16) [verbose]: startingxpos=9 outpos=7 _xPos=16 char='111'
-(20:65:16) [verbose]: startingxpos=9 outpos=8 _xPos=17 char='98'
-(20:65:16) [verbose]: startingxpos=9 outpos=9 _xPos=18 char='97'
-(20:65:17) [verbose]: startingxpos=9 outpos=10 _xPos=19 char='259'
-(20:65:17) [verbose]: got up.
-(20:65:17) [verbose]: startingxpos=9 outpos=10 _xPos=19 char='260'
-(20:65:17) [verbose]: got left.
-(20:65:17) [verbose]: startingxpos=9 outpos=9 _xPos=18 char='260'
-(20:65:17) [verbose]: got left.
-(20:65:17) [verbose]: startingxpos=9 outpos=8 _xPos=17 char='260'
-(20:65:17) [verbose]: got left.
-(20:65:18) [verbose]: startingxpos=9 outpos=7 _xPos=16 char='260'
-(20:65:18) [verbose]: got left.
-(20:65:18) [verbose]: startingxpos=9 outpos=6 _xPos=15 char='260'
-(20:65:18) [verbose]: got left.
-(20:65:18) [verbose]: startingxpos=9 outpos=5 _xPos=14 char='11'
-(20:65:18) [verbose]: got ctrl+k.
-(20:65:19) [verbose]: startingxpos=9 outpos=5 _xPos=14 char='114'
-(20:65:19) [verbose]: startingxpos=9 outpos=6 _xPos=15 char='111'
-(20:65:19) [verbose]: startingxpos=9 outpos=7 _xPos=16 char='111'
-(20:65:20) [verbose]: startingxpos=9 outpos=8 _xPos=17 char='98'
-(20:65:20) [verbose]: startingxpos=9 outpos=9 _xPos=18 char='97'
-(20:65:21) [verbose]: startingxpos=9 outpos=10 _xPos=19 char='10'
-(20:65:21) [verbose]: got non-printable character: 10
-(20:65:21) [verbose]: verbatim: "ooba rooba"
-(20:65:21)   [error]: Not connected to chat!
-(20:65:22) [verbose]: startingxpos=9 outpos=0 _xPos=9 char='47'
-(20:65:22) [verbose]: startingxpos=9 outpos=1 _xPos=10 char='101'
-(20:65:22) [verbose]: startingxpos=9 outpos=2 _xPos=11 char='120'
-(20:65:22) [verbose]: startingxpos=9 outpos=3 _xPos=12 char='105'
-(20:65:23) [verbose]: startingxpos=9 outpos=4 _xPos=13 char='116'
-(20:65:23) [verbose]: startingxpos=9 outpos=5 _xPos=14 char='10'
-(20:65:23) [verbose]: got non-printable character: 10
-(20:65:23) [verbose]: verbatim: "/exit"
-(20:65:23)    [info]: Exiting scats...
+(21:78:17)    [info]: Loading setting database...
+(21:78:17)    [info]: Loading contact database...
+(21:78:18) [verbose]: startingxpos=9 outpos=0 _xPos=9 char='47'
+(21:78:19) [verbose]: startingxpos=9 outpos=1 _xPos=10 char='108'
+(21:78:19) [verbose]: startingxpos=9 outpos=2 _xPos=11 char='105'
+(21:78:19) [verbose]: startingxpos=9 outpos=3 _xPos=12 char='115'
+(21:78:19) [verbose]: startingxpos=9 outpos=4 _xPos=13 char='116'
+(21:78:19) [verbose]: startingxpos=9 outpos=5 _xPos=14 char='45'
+(21:78:19) [verbose]: startingxpos=9 outpos=6 _xPos=15 char='115'
+(21:78:19) [verbose]: startingxpos=9 outpos=7 _xPos=16 char='9'
+(21:78:19) [verbose]: found command matching query: list-s~=list-settings
+(21:78:20) [verbose]: startingxpos=9 outpos=14 _xPos=23 char='10'
+(21:78:20) [verbose]: got non-printable character: 10
+(21:78:20) [verbose]: verbatim: "/list-settings"
+(21:78:23) [verbose]: startingxpos=9 outpos=0 _xPos=9 char='47'
+(21:78:23) [verbose]: startingxpos=9 outpos=1 _xPos=10 char='116'
+(21:78:23) [verbose]: startingxpos=9 outpos=2 _xPos=11 char='101'
+(21:78:23) [verbose]: startingxpos=9 outpos=3 _xPos=12 char='115'
+(21:78:23) [verbose]: startingxpos=9 outpos=4 _xPos=13 char='116'
+(21:78:23) [verbose]: startingxpos=9 outpos=5 _xPos=14 char='10'
+(21:78:23) [verbose]: got non-printable character: 10
+(21:78:23) [verbose]: verbatim: "/test"
+(21:78:23) [verbose]: startingxpos=9 outpos=0 _xPos=9 char='47'
+(21:78:24) [verbose]: startingxpos=9 outpos=1 _xPos=10 char='98'
+(21:78:24) [verbose]: startingxpos=9 outpos=2 _xPos=11 char='105'
+(21:78:24) [verbose]: startingxpos=9 outpos=3 _xPos=12 char='103'
+(21:78:24) [verbose]: startingxpos=9 outpos=4 _xPos=13 char='32'
+(21:78:25) [verbose]: startingxpos=9 outpos=5 _xPos=14 char='111'
+(21:78:25) [verbose]: startingxpos=9 outpos=6 _xPos=15 char='111'
+(21:78:25) [verbose]: startingxpos=9 outpos=7 _xPos=16 char='112'
+(21:78:25) [verbose]: startingxpos=9 outpos=8 _xPos=17 char='10'
+(21:78:25) [verbose]: got non-printable character: 10
+(21:78:25) [verbose]: verbatim: "/big oop"
+(21:78:25) [verbose]: startingxpos=9 outpos=0 _xPos=9 char='259'
+(21:78:25) [verbose]: got up.
+(21:78:26) [verbose]: startingxpos=9 outpos=8 _xPos=17 char='259'
+(21:78:26) [verbose]: got up.
+(21:78:26) [verbose]: startingxpos=9 outpos=5 _xPos=14 char='259'
+(21:78:26) [verbose]: got up.
+(21:78:26) [verbose]: startingxpos=9 outpos=14 _xPos=23 char='258'
+(21:78:27) [verbose]: startingxpos=9 outpos=14 _xPos=23 char='258'
+(21:78:27) [verbose]: startingxpos=9 outpos=14 _xPos=23 char='258'
+(21:78:27) [verbose]: startingxpos=9 outpos=14 _xPos=23 char='258'
+(21:78:27) [verbose]: startingxpos=9 outpos=14 _xPos=23 char='258'
+(21:78:29) [verbose]: startingxpos=9 outpos=14 _xPos=23 char='263'
+(21:78:29) [verbose]: got backspace.
+(21:78:30) [verbose]: startingxpos=9 outpos=13 _xPos=22 char='263'
+(21:78:30) [verbose]: got backspace.
+(21:78:30) [verbose]: startingxpos=9 outpos=12 _xPos=21 char='263'
+(21:78:30) [verbose]: got backspace.
+(21:78:30) [verbose]: startingxpos=9 outpos=11 _xPos=20 char='263'
+(21:78:30) [verbose]: got backspace.
+(21:78:30) [verbose]: startingxpos=9 outpos=10 _xPos=19 char='263'
+(21:78:30) [verbose]: got backspace.
+(21:78:30) [verbose]: startingxpos=9 outpos=9 _xPos=18 char='263'
+(21:78:30) [verbose]: got backspace.
+(21:78:30) [verbose]: startingxpos=9 outpos=8 _xPos=17 char='263'
+(21:78:30) [verbose]: got backspace.
+(21:78:30) [verbose]: startingxpos=9 outpos=7 _xPos=16 char='263'
+(21:78:30) [verbose]: got backspace.
+(21:78:30) [verbose]: startingxpos=9 outpos=6 _xPos=15 char='263'
+(21:78:30) [verbose]: got backspace.
+(21:78:30) [verbose]: startingxpos=9 outpos=5 _xPos=14 char='263'
+(21:78:30) [verbose]: got backspace.
+(21:78:30) [verbose]: startingxpos=9 outpos=4 _xPos=13 char='263'
+(21:78:30) [verbose]: got backspace.
+(21:78:30) [verbose]: startingxpos=9 outpos=3 _xPos=12 char='263'
+(21:78:30) [verbose]: got backspace.
+(21:78:30) [verbose]: startingxpos=9 outpos=2 _xPos=11 char='263'
+(21:78:30) [verbose]: got backspace.
+(21:78:30) [verbose]: startingxpos=9 outpos=1 _xPos=10 char='263'
+(21:78:30) [verbose]: got backspace.
+(21:78:30) [verbose]: startingxpos=9 outpos=0 _xPos=9 char='263'
+(21:78:30) [verbose]: got backspace.
+(21:78:30) [verbose]: startingxpos=9 outpos=0 _xPos=9 char='263'
+(21:78:30) [verbose]: got backspace.
+(21:78:30) [verbose]: startingxpos=9 outpos=0 _xPos=9 char='263'
+(21:78:30) [verbose]: got backspace.
+(21:78:30) [verbose]: startingxpos=9 outpos=0 _xPos=9 char='263'
+(21:78:30) [verbose]: got backspace.
+(21:78:30) [verbose]: startingxpos=9 outpos=0 _xPos=9 char='263'
+(21:78:30) [verbose]: got backspace.
+(21:78:30) [verbose]: startingxpos=9 outpos=0 _xPos=9 char='263'
+(21:78:30) [verbose]: got backspace.
+(21:78:30) [verbose]: startingxpos=9 outpos=0 _xPos=9 char='263'
+(21:78:30) [verbose]: got backspace.
+(21:78:30) [verbose]: startingxpos=9 outpos=0 _xPos=9 char='263'
+(21:78:30) [verbose]: got backspace.
+(21:78:30) [verbose]: startingxpos=9 outpos=0 _xPos=9 char='263'
+(21:78:30) [verbose]: got backspace.
+(21:78:30) [verbose]: startingxpos=9 outpos=0 _xPos=9 char='263'
+(21:78:30) [verbose]: got backspace.
+(21:78:31) [verbose]: startingxpos=9 outpos=0 _xPos=9 char='260'
+(21:78:31) [verbose]: got left.
+(21:78:31) [verbose]: startingxpos=9 outpos=0 _xPos=9 char='260'
+(21:78:31) [verbose]: got left.
+(21:78:31) [verbose]: startingxpos=9 outpos=0 _xPos=9 char='259'
+(21:78:31) [verbose]: got up.
+(21:78:31) [verbose]: startingxpos=9 outpos=14 _xPos=23 char='259'
+(21:78:31) [verbose]: got up.
+(21:78:32) [verbose]: startingxpos=9 outpos=14 _xPos=23 char='258'
+(21:78:32) [verbose]: startingxpos=9 outpos=14 _xPos=23 char='258'
+(21:78:32) [verbose]: startingxpos=9 outpos=14 _xPos=23 char='258'
+(21:78:32) [verbose]: startingxpos=9 outpos=14 _xPos=23 char='263'
+(21:78:32) [verbose]: got backspace.
+(21:78:33) [verbose]: startingxpos=9 outpos=13 _xPos=22 char='263'
+(21:78:33) [verbose]: got backspace.
+(21:78:33) [verbose]: startingxpos=9 outpos=12 _xPos=21 char='263'
+(21:78:33) [verbose]: got backspace.
+(21:78:33) [verbose]: startingxpos=9 outpos=11 _xPos=20 char='263'
+(21:78:33) [verbose]: got backspace.
+(21:78:33) [verbose]: startingxpos=9 outpos=10 _xPos=19 char='263'
+(21:78:33) [verbose]: got backspace.
+(21:78:33) [verbose]: startingxpos=9 outpos=9 _xPos=18 char='263'
+(21:78:33) [verbose]: got backspace.
+(21:78:33) [verbose]: startingxpos=9 outpos=8 _xPos=17 char='263'
+(21:78:33) [verbose]: got backspace.
+(21:78:33) [verbose]: startingxpos=9 outpos=7 _xPos=16 char='263'
+(21:78:33) [verbose]: got backspace.
+(21:78:33) [verbose]: startingxpos=9 outpos=6 _xPos=15 char='263'
+(21:78:33) [verbose]: got backspace.
+(21:78:33) [verbose]: startingxpos=9 outpos=5 _xPos=14 char='263'
+(21:78:33) [verbose]: got backspace.
+(21:78:33) [verbose]: startingxpos=9 outpos=4 _xPos=13 char='263'
+(21:78:33) [verbose]: got backspace.
+(21:78:33) [verbose]: startingxpos=9 outpos=3 _xPos=12 char='263'
+(21:78:33) [verbose]: got backspace.
+(21:78:33) [verbose]: startingxpos=9 outpos=2 _xPos=11 char='263'
+(21:78:33) [verbose]: got backspace.
+(21:78:33) [verbose]: startingxpos=9 outpos=1 _xPos=10 char='263'
+(21:78:33) [verbose]: got backspace.
+(21:78:33) [verbose]: startingxpos=9 outpos=0 _xPos=9 char='263'
+(21:78:33) [verbose]: got backspace.
+(21:78:33) [verbose]: startingxpos=9 outpos=0 _xPos=9 char='263'
+(21:78:33) [verbose]: got backspace.
+(21:78:33) [verbose]: startingxpos=9 outpos=0 _xPos=9 char='263'
+(21:78:33) [verbose]: got backspace.
+(21:78:33) [verbose]: startingxpos=9 outpos=0 _xPos=9 char='263'
+(21:78:33) [verbose]: got backspace.
+(21:78:33) [verbose]: startingxpos=9 outpos=0 _xPos=9 char='263'
+(21:78:33) [verbose]: got backspace.
+(21:78:33) [verbose]: startingxpos=9 outpos=0 _xPos=9 char='263'
+(21:78:33) [verbose]: got backspace.
+(21:78:34) [verbose]: startingxpos=9 outpos=0 _xPos=9 char='263'
+(21:78:34) [verbose]: got backspace.
+(21:78:34) [verbose]: startingxpos=9 outpos=0 _xPos=9 char='263'
+(21:78:34) [verbose]: got backspace.
+(21:78:34) [verbose]: startingxpos=9 outpos=0 _xPos=9 char='263'
+(21:78:34) [verbose]: got backspace.
+(21:78:34) [verbose]: startingxpos=9 outpos=0 _xPos=9 char='263'
+(21:78:34) [verbose]: got backspace.
+(21:78:34) [verbose]: startingxpos=9 outpos=0 _xPos=9 char='263'
+(21:78:34) [verbose]: got backspace.
+(21:78:34) [verbose]: startingxpos=9 outpos=0 _xPos=9 char='263'
+(21:78:34) [verbose]: got backspace.
+(21:78:34) [verbose]: startingxpos=9 outpos=0 _xPos=9 char='263'
+(21:78:34) [verbose]: got backspace.
+(21:78:34) [verbose]: startingxpos=9 outpos=0 _xPos=9 char='263'
+(21:78:34) [verbose]: got backspace.
+(21:78:35) [verbose]: startingxpos=9 outpos=0 _xPos=9 char='47'
+(21:78:36) [verbose]: startingxpos=9 outpos=1 _xPos=10 char='108'
+(21:78:36) [verbose]: startingxpos=9 outpos=2 _xPos=11 char='105'
+(21:78:36) [verbose]: startingxpos=9 outpos=3 _xPos=12 char='115'
+(21:78:36) [verbose]: startingxpos=9 outpos=4 _xPos=13 char='116'
+(21:78:36) [verbose]: startingxpos=9 outpos=5 _xPos=14 char='48'
+(21:78:36) [verbose]: startingxpos=9 outpos=6 _xPos=15 char='263'
+(21:78:36) [verbose]: got backspace.
+(21:78:37) [verbose]: startingxpos=9 outpos=5 _xPos=14 char='45'
+(21:78:37) [verbose]: startingxpos=9 outpos=6 _xPos=15 char='9'
+(21:78:37) [verbose]: found command matching query: list-~=list-contacts
+(21:78:37) [verbose]: startingxpos=9 outpos=14 _xPos=23 char='10'
+(21:78:37) [verbose]: got non-printable character: 10
+(21:78:37) [verbose]: verbatim: "/list-contacts"
+(21:78:38) [verbose]: startingxpos=9 outpos=0 _xPos=9 char='47'
+(21:78:39) [verbose]: startingxpos=9 outpos=1 _xPos=10 char='108'
+(21:78:39) [verbose]: startingxpos=9 outpos=2 _xPos=11 char='105'
+(21:78:39) [verbose]: startingxpos=9 outpos=3 _xPos=12 char='115'
+(21:78:39) [verbose]: startingxpos=9 outpos=4 _xPos=13 char='116'
+(21:78:39) [verbose]: startingxpos=9 outpos=5 _xPos=14 char='45'
+(21:78:39) [verbose]: startingxpos=9 outpos=6 _xPos=15 char='48'
+(21:78:40) [verbose]: startingxpos=9 outpos=7 _xPos=16 char='263'
+(21:78:40) [verbose]: got backspace.
+(21:78:40) [verbose]: startingxpos=9 outpos=6 _xPos=15 char='115'
+(21:78:40) [verbose]: startingxpos=9 outpos=7 _xPos=16 char='101'
+(21:78:40) [verbose]: startingxpos=9 outpos=8 _xPos=17 char='116'
+(21:78:41) [verbose]: startingxpos=9 outpos=9 _xPos=18 char='9'
+(21:78:41) [verbose]: found command matching query: list-set~=list-settings
+(21:78:41) [verbose]: startingxpos=9 outpos=14 _xPos=23 char='10'
+(21:78:41) [verbose]: got non-printable character: 10
+(21:78:41) [verbose]: verbatim: "/list-settings"
+(21:78:43) [verbose]: startingxpos=9 outpos=0 _xPos=9 char='47'
+(21:78:43) [verbose]: startingxpos=9 outpos=1 _xPos=10 char='99'
+(21:78:43) [verbose]: startingxpos=9 outpos=2 _xPos=11 char='104'
+(21:78:43) [verbose]: startingxpos=9 outpos=3 _xPos=12 char='97'
+(21:78:43) [verbose]: startingxpos=9 outpos=4 _xPos=13 char='110'
+(21:78:43) [verbose]: startingxpos=9 outpos=5 _xPos=14 char='9'
+(21:78:43) [verbose]: found command matching query: chan~=change-setting
+(21:78:44) [verbose]: startingxpos=9 outpos=15 _xPos=24 char='10'
+(21:78:44) [verbose]: got non-printable character: 10
+(21:78:44) [verbose]: verbatim: "/change-setting"
+(21:78:44)    [info]: Changing settings...
+(21:78:44) [verbose]: startingxpos=5 outpos=0 _xPos=5 char='99'
+(21:78:45) [verbose]: startingxpos=5 outpos=1 _xPos=6 char='111'
+(21:78:45) [verbose]: startingxpos=5 outpos=2 _xPos=7 char='109'
+(21:78:45) [verbose]: startingxpos=5 outpos=3 _xPos=8 char='109'
+(21:78:45) [verbose]: startingxpos=5 outpos=4 _xPos=9 char='97'
+(21:78:45) [verbose]: startingxpos=5 outpos=5 _xPos=10 char='110'
+(21:78:45) [verbose]: startingxpos=5 outpos=6 _xPos=11 char='100'
+(21:78:45) [verbose]: startingxpos=5 outpos=7 _xPos=12 char='72'
+(21:78:46) [verbose]: startingxpos=5 outpos=8 _xPos=13 char='105'
+(21:78:46) [verbose]: startingxpos=5 outpos=9 _xPos=14 char='115'
+(21:78:46) [verbose]: startingxpos=5 outpos=10 _xPos=15 char='116'
+(21:78:47) [verbose]: startingxpos=5 outpos=11 _xPos=16 char='111'
+(21:78:47) [verbose]: startingxpos=5 outpos=12 _xPos=17 char='114'
+(21:78:47) [verbose]: startingxpos=5 outpos=13 _xPos=18 char='121'
+(21:78:47) [verbose]: startingxpos=5 outpos=14 _xPos=19 char='76'
+(21:78:47) [verbose]: startingxpos=5 outpos=15 _xPos=20 char='101'
+(21:78:48) [verbose]: startingxpos=5 outpos=16 _xPos=21 char='110'
+(21:78:48) [verbose]: startingxpos=5 outpos=17 _xPos=22 char='103'
+(21:78:48) [verbose]: startingxpos=5 outpos=18 _xPos=23 char='116'
+(21:78:48) [verbose]: startingxpos=5 outpos=19 _xPos=24 char='104'
+(21:78:49) [verbose]: startingxpos=5 outpos=20 _xPos=25 char='10'
+(21:78:49) [verbose]: got non-printable character: 10
+(21:78:49) [verbose]: verbatim: "commandHistoryLength"
+(21:78:50) [verbose]: startingxpos=21 outpos=0 _xPos=21 char='48'
+(21:78:50) [verbose]: startingxpos=21 outpos=1 _xPos=22 char='10'
+(21:78:50) [verbose]: got non-printable character: 10
+(21:78:50) [verbose]: verbatim: "0"
+(21:78:50)    [info]: Changed setting: commandHistoryLength=0
+(21:78:51) [verbose]: startingxpos=9 outpos=0 _xPos=9 char='259'
+(21:78:51) [verbose]: got up.
+(21:78:52) [verbose]: startingxpos=9 outpos=15 _xPos=24 char='259'
+(21:78:52) [verbose]: got up.
+(21:78:52) [verbose]: startingxpos=9 outpos=14 _xPos=23 char='259'
+(21:78:52) [verbose]: got up.
+(21:78:53) [verbose]: startingxpos=9 outpos=14 _xPos=23 char='259'
+(21:78:53) [verbose]: got up.
+(21:78:53) [verbose]: startingxpos=9 outpos=8 _xPos=17 char='259'
+(21:78:53) [verbose]: got up.
+(21:78:53) [verbose]: startingxpos=9 outpos=5 _xPos=14 char='259'
+(21:78:53) [verbose]: got up.
+(21:78:54) [verbose]: startingxpos=9 outpos=14 _xPos=23 char='258'
+(21:78:54) [verbose]: startingxpos=9 outpos=14 _xPos=23 char='258'
+(21:78:54) [verbose]: startingxpos=9 outpos=14 _xPos=23 char='258'
+(21:78:54) [verbose]: startingxpos=9 outpos=14 _xPos=23 char='258'
+(21:78:54) [verbose]: startingxpos=9 outpos=14 _xPos=23 char='258'
+(21:78:55) [verbose]: startingxpos=9 outpos=14 _xPos=23 char='258'
+(21:78:55) [verbose]: startingxpos=9 outpos=14 _xPos=23 char='258'
+(21:78:55) [verbose]: startingxpos=9 outpos=14 _xPos=23 char='258'
+(21:78:56)    [info]: Sigint recieved.
