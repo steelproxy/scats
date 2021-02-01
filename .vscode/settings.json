@@ -85,5 +85,9 @@
     "cmake.configureOnOpen": false,
     "cSpell.ignoreWords": [
         "startingxpos"
+    ],
+    "cSpell.words": [
+        "ncout",
+        "ncoutln"
     ]
 }

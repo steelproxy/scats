@@ -150,7 +150,6 @@ int main(int argc, char **argv)
 
     // apply settings
     DefSet("contactDatabasePath", DEFAULT_CONTACTS_FILE, "Path to contact database.");
-    DefSet("enableShell", DEFAULT_ENABLE_SHELL, "Enable shell access from within scats.");
     DefSet("logLevel", DEFAULT_LOG_LEVEL, "Minimum severity level to print to log.");
     DefSet("commandHistoryLength", DEFAULT_HISTORY_LEN, "Maximum number of commands to be kept in history.");
     logger.setLevel(LevelToI(getSet(settingDatabase, "logLevel")));
