@@ -6,29 +6,30 @@
 #include <sstream>
 
 #define KEY_ESCAPE 27
+#define KEY_DELETE 330
 #define ctrl(x) ((x)&0x1f)
 
 ///
 /// @brief Macro for formatting and printing message to root ncurses window.
 /// @param message Message to be printed to root ncurses window.
-#define ncout(message)                                    \
-    {                                                     \
-        int xPos, yPos;                                   \
-        (void) xPos;                                      \
-        getyx(root, xPos, yPos);                          \
-        if (yPos == getmaxy(root))                        \
-            scroll(root);                                 \
-        logger.stringBuilder.str(string());               \
-        logger.stringBuilder << message;                  \
+#define ncout(message)                                           \
+    {                                                            \
+        int xPos, yPos;                                          \
+        (void)xPos;                                              \
+        getyx(root, xPos, yPos);                                 \
+        if (yPos == getmaxy(root))                               \
+            scroll(root);                                        \
+        logger.stringBuilder.str(string());                      \
+        logger.stringBuilder << message;                         \
         wprintw(root, "%s", logger.stringBuilder.str().c_str()); \
-        refresh();                                        \
+        refresh();                                               \
     }
 
 ///
 /// @brief Macro for formatting and printing line to root ncurses window.
 /// @param line Line to be printed to root ncurses window.
 #define ncoutln(line)        \
-    {                           \
+    {                        \
         ncout(line << endl); \
     }
 
@@ -41,10 +42,10 @@ extern const size_t commandsLen;
 ///
 void StartCurses();
 
-/// 
+///
 /// @brief Gets user input, with command history and line editing.
 /// @param out Reference to string that will be filled with user input.
-void GetConsoleInput(WINDOW* win, bool lineEdit, std::string &out);
+void GetConsoleInput(WINDOW *win, bool lineEdit, std::string &out);
 
 bool checkPrintable(int test);
 
