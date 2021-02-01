@@ -17,6 +17,7 @@ void ChatServer::startAccept()
 void ChatServer::handleAccept(ChatConnection::pointer new_connection,
                               const boost::system::error_code &error)
 {
+    quickPrintLog(VERBOSE, "")
     if (!error)
     {
         new_connection->start();

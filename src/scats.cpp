@@ -49,7 +49,8 @@ void SignalHandler(int sig)
 {
     if (sig == SIGINT)
     {
-        quickPrintLog(INFO, "Sigint recieved.");
+        ncoutln(endl << "Sigint caught.");
+        quickLog(INFO, "Sigint caught.");
         siglongjmp(sigintJumpPoint, 1);
     }
 }
@@ -169,6 +170,20 @@ int main(int argc, char **argv)
             exceptionLog(ERROR, msg);
         }
     }
+    // TODO fix resize
+    // get command history vector length
+    size_t commandHistoryLen = 0;
+    try
+    {
+        commandHistoryLen = stoi(getSet(settingDatabase, "commandHistoryLength"));
+    }
+    catch (const std::exception &e)
+    {
+        quickLog(ERROR, "Invalid value for commandHistoryLength!");
+        exceptionLog(ERROR, e.what());
+        settingDatabase.searchKey("commandHistoryLength").setValue(DEFAULT_HISTORY_LEN);
+        commandHistoryLen = stoi(DEFAULT_HISTORY_LEN);
+    }
 
     // create contacts file if necessary
     if (!FileExists(getSet(settingDatabase, "contactDatabasePath")))
@@ -195,7 +210,7 @@ int main(int argc, char **argv)
     catch (const char *msg)
     {
         quickPrintLog(ERROR, "Unable to load contact database!");
-        quickLog(ERROR, "Exception caught:" << msg);
+        exceptionLog(ERROR, msg);
     }
 
     // capture SIGINT's
@@ -223,27 +238,6 @@ int main(int argc, char **argv)
             continue;
         }
         commandSubStr = userInput.substr(1); // extract command after '/'
-
-        // TODO fix resize
-        // get command history vector length
-        size_t commandHistoryLen = 0;
-        try
-        {
-            commandHistoryLen = stoi(getSet(settingDatabase, "commandHistoryLength"));
-        }
-        catch (const std::exception &e)
-        {
-            quickLog(ERROR, "Invalid value for commandHistoryLength!");
-            exceptionLog(ERROR, "Exception caught: " << e.what());
-            settingDatabase.searchKey("commandHistoryLength").setValue(DEFAULT_HISTORY_LEN);
-            commandHistoryLen = stoi(DEFAULT_HISTORY_LEN);
-        }
-
-        // handle sudden changes
-        if(commandHistory.size() >= commandHistoryLen)
-        {
-            commandHistory.clear();
-        }
 
         // push command history
         if (commandHistory.size() < commandHistoryLen) // if there is room left in the history vector
@@ -351,7 +345,7 @@ int main(int argc, char **argv)
             // boost::asio::streambuf readBuf;
             ncoutln("What port would you like to start the server on? ");
             GetConsoleInput(root, false, commandSubStr);
-            quickPrintLog(INFO, "Starting server on port: " << commandSubStr << "...");
+            quickPrintLog(INFO, "Starting server on port: " << "...");
             ChatServer testSrv(ioService, 25565);
             for (;;)
                 ;

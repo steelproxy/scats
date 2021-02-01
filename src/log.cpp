@@ -51,7 +51,7 @@ void Log::truncate() // truncate log, reopen in trunc mode
     }
 }
 
-void Log::writeLine(LogLevel level, std::string message) // write a line to the log file
+void Log::writeLine(LogLevel level, const char* func, const int line, std::string message) // write a line to the log file
 {
     if(level < this -> level)
     {
@@ -80,23 +80,23 @@ void Log::writeLine(LogLevel level, std::string message) // write a line to the 
     switch (level)
     {
     case VERBOSE: // if severe level
-        this->file << timestamp << setw(12) << fixed << " [verbose]: " << message << endl;
+        this->file << timestamp << setw(12) << fixed << " [verbose] {" << func << ":" << line << "}: " << message << endl;
         break;
 
     case INFO: // if INFO level
-        this->file << timestamp << setw(12) << fixed << " [info]: " << message << endl;
+        this->file << timestamp << setw(12) << fixed << " [info] {" << func << ":" << line << "}: " << message << endl;
         break;
 
     case WARNING: // if warning level
-        this->file << timestamp << setw(12) << fixed << " [warning]: " << message << endl;
+        this->file << timestamp << setw(12) << fixed << " [warning] {" << func << ":" << line << "}: " << message << endl;
         break;
 
     case ERROR: // if error level
-        this->file << timestamp << setw(12) << fixed << " [error]: " << message << endl;
+        this->file << timestamp << setw(12) << fixed << " [error] {" << func << ":" << line << "}: " << message << endl;
         break;
 
     case SEVERE: // if severe level
-        this->file << timestamp << setw(12) << fixed << " [severe]: " << message << endl;
+        this->file << timestamp << setw(12) << fixed << " [severe] {" << func << ":" << line << "}: " << message << endl;
         break;
     }
 

@@ -22,7 +22,7 @@
     {                                                        \
         logger.stringBuilder.str(string());                  \
         logger.stringBuilder << message;                     \
-        logger.writeLine(level, logger.stringBuilder.str()); \
+        logger.writeLine(level, __FUNCTION__, __LINE__, logger.stringBuilder.str()); \
     }
 
 ///
@@ -37,7 +37,7 @@
 
 #define exceptionLog(level, message)   \
 {   \
-    quickLog(level, "Exception caught (" << __FUNCTION__ << "," << __LINE__ << "): " << message); \
+    quickLog(level, "Exception caught: " << message); \
 }
 
 ///
@@ -83,7 +83,7 @@ public:
     /// @param level Severity level of message.
     /// @param message Message to print to log.
     /// @exception "Unable to open file!" Unable to open log file.
-    void writeLine(LogLevel level, std::string message);
+    void writeLine(LogLevel level, const char* func, const int line, std::string message);
 
     ///
     /// @brief Sets log severity level

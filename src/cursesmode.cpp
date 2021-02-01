@@ -24,14 +24,16 @@ void StartCurses()
 void GetConsoleInput(WINDOW* win, bool lineEdit, string &out)
 {
     int charBuf = 0;
-    int startingXPos, _xPos, _yPos;
-    size_t outPos = 0;
+    int startingXPos; // starting x position
+    int _xPos, _yPos; // current x and y positions
+    size_t outPos = 0; // position in output buffer
     size_t commandHistoryIndex = (commandHistory.size() == 0) ? 0 : commandHistory.size() - 1;
 
     bool historyScrollUp = false;
     bool historyScrollDown = false;
 
-    getyx(win, _yPos, startingXPos); //
+    getyx(win, _yPos, _xPos); // get current cursor position
+    startingXPos = _xPos; // store starting cursor x position
 
     while (charBuf != '\n')
     {
@@ -54,7 +56,7 @@ void GetConsoleInput(WINDOW* win, bool lineEdit, string &out)
             case KEY_BACKSPACE:
             {
                 quickLog(VERBOSE, "got backspace.");
-                if (out.length() >= 1 && _xPos != startingXPos) // if not at beginning
+                if (outPos > 0) // if not at beginning
                 {
                     mvwdelch(win, _yPos, _xPos - 1);           // move to and erase previous character
                     out.erase(out.begin() + (--outPos)); // erase character from string buffer
@@ -66,35 +68,34 @@ void GetConsoleInput(WINDOW* win, bool lineEdit, string &out)
             case KEY_LEFT:
             {
                 quickLog(VERBOSE, "got left.");
-                if (outPos <= 0) // if at beginning of string buffer
+                if (outPos > 0) // if not beginning of string buffer
                 {
-                    continue;
+                    outPos--;               // move back one character in string buffer
+                    wmove(win, _yPos, _xPos - 1); // move cursor back one
                 }
-                outPos--;               // move back one character in string buffer
-                wmove(win, _yPos, _xPos - 1); // move cursor back one
                 continue;
             }
 
             case KEY_RIGHT:
             {
                 quickLog(VERBOSE, "got right.");
-                if (outPos >= out.length()) // if at end of string buffer
+                if (outPos < out.length()) // if at end of string buffer
                 {
-                    continue;
+                    outPos++;               // move forward one character in string buffer
+                    wmove(win, _yPos, _xPos + 1); // move cursor forward one
                 }
-                outPos++;               // move forward one character in string buffer
-                wmove(win, _yPos, _xPos + 1); // move cursor forward one
                 continue;
             }
 
             case KEY_UP:
             {
+                quickLog(VERBOSE, "got up.");
                 if(!lineEdit)
                 {
+                    quickLog(VERBOSE, "Line editing disabled, ignoring...");
                     continue;
                 }
 
-                quickLog(VERBOSE, "got up.");
                 historyScrollDown = false;  // cancel first-time scroll down feature                
                 if (commandHistory.empty()) // if command history is empty
                 {
@@ -129,12 +130,13 @@ void GetConsoleInput(WINDOW* win, bool lineEdit, string &out)
 
             case KEY_DOWN:
             {
+                quickLog(VERBOSE, "got down.");
                 if(!lineEdit)
                 {
+                    quickLog(VERBOSE, "Line editing disabled, ignoring...");
                     continue;
                 }
 
-                quickLog(VERBOSE, "got down.");
                 historyScrollUp = false;    // cancel first-time scroll up feature
                 if (commandHistory.empty()) // if command history is empty
                 {
@@ -169,10 +171,29 @@ void GetConsoleInput(WINDOW* win, bool lineEdit, string &out)
                 continue;
             }
 
+            // delete key
+            case 330:
+            {
+                quickLog(VERBOSE, "got delete.");
+                if (outPos < out.length() && outPos >= 0)
+                {
+                    wmove(win, _yPos, startingXPos);           // move to beginning of line
+                    wclrtoeol(win);                            // clear line
+                    out.erase(out.begin() + outPos); // erase character from string buffer
+                    waddstr(win, out.c_str());          // print new string
+                    wmove(win, _yPos, _xPos);
+                    continue;
+                }
+                continue;
+            }
+
             case '\t':
             {
+                // TODO fix segfault for tab, think i solved it out.erase culprit?
+                quickLog(VERBOSE, "got tab.");
                 if(!lineEdit)
                 {
+                    quickLog(VERBOSE, "Line editing disabled, ignoring...");
                     continue;
                 }
 
@@ -183,6 +204,7 @@ void GetConsoleInput(WINDOW* win, bool lineEdit, string &out)
 
                 out.erase(out.begin());
 
+                bool found = false;
                 for (size_t commandIndex = 0; commandIndex < commandsLen; commandIndex++)
                 {
                     string command = commands[commandIndex];
@@ -197,8 +219,13 @@ void GetConsoleInput(WINDOW* win, bool lineEdit, string &out)
                         waddstr(win, out.c_str());
                         wmove(win, _yPos, startingXPos + out.length());
                         outPos = out.length();
+                        found = true;
                         break;
                     }
+                }
+                if(!found)
+                {
+                    out.insert(out.begin(), '/');
                 }
                 continue;
             }
@@ -224,6 +251,7 @@ void GetConsoleInput(WINDOW* win, bool lineEdit, string &out)
                 quickLog(VERBOSE, "got ctrl+k.");
                 wclrtoeol(win);
                 out.erase(out.begin() + outPos, out.end());
+                // outPos = 0
                 continue;
             }
 
