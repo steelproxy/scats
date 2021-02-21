@@ -41,7 +41,11 @@ const std::string commands[] = {"add-contact", "add-setting", "build", "change-s
 const size_t commandsLen = 15;
 vector<string> commandHistory;
 
-WINDOW *root;
+WINDOW *wRoot;
+WINDOW *wStatusLine;
+WINDOW *wUserLog;
+WINDOW *wCommandLine;
+
 Log logger;
 sigjmp_buf sigintJumpPoint;
 
@@ -49,27 +53,26 @@ void SignalHandler(int sig)
 {
     if (sig == SIGINT)
     {
-        ncoutln(endl << "Sigint caught.");
-        quickLog(INFO, "Sigint caught.");
+        quickPrintLog(INFO, "Sigint caught.");
         siglongjmp(sigintJumpPoint, 1);
     }
 }
 
 void DisplayHelp()
 {
-    ncoutln("Commands: ");
-    ncoutln("add-contact    Adds a new contact.");
-    ncoutln("add-setting    Adds a new setting.");
-    ncoutln("build          Rebuild and restart.");
-    ncoutln("change-setting Changes a setting");
-    ncoutln("chat           Starts server.");
-    ncoutln("delete-contact Deletes a contact.");
-    ncoutln("delete-setting Deletes a setting.");
-    ncoutln("exit           Exit scats.");
-    ncoutln("help           Displays help page.");
-    ncoutln("list-contacts  Lists all contacts.");
-    ncoutln("list-settings  Lists all settings.");
-    ncoutln("nuke           Erases all user files and exits.");
+    ncOutUsr("Commands: ");
+    ncOutUsr("add-contact    Adds a new contact.");
+    ncOutUsr("add-setting    Adds a new setting.");
+    ncOutUsr("build          Rebuild and restart.");
+    ncOutUsr("change-setting Changes a setting");
+    ncOutUsr("chat           Starts server.");
+    ncOutUsr("delete-contact Deletes a contact.");
+    ncOutUsr("delete-setting Deletes a setting.");
+    ncOutUsr("exit           Exit scats.");
+    ncOutUsr("help           Displays help page.");
+    ncOutUsr("list-contacts  Lists all contacts.");
+    ncOutUsr("list-settings  Lists all settings.");
+    ncOutUsr("nuke           Erases all user files and exits.");
 }
 
 void Cleanup()
@@ -90,12 +93,13 @@ int main(int argc, char **argv)
     if (!FileExists(DEFAULT_LOG_FILE))
     {
         ofstream logFile;
-        ncoutln("Log file does not exist!");
-        ncoutln("Creating log file...");
+        ncOutUsr("Log file not found at: " << DEFAULT_LOG_FILE);
+        ncOutUsr("Log file does not exist!");
+        ncOutUsr("Creating log file...");
         logFile.open(DEFAULT_LOG_FILE, ios::out);
         if (logFile.fail())
         {
-            ncoutln("Unable to create log file!");
+            ncOutUsr("Unable to create log file!");
         }
         logFile.close();
     }
@@ -108,11 +112,11 @@ int main(int argc, char **argv)
     }
     catch (const char *msg)
     {
-        ncoutln("Unable to open log file!"); // print error if fail
+        ncOutUsr("Unable to open log file!"); // print error if fail
     }
 
     // start scats
-    ncoutln("Starting scats...");
+    quickPrintLog(INFO, "Starting scats...");
 
     // create settings file if necessary
     bool newSettingFile = false;
@@ -121,6 +125,7 @@ int main(int argc, char **argv)
     {
         ofstream settingFile;
         newSettingFile = true;
+        quickPrintLog(VERBOSE, "Setting database file not found at: " << DEFAULT_SETTINGS_FILE);
         quickPrintLog(WARNING, "Setting database does not exist!");
         quickPrintLog(INFO, "Creating setting database...");
         settingFile.open(DEFAULT_SETTINGS_FILE, ios::out);
@@ -188,6 +193,7 @@ int main(int argc, char **argv)
     if (!FileExists(getSet(settingDatabase, "contactDatabasePath")))
     {
         ofstream contactFile;
+        quickPrintLog(VERBOSE, "Contact database file not found at: " << getSet(settingDatabase, "contactDatabasePath"));
         quickPrintLog(WARNING, "Contact database does not exist!");
         quickPrintLog(INFO, "Creating contact database.");
         contactFile.open(getSet(settingDatabase, "contactDatabasePath"), ios::out);
@@ -221,18 +227,29 @@ int main(int argc, char **argv)
         while (sigsetjmp(sigintJumpPoint, 1) != 0)
             ; // set jump to beginning of loop
 
+        // status line
+        wmove(wStatusLine, 0, 0);
+        wclrtoeol(wStatusLine);
+        wprintw(wStatusLine, "%s [%s] Connected: %s", makeTimestamp().c_str(), getSet(settingDatabase, "userHandle").c_str(), (connectedToServer()) ? "true" : "false");
+        wrefresh(wStatusLine);
+
+        wrefresh(wCommandLine);
         // user prompt
         string userInput;
         userInput = string(); // clear string
-        addstr("[");
-        addstr(getSet(settingDatabase, "userHandle").c_str());
-        addstr("] > ");
-        GetConsoleInput(root, true, userInput);
+        ncOutCmd("[" << getSet(settingDatabase, "userHandle").c_str() << "]: ");
+        GetConsoleInput(true, userInput);
 
         // extract command substring
         string commandSubStr;
         if (userInput.empty() || userInput.at(0) != '/') // check if input is a command
         {
+            if(connectedToServer() && !userInput.empty())
+            {
+                SendChat(userInput);
+                ncOutUsr("[" << getSet(settingDatabase, "userHandle").c_str() << "]: " << userInput);
+                continue;
+            }
             quickPrintLog(ERROR, "Not connected to chat!");
             continue;
         }
@@ -255,66 +272,62 @@ int main(int argc, char **argv)
         }
         else if (commandSubStr == "add-contact") // add a contact
         {
-            quickPrintLog(INFO, "Adding new contact...");
             InteractiveAddContact(contactDatabase);
         }
         else if (commandSubStr == "delete-contact") // delete a contact
         {
-            quickPrintLog(INFO, "Deleting contact...");
             InteractiveDeleteContact(contactDatabase);
         }
         else if (commandSubStr == "list-contacts") // list all contacts
         {
-            ncoutln("Contacts: ");
+            ncOutUsr("Contacts: ");
             for (size_t index = 0; index < contactDatabase.getLength(); index++) // read contacts from database
             {
-                ncoutln("[" << contactDatabase.getIndex(index).getAlias() << "]");
-                ncoutln("   " << contactDatabase.getIndex(index).getEndpoint());
-                ncoutln("   " << contactDatabase.getIndex(index).getPort());
+                ncOutUsr("[" << contactDatabase.getIndex(index).getAlias() << "]");
+                ncOutUsr("   " << contactDatabase.getIndex(index).getEndpoint());
+                ncOutUsr("   " << contactDatabase.getIndex(index).getPort());
             }
         }
         else if (commandSubStr == "add-setting") // add a new setting
         {
-            quickPrintLog(INFO, "Adding new setting...");
             InteractiveAddSetting(settingDatabase);
         }
         else if (commandSubStr == "delete-setting") // delete a setting
         {
-            quickPrintLog(INFO, "Deleting setting...");
             InteractiveDeleteSetting(settingDatabase);
         }
         else if (commandSubStr == "list-settings") // list all settings
         {
-            ncoutln("Settings: ");
+            ncOutUsr("Settings: ");
             for (size_t index = 0; index < settingDatabase.getLength(); index++) // read settings from database
             {
-                ncoutln(settingDatabase.getIndex(index).getKey() << "=" << settingDatabase.getIndex(index).getValue());
-                ncoutln("    " << settingDatabase.getIndex(index).getDescription());
+                ncOutUsr(settingDatabase.getIndex(index).getKey() << "=" << settingDatabase.getIndex(index).getValue());
+                ncOutUsr("    " << settingDatabase.getIndex(index).getDescription());
             }
         }
         else if (commandSubStr == "nuke") // nuke files
         {
             string nukePrompt;
-            ncout("Would you like to delete your user files? (y/n): ");
-            GetConsoleInput(root, false, nukePrompt);
+            ncOutCmd("Would you like to delete your user files? (y/n): ");
+            GetConsoleInput(false, nukePrompt);
             if (nukePrompt == "y")
             {
-                ncoutln("Deleting log file...");
+                ncOutUsr("Deleting log file...");
                 if (remove(DEFAULT_LOG_FILE) != 0) // delete log
                 {
-                    ncoutln("Unable to delete log file!");
+                    ncOutUsr("Unable to delete log file!");
                 }
 
-                ncoutln("Deleting setting database file...");
+                ncOutUsr("Deleting setting database file...");
                 if (remove(DEFAULT_SETTINGS_FILE) != 0) // delete settings
                 {
-                    ncoutln("Unable to delete setting database!");
+                    ncOutUsr("Unable to delete setting database!");
                 }
 
-                ncoutln("Deleting contact database...");
+                ncOutUsr("Deleting contact database...");
                 if (remove(getSet(settingDatabase, "contactDatabasePath").c_str()) != 0) // delete contact database
                 {
-                    ncoutln("Unable to delete contact database!");
+                    ncOutUsr("Unable to delete contact database!");
                 }
                 return 0; // exit
             }
@@ -326,28 +339,28 @@ int main(int argc, char **argv)
         }
         else if (commandSubStr == "change-setting") // change a setting
         {
-            quickPrintLog(INFO, "Changing settings...");
             InteractiveChangeSetting(settingDatabase);
         }
         else if (commandSubStr == "clear") // clear screen
         {
-            clear();
+            wclear(wUserLog);
+            wmove(wUserLog, 0, 0);
+            wrefresh(wUserLog);
         }
         else if (commandSubStr == "save-contacts") // save contacts
         {
             quickPrintLog(INFO, "Saving contact file...");
             contactDatabase.save();
         }
-        else if (commandSubStr == "chat") // start chat server
+        else if (commandSubStr == "server") // start chat server
         {
-            boost::asio::io_service ioService;
-            // boost::asio::streambuf readBuf;
-            ncoutln("What port would you like to start the server on? ");
-            GetConsoleInput(root, false, commandSubStr);
             quickPrintLog(INFO, "Starting server on port: " << "...");
-            ChatServer testSrv(ioService, 25565);
-            for (;;)
-                ;
+            StartServer(25565);
+        }
+        else if (commandSubStr == "client")
+        {
+            quickPrintLog(INFO, "Connecting to server at port 25565");
+            ConnectServer(25565);
         }
         else if (commandSubStr == "exit") // exit scats
         {
@@ -362,7 +375,7 @@ int main(int argc, char **argv)
         }
         else
         {
-            ncoutln("Unknown command!");
+            ncOutUsr("Unknown command!");
         }
     }
 }

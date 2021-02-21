@@ -1,5 +1,4 @@
 contactDatabasePath=contacts.txt:Path to contact database.
-enableShell=false:Enable shell access from within scats.
+logLevel=info:Minimum severity level to print to log.
 commandHistoryLength=64:Maximum number of commands to be kept in history.
-userHandle=BIG PIMP DADDY:Name used to identify yourself to others.
-logLevel=verbose:Minimum severity level to print to log.
+userHandle=anonymous user:Name used to identify yourself to others.

@@ -18,11 +18,12 @@
 /// @brief Macro for formatting and printing messages to the log.
 /// @param level Log severity level.
 /// @param message Message to print to log.
-#define quickLog(level, message)                             \
-    {                                                        \
-        logger.stringBuilder.str(string());                  \
-        logger.stringBuilder << message;                     \
-        logger.writeLine(level, __FUNCTION__, __LINE__, logger.stringBuilder.str()); \
+#define quickLog(level, message)                                                     \
+    {                                                                                \
+        std::ostringstream stringBuilder;                                            \
+        stringBuilder.str(string());                                          \
+        stringBuilder << message;                                             \
+        logger.writeLine(level, __FUNCTION__, __LINE__, stringBuilder.str()); \
     }
 
 ///
@@ -31,14 +32,14 @@
 /// @param message Message to print to log and user.
 #define quickPrintLog(level, message) \
     {                                 \
-        ncoutln(message);             \
+        ncOutUsr(message);            \
         quickLog(level, message);     \
     }
 
-#define exceptionLog(level, message)   \
-{   \
-    quickLog(level, "Exception caught: " << message); \
-}
+#define exceptionLog(level, message)                      \
+    {                                                     \
+        quickLog(level, "Exception caught: " << message); \
+    }
 
 ///
 /// @brief Log severity level type.
@@ -52,18 +53,18 @@ typedef enum
     SEVERE
 } LogLevel;
 
+std::string makeTimestamp();
 
 ///
 /// @brief Class for managing log.
 class Log
 {
 public:
-
     ///
     /// @brief Default constructor, all values empty, default level is INFO.
     ///
     Log();
-    
+
     ///
     /// @brief String constructor, opens log file at provided path.
     /// @param newPath Path to log file.
@@ -83,7 +84,7 @@ public:
     /// @param level Severity level of message.
     /// @param message Message to print to log.
     /// @exception "Unable to open file!" Unable to open log file.
-    void writeLine(LogLevel level, const char* func, const int line, std::string message);
+    void writeLine(LogLevel level, const char *func, const int line, std::string message);
 
     ///
     /// @brief Sets log severity level
@@ -95,14 +96,11 @@ public:
     /// @exception "Unable to open file!" Unable to open log file.
     void truncate();
 
-    std::ostringstream stringBuilder;
-
 private:
     int level;
     std::ofstream file;
     std::string path;
 };
-
 
 /// @brief Converts a severity level string into LogLevel type.
 /// @param level Severity level string to be converted.

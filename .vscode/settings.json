@@ -89,5 +89,6 @@
     "cSpell.words": [
         "ncout",
         "ncoutln"
-    ]
+    ],
+    "C_Cpp.errorSquiggles": "Enabled"
 }

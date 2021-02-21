@@ -32,13 +32,18 @@ bool isPrintStr(string str)
 
 void InteractiveSetUserHandle(SettingDB &database)
 {
+    quickPrintLog(INFO, "Setting new user handle...");
+
     string userHandle;
-    ncout("Handle (max 16 characters, no special characters): ");
-    GetConsoleInput(root, false, userHandle);                                                              // read user handle into userHandle
+    ncOutUsr("Please enter a new user handle.");
+    ncOutCmd("Handle (max 16 characters, no special characters): ");
+    GetConsoleInput(false, userHandle);
+    // read user handle into userHandle
     while (userHandle.length() > 16 || userHandle.length() < 1 || !isPrintStr(userHandle)) // must be less than 16 characters and be only printable characters
     {
-        ncout("Handle is invalid. Please enter a new one: ");
-        GetConsoleInput(root, false, userHandle); // read a new user handle into userHandle
+        ncOutUsr("Invalid handle, please enter a new one.");
+        ncOutCmd("Handle: ");
+        GetConsoleInput(false, userHandle); // read a new user handle into userHandle
     }
     try
     {
@@ -49,23 +54,39 @@ void InteractiveSetUserHandle(SettingDB &database)
         quickPrintLog(ERROR, "Unable to set user handle!");
         exceptionLog(ERROR, msg);
     }
+
+    quickPrintLog(INFO, "Set new user handle.");
 }
 
 void InteractiveAddContact(ContactDB &contactDatabase)
 {
+    quickPrintLog(INFO, "Adding new contact...");
+
     string newAlias;
     do
     {
-        ncout("Alias: ");
-        GetConsoleInput(root, false, newAlias);
+        ncOutCmd("Alias: ");
+        GetConsoleInput(false, newAlias);
+        if (!isPrintStr(newAlias))
+        {
+            ncOutUsr("Invalid alias, please enter a new one.");
+            continue;
+        }
     } while (newAlias.empty());
+    ncOutUsr("Alias: " << newAlias);
 
     string newEndpoint;
     do
     {
-        ncout("Endpoint: ");
-        GetConsoleInput(root, false, newEndpoint);
+        ncOutCmd("Endpoint: ");
+        GetConsoleInput(false, newEndpoint);
+        if (!isPrintStr(newEndpoint))
+        {
+            ncOutUsr("Invalid endpoint, please enter a new one.");
+            continue;
+        }
     } while (newEndpoint.empty());
+    ncOutUsr("Endpoint: " << newEndpoint);
 
     for (size_t index = 0; index < newAlias.length(); index++)
     {
@@ -84,35 +105,51 @@ void InteractiveAddContact(ContactDB &contactDatabase)
     }
 
     string newPort;
-    ncout("Port: ");
-    while (true)
+    int _newPort;
+    while (true) // TODO: fix broken loop
     {
-        GetConsoleInput(root, false, newPort);
+        ncOutCmd("Port: ");
+        GetConsoleInput(false, newPort);
         try
         {
-            contactDatabase.addContact(Contact(newAlias, newEndpoint, stoi(newPort)));
-            break;
+            _newPort = stoi(newPort);
         }
-        catch (const char *msg)
+        catch (std::exception &e)
         {
-            quickPrintLog(ERROR, "Unable to add contact!");
-            exceptionLog(ERROR, msg);
-            return;
+            ncOutUsr("Invalid port, please enter a new one.");
+            exceptionLog(ERROR, e.what());
+            continue;
         }
     }
+    ncOutUsr("Port: " << _newPort);
+
+    try
+    {
+        contactDatabase.addContact(Contact(newAlias, newEndpoint, _newPort));
+    }
+    catch (const char *msg)
+    {
+        quickPrintLog(ERROR, "Unable to add contact!");
+        exceptionLog(ERROR, msg);
+        return;
+    }
+
     quickPrintLog(INFO, "Added contact.");
 }
 
 void InteractiveDeleteContact(ContactDB &contactDatabase)
 {
+    quickPrintLog(INFO, "Deleting contact...");
+
     string targetAlias;
     size_t startingLen = contactDatabase.getLength();
 
     do
     {
-        ncout("Alias (must be exact): ");
-        GetConsoleInput(root, false, targetAlias);
+        ncOutCmd("Alias (must be exact): ");
+        GetConsoleInput(false, targetAlias);
     } while (targetAlias.empty());
+    ncOutUsr("Alias: " << targetAlias);
 
     try
     {
@@ -133,9 +170,16 @@ void InteractiveDeleteContact(ContactDB &contactDatabase)
 
 void InteractiveAddSetting(SettingDB &settingDatabase)
 {
+    quickPrintLog(INFO, "Adding setting...");
+
     string newKey;
-    ncout("Key: ");
-    GetConsoleInput(root, false, newKey);
+    do
+    {
+        ncOutCmd("Key: ");
+        GetConsoleInput(false, newKey);
+    } while (newKey.empty());
+    ncOutUsr("Key: " << newKey);
+
     for (size_t index = 0; index < newKey.length(); index++)
     {
         if (newKey.at(index) == '=' || newKey.at(index) == ':' || !isprint(newKey.at(index)))
@@ -145,8 +189,13 @@ void InteractiveAddSetting(SettingDB &settingDatabase)
     }
 
     string newValue;
-    ncout("Value: ");
-    GetConsoleInput(root, false, newValue);
+    do
+    {
+        ncOutCmd("Value: ");
+        GetConsoleInput(false, newValue);
+    } while (newValue.empty());
+    ncOutUsr("Value: " << newValue);
+
     for (size_t index = 0; index < newValue.length(); index++)
     {
         if (newValue.at(index) == '=' || newValue.at(index) == ':' || !isprint(newValue.at(index)))
@@ -156,8 +205,13 @@ void InteractiveAddSetting(SettingDB &settingDatabase)
     }
 
     string newDescription;
-    ncout("Description: ");
-    GetConsoleInput(root, false, newDescription);
+    do
+    {
+        ncOutCmd("Description: ");
+        GetConsoleInput(false, newDescription);
+    } while (newDescription.empty());
+    ncOutUsr("Description: " << newDescription);
+
     for (size_t index = 0; index < newDescription.length(); index++)
     {
         if (newDescription.at(index) == '=' || newDescription.at(index) == ':' || !isprint(newDescription.at(index)))
@@ -182,11 +236,17 @@ void InteractiveAddSetting(SettingDB &settingDatabase)
 
 void InteractiveDeleteSetting(SettingDB &settingDatabase)
 {
+    quickPrintLog(INFO, "Deleting setting...");
+
     string targetKey;
     size_t startingLen = settingDatabase.getLength();
 
-    ncout("Key: ");
-    GetConsoleInput(root, false, targetKey);
+    do
+    {
+        ncOutCmd("Key: ");
+        GetConsoleInput(false, targetKey);
+    } while (targetKey.empty());
+    ncOutUsr("Key: " << targetKey);
 
     try
     {
@@ -207,21 +267,26 @@ void InteractiveDeleteSetting(SettingDB &settingDatabase)
 
 void InteractiveChangeSetting(SettingDB &settingDatabase)
 {
+    quickPrintLog(INFO, "Changing setting...");
+
     Setting targetSetting;
-    string targetKey;
     string newValue;
     string oldDescription;
 
-    ncout("Key: ");
-    GetConsoleInput(root, false, targetKey);
+    string targetKey;
+    do
+    {
+        ncOutCmd("Key: ");
+        GetConsoleInput(false, targetKey);
+    } while (targetKey.empty());
     targetSetting = settingDatabase.searchKey(targetKey);
 
     if (!targetSetting.empty())
     {
-        ncoutln(targetSetting.getKey() << "=" << targetSetting.getValue());
-        ncout(targetSetting.getKey() << "=");
+        ncOutUsr(targetSetting.getKey() << "=" << targetSetting.getValue());
+        ncOutCmd(targetSetting.getKey() << "=");
 
-        GetConsoleInput(root, false, newValue);
+        GetConsoleInput(false, newValue);
         for (size_t index = 0; index < newValue.length(); index++)
         {
             if (newValue.at(index) == '=' || newValue.at(index) == ':' || !isprint(newValue.at(index)))
@@ -245,6 +310,6 @@ void InteractiveChangeSetting(SettingDB &settingDatabase)
     }
     else
     {
-        ncoutln("No setting found!");
+        ncOutUsr("No setting found!");
     }
 }

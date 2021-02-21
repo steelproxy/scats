@@ -12,17 +12,36 @@
 
 using namespace std;
 
+// TODO: Fix weird ass time error, potentially related to UTC
+string makeTimestamp()
+{
+    std::ostringstream stringBuilder;
+    time_t rawTime; // used for storing result of time()
+    time(&rawTime); // get time
+
+    struct tm *hTime;            // used for accessing time data
+    hTime = localtime(&rawTime); // get tm struct
+    stringBuilder.str(string());
+    stringBuilder << "(" << setw(2) << fixed << setfill('0') << hTime->tm_hour << ":"; // build timestamp, insert hours
+    stringBuilder << setw(2) << fixed << setfill('0') << hTime->tm_min << ":";        // insert minutes
+    stringBuilder << setw(2) << fixed << setfill('0') << hTime->tm_sec << ")";             // insert seconds
+
+    std::string timestamp;           // used for storing timestamp
+    timestamp = stringBuilder.str(); // store string timestamp
+    return timestamp;
+}
+
 Log::Log() // default constructor
 {
     this->level = INFO;
-    this->path = string();   // set default empty string
+    this->path = string(); // set default empty string
 }
 
 Log::Log(string newPath) // string constructor, open path
 {
     this->level = INFO;
     this->file.open(newPath, ios::app); // open file
-    this->path = newPath; // set new path
+    this->path = newPath;               // set new path
 }
 
 void Log::open(string newPath) // opens the log file
@@ -51,9 +70,9 @@ void Log::truncate() // truncate log, reopen in trunc mode
     }
 }
 
-void Log::writeLine(LogLevel level, const char* func, const int line, std::string message) // write a line to the log file
+void Log::writeLine(LogLevel level, const char *func, const int line, std::string message) // write a line to the log file
 {
-    if(level < this -> level)
+    if (level < this->level)
     {
         return;
     }
@@ -64,19 +83,7 @@ void Log::writeLine(LogLevel level, const char* func, const int line, std::strin
         throw "Unable to open file!";
     }
 
-    time_t rawTime;        // used for storing result of time()
-    time(&rawTime); // get time
-
-    struct tm *hTime;      // used for accessing time data
-    hTime = localtime(&rawTime);                       // get tm struct
-    stringBuilder.str(string());
-    stringBuilder << "(" << setw(2) << fixed << setfill('0') << hTime->tm_hour + 5 << ":"; // build timestamp, insert hours
-    stringBuilder << setw(2) << fixed << setfill('0') << hTime->tm_min + 30 << ":";        // insert minutes
-    stringBuilder << setw(2) << fixed << setfill('0') << hTime->tm_sec << ")";             // insert seconds
-
-    std::string timestamp; // used for storing timestamp
-    timestamp = stringBuilder.str(); // store string timestamp
-
+    string timestamp = makeTimestamp();
     switch (level)
     {
     case VERBOSE: // if severe level
@@ -99,13 +106,11 @@ void Log::writeLine(LogLevel level, const char* func, const int line, std::strin
         this->file << timestamp << setw(12) << fixed << " [severe] {" << func << ":" << line << "}: " << message << endl;
         break;
     }
-
-    stringBuilder.str(string()); // clear stringBuilder
 }
 
 void Log::setLevel(LogLevel newLevel)
 {
-    this -> level = newLevel;
+    this->level = newLevel;
 }
 
 LogLevel LevelToI(string level)

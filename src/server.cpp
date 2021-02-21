@@ -1,61 +1,98 @@
+#include <string>
+#include <boost/thread.hpp>
 #include <boost/asio.hpp>
 #include "server.h"
 #include "cursesmode.h"
 #include "log.h"
 
+#define RACIST_DELIM "\n"
+
 using namespace std;
 
-void ChatServer::startAccept()
-{
-    ChatConnection::pointer new_connection = ChatConnection::create(acceptor_.get_executor().context());
+using boost::asio::ip::tcp;
 
-    acceptor_.async_accept(new_connection->socket(),
-                           boost::bind(&ChatServer::handleAccept, this, new_connection,
-                                       boost::asio::placeholders::error));
+string makeAFuckingString(boost::asio::streambuf &_streambuf)
+{
+    return {boost::asio::buffers_begin(_streambuf.data()),
+            boost::asio::buffers_end(_streambuf.data())};
 }
 
-void ChatServer::handleAccept(ChatConnection::pointer new_connection,
-                              const boost::system::error_code &error)
+void StartServer(short port)
 {
-    quickPrintLog(VERBOSE, "")
-    if (!error)
+    try
     {
-        new_connection->start();
-        startAccept();
-    }
-}
+        boost::asio::io_service _io_service;
+        tcp::acceptor _acceptor(_io_service, tcp::endpoint(tcp::v4(), port));
 
-void ChatConnection::start()
-{
-    /*boost::asio::async_write(socket_, boost::asio::buffer(recvBuf),
-                             boost::bind(&ChatConnection::handleWrite, shared_from_this(),
-                                         boost::asio::placeholders::error,
-                                         boost::asio::placeholders::bytes_transferred));*/
-    startRead();
-}
+        tcp::socket _socket(_io_service);
+        _acceptor.accept(_socket);
+        quickPrintLog(INFO, "Got connection!");
 
-void ChatConnection::handleRead(const boost::system::error_code &error,
-                                std::size_t)
-{
-    if (!error || error == boost::asio::error::message_size)
-    {
-        //socket_.async_send(boost::asio::buffer(recvBuf), boost::bind(&ChatConnection::handleWrite, this, recvBuf,
-        //                                  boost::asio::placeholders::error,
-        //                                  boost::asio::placeholders::bytes_transferred));
-
-        ncoutln("Recieved " << boost::asio::placeholders::bytes_transferred << " characters:");
-
-        for(size_t byteBuf = 0; byteBuf < recvBuf.size(); byteBuf++)
+        for (;;)
         {
-            ncout(recvBuf.at(byteBuf));
+            boost::asio::streambuf buffer;
+            string _recievebuf;
+            size_t bytes_read;
+            bytes_read = boost::asio::read_until(_socket, buffer, RACIST_DELIM);
+            ncOutUsr("Got:" << makeAFuckingString(buffer));
+            buffer.consume(bytes_read / sizeof(char));
+
+            string response;
+            ncOutUsr("Send: ");
+            GetConsoleInput(false, response);
+            response += RACIST_DELIM;
+            boost::system::error_code _error;
+            boost::asio::write(_socket, boost::asio::buffer(response), _error);
         }
-
-
-        startRead();
+    }
+    catch (std::exception &e)
+    {
+        ncOutUsr("Lost connection!");
+        exceptionLog(ERROR, e.what());
     }
 }
 
-void ChatConnection::startRead()
+void ConnectServer(short port)
 {
-    socket_.async_receive(boost::asio::buffer(recvBuf), boost::bind(&ChatConnection::handleRead, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+    try
+    {
+        boost::asio::io_service _io_service;
+        tcp::socket _socket(_io_service);
+
+        _socket.connect(tcp::endpoint(tcp::v4(), port));
+        quickPrintLog(INFO, "Connected!");
+
+        for (;;)
+        {
+            boost::system::error_code _error;
+
+            ncOutUsr("Send: ");
+            string sendbuf;
+            GetConsoleInput(false, sendbuf);
+            sendbuf += RACIST_DELIM;
+            boost::asio::write(_socket, boost::asio::buffer(sendbuf), _error);
+
+            boost::asio::streambuf buffer;
+            string _recievebuf;
+            size_t bytes_read;
+            bytes_read = boost::asio::read_until(_socket, buffer, RACIST_DELIM);
+            ncOutUsr("Got: " << makeAFuckingString(buffer));
+            buffer.consume(bytes_read / sizeof(char));
+        }
+    }
+    catch(std::exception &e)
+    {
+        ncOutUsr("Lost connection!");
+        exceptionLog(ERROR, e.what());
+    }
+}
+
+bool connectedToServer()
+{
+    return true;
+}
+
+void SendChat(string chat)
+{
+    return;
 }

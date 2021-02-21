@@ -1,26 +1,34 @@
-(25:31:54)    [info] {main:119}: Loading setting database...
-(25:31:54)    [info] {main:204}: Loading contact database...
-(25:31:57) [verbose] {GetConsoleInput:44}:  _xPos=19 _yPos=3 startingXPos=19 outpos=0 charBuf=116
-(25:31:57) [verbose] {GetConsoleInput:44}:  _xPos=20 _yPos=3 startingXPos=19 outpos=1 charBuf=101
-(25:31:57) [verbose] {GetConsoleInput:44}:  _xPos=21 _yPos=3 startingXPos=19 outpos=2 charBuf=115
-(25:31:58) [verbose] {GetConsoleInput:44}:  _xPos=22 _yPos=3 startingXPos=19 outpos=3 charBuf=116
-(25:31:58) [verbose] {GetConsoleInput:44}:  _xPos=23 _yPos=3 startingXPos=19 outpos=4 charBuf=114
-(25:31:59) [verbose] {GetConsoleInput:44}:  _xPos=24 _yPos=3 startingXPos=19 outpos=5 charBuf=10
-(25:31:59) [verbose] {GetConsoleInput:268}: got newline. ending input...
-(25:31:59) [verbose] {GetConsoleInput:287}: verbatim: "testr"
-(25:31:59)   [error] {main:237}: Not connected to chat!
-(25:32:09) [verbose] {GetConsoleInput:44}:  _xPos=19 _yPos=5 startingXPos=19 outpos=0 charBuf=47
-(25:32:10) [verbose] {GetConsoleInput:44}:  _xPos=20 _yPos=5 startingXPos=19 outpos=1 charBuf=108
-(25:32:10) [verbose] {GetConsoleInput:44}:  _xPos=21 _yPos=5 startingXPos=19 outpos=2 charBuf=105
-(25:32:10) [verbose] {GetConsoleInput:44}:  _xPos=22 _yPos=5 startingXPos=19 outpos=3 charBuf=115
-(25:32:11) [verbose] {GetConsoleInput:44}:  _xPos=23 _yPos=5 startingXPos=19 outpos=4 charBuf=116
-(25:32:11) [verbose] {GetConsoleInput:44}:  _xPos=24 _yPos=5 startingXPos=19 outpos=5 charBuf=45
-(25:32:11) [verbose] {GetConsoleInput:44}:  _xPos=25 _yPos=5 startingXPos=19 outpos=6 charBuf=115
-(25:32:11) [verbose] {GetConsoleInput:44}:  _xPos=26 _yPos=5 startingXPos=19 outpos=7 charBuf=101
-(25:32:11) [verbose] {GetConsoleInput:44}:  _xPos=27 _yPos=5 startingXPos=19 outpos=8 charBuf=116
-(25:32:12) [verbose] {GetConsoleInput:44}:  _xPos=28 _yPos=5 startingXPos=19 outpos=9 charBuf=9
-(25:32:12) [verbose] {GetConsoleInput:193}: got tab.
-(25:32:12) [verbose] {GetConsoleInput:213}: found command matching query: list-set~=list-settings
-(25:32:14) [verbose] {GetConsoleInput:44}:  _xPos=33 _yPos=5 startingXPos=19 outpos=14 charBuf=10
-(25:32:14) [verbose] {GetConsoleInput:268}: got newline. ending input...
-(25:32:14) [verbose] {GetConsoleInput:287}: verbatim: "/list-settings"
+(06:51:58)    [info] {main:119}: Starting scats...
+(06:51:58)    [info] {main:123}: Loading setting database...
+(06:51:58) [warning] {main:129}: Setting database does not exist!
+(06:51:58)    [info] {main:130}: Creating setting database...
+(06:51:58)    [info] {InteractiveSetUserHandle:35}: Setting new user handle...
+(06:52:14)    [info] {InteractiveSetUserHandle:58}: Set new user handle.
+(06:52:14) [warning] {main:197}: Contact database does not exist!
+(06:52:14)    [info] {main:198}: Creating contact database.
+(06:52:14)    [info] {main:209}: Loading contact database...
+(06:52:59)    [info] {InteractiveAddContact:63}: Adding new contact...
+(06:53:15)   [error] {InteractiveAddContact:120}: Exception caught: stoi
+(06:53:18)   [error] {InteractiveAddContact:120}: Exception caught: stoi
+(06:53:19)   [error] {InteractiveAddContact:120}: Exception caught: stoi
+(06:53:21)   [error] {InteractiveAddContact:120}: Exception caught: stoi
+(06:53:22)   [error] {InteractiveAddContact:120}: Exception caught: stoi
+(06:53:22)   [error] {InteractiveAddContact:120}: Exception caught: stoi
+(06:53:23)   [error] {InteractiveAddContact:120}: Exception caught: stoi
+(06:53:23)   [error] {InteractiveAddContact:120}: Exception caught: stoi
+(06:53:23)   [error] {InteractiveAddContact:120}: Exception caught: stoi
+(06:53:23)   [error] {InteractiveAddContact:120}: Exception caught: stoi
+(06:53:24)   [error] {InteractiveAddContact:120}: Exception caught: stoi
+(06:53:24)   [error] {InteractiveAddContact:120}: Exception caught: stoi
+(06:53:24)   [error] {InteractiveAddContact:120}: Exception caught: stoi
+(06:53:25)    [info] {SignalHandler:56}: Sigint caught.
+(06:53:32)    [info] {InteractiveAddContact:63}: Adding new contact...
+(06:53:35)   [error] {InteractiveAddContact:120}: Exception caught: stoi
+(06:53:36)   [error] {InteractiveAddContact:120}: Exception caught: stoi
+(06:53:36)   [error] {InteractiveAddContact:120}: Exception caught: stoi
+(06:53:36)   [error] {InteractiveAddContact:120}: Exception caught: stoi
+(06:53:37)   [error] {InteractiveAddContact:120}: Exception caught: stoi
+(06:53:37)   [error] {InteractiveAddContact:120}: Exception caught: stoi
+(06:53:38)   [error] {InteractiveAddContact:120}: Exception caught: stoi
+(06:53:39)    [info] {SignalHandler:56}: Sigint caught.
+(06:53:40)    [info] {main:367}: Exiting scats...

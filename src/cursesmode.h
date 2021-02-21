@@ -12,25 +12,24 @@
 ///
 /// @brief Macro for formatting and printing message to root ncurses window.
 /// @param message Message to be printed to root ncurses window.
-#define ncout(message)                                           \
-    {                                                            \
-        int xPos, yPos;                                          \
-        (void)xPos;                                              \
-        getyx(root, xPos, yPos);                                 \
-        if (yPos == getmaxy(root))                               \
-            scroll(root);                                        \
-        logger.stringBuilder.str(string());                      \
-        logger.stringBuilder << message;                         \
-        wprintw(root, "%s", logger.stringBuilder.str().c_str()); \
-        refresh();                                               \
+#define ncOutCmd(message)                                                \
+    {                                                                    \
+        std::ostringstream stringBuilder;\
+        wmove(wCommandLine, 0, 0);                                       \
+        wclrtoeol(wCommandLine);                                         \
+        stringBuilder.str(string());                              \
+        stringBuilder << message;                                 \
+        wprintw(wCommandLine, "%s", stringBuilder.str().c_str()); \
+        wrefresh(wCommandLine);                                          \
     }
 
-///
-/// @brief Macro for formatting and printing line to root ncurses window.
-/// @param line Line to be printed to root ncurses window.
-#define ncoutln(line)        \
-    {                        \
-        ncout(line << endl); \
+#define ncOutUsr(message)                                              \
+    {                                                                  \
+        std::ostringstream stringBuilder;                                            \
+        stringBuilder.str(string());                            \
+        stringBuilder << message;                               \
+        wprintw(wUserLog, "%s\n", stringBuilder.str().c_str()); \
+        wrefresh(wUserLog);                                            \
     }
 
 extern std::vector<std::string> commandHistory;
@@ -45,11 +44,14 @@ void StartCurses();
 ///
 /// @brief Gets user input, with command history and line editing.
 /// @param out Reference to string that will be filled with user input.
-void GetConsoleInput(WINDOW *win, bool lineEdit, std::string &out);
+void GetConsoleInput(bool lineEdit, std::string &out);
 
 bool checkPrintable(int test);
 
-extern WINDOW *root;
+extern WINDOW *wRoot;
+extern WINDOW *wStatusLine;
+extern WINDOW *wUserLog;
+extern WINDOW *wCommandLine;
 
 extern std::vector<std::string> commandHistory;
 
