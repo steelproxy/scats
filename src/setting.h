@@ -62,6 +62,8 @@ public:
     /// @return Returns description string.
     std::string getDescription();
 
+    std::string getDefault();
+
     ///
     /// @brief Sets a new key.
     /// @param New key.
@@ -76,6 +78,9 @@ public:
     /// @brief Sets a new description.
     /// @param New description.
     void setDescription(std::string newDescription);
+
+    void setDefault(std::string newDefault);
+
 
     /// @brief Creates a string containing all object info.
     /// @details String in format "<key>=<value>:<description>."
@@ -96,6 +101,7 @@ private:
     std::string key;
     std::string value;
     std::string description;
+    std::string def;
 };
 
 ///
@@ -207,6 +213,9 @@ private:
 /// @return Returns true if file exists, false if otherwise.
 bool FileExists(std::string path);
 
-std::string getSet(SettingDB &database, std::string targetKey);
+std::string getSet(std::string targetKey);
+int getIntSet(std::string targetKey);
+
+extern SettingDB settingDatabase;
 
 #endif

@@ -1,34 +1,21 @@
-(06:51:58)    [info] {main:119}: Starting scats...
-(06:51:58)    [info] {main:123}: Loading setting database...
-(06:51:58) [warning] {main:129}: Setting database does not exist!
-(06:51:58)    [info] {main:130}: Creating setting database...
-(06:51:58)    [info] {InteractiveSetUserHandle:35}: Setting new user handle...
-(06:52:14)    [info] {InteractiveSetUserHandle:58}: Set new user handle.
-(06:52:14) [warning] {main:197}: Contact database does not exist!
-(06:52:14)    [info] {main:198}: Creating contact database.
-(06:52:14)    [info] {main:209}: Loading contact database...
-(06:52:59)    [info] {InteractiveAddContact:63}: Adding new contact...
-(06:53:15)   [error] {InteractiveAddContact:120}: Exception caught: stoi
-(06:53:18)   [error] {InteractiveAddContact:120}: Exception caught: stoi
-(06:53:19)   [error] {InteractiveAddContact:120}: Exception caught: stoi
-(06:53:21)   [error] {InteractiveAddContact:120}: Exception caught: stoi
-(06:53:22)   [error] {InteractiveAddContact:120}: Exception caught: stoi
-(06:53:22)   [error] {InteractiveAddContact:120}: Exception caught: stoi
-(06:53:23)   [error] {InteractiveAddContact:120}: Exception caught: stoi
-(06:53:23)   [error] {InteractiveAddContact:120}: Exception caught: stoi
-(06:53:23)   [error] {InteractiveAddContact:120}: Exception caught: stoi
-(06:53:23)   [error] {InteractiveAddContact:120}: Exception caught: stoi
-(06:53:24)   [error] {InteractiveAddContact:120}: Exception caught: stoi
-(06:53:24)   [error] {InteractiveAddContact:120}: Exception caught: stoi
-(06:53:24)   [error] {InteractiveAddContact:120}: Exception caught: stoi
-(06:53:25)    [info] {SignalHandler:56}: Sigint caught.
-(06:53:32)    [info] {InteractiveAddContact:63}: Adding new contact...
-(06:53:35)   [error] {InteractiveAddContact:120}: Exception caught: stoi
-(06:53:36)   [error] {InteractiveAddContact:120}: Exception caught: stoi
-(06:53:36)   [error] {InteractiveAddContact:120}: Exception caught: stoi
-(06:53:36)   [error] {InteractiveAddContact:120}: Exception caught: stoi
-(06:53:37)   [error] {InteractiveAddContact:120}: Exception caught: stoi
-(06:53:37)   [error] {InteractiveAddContact:120}: Exception caught: stoi
-(06:53:38)   [error] {InteractiveAddContact:120}: Exception caught: stoi
-(06:53:39)    [info] {SignalHandler:56}: Sigint caught.
-(06:53:40)    [info] {main:367}: Exiting scats...
+(03:17:35)    [info] {main:134}: Starting scats...
+(03:17:35)    [info] {main:138}: Loading setting database...
+(03:17:35)    [info] {main:211}: Loading contact database...
+(03:17:58)   [error] {main:249}: Not connected to chat!
+(03:17:59)   [error] {main:249}: Not connected to chat!
+(03:17:59)   [error] {main:249}: Not connected to chat!
+(03:17:59)   [error] {main:249}: Not connected to chat!
+(03:17:59)   [error] {main:249}: Not connected to chat!
+(03:17:59)   [error] {main:249}: Not connected to chat!
+(03:17:59)   [error] {main:249}: Not connected to chat!
+(03:17:59)   [error] {main:249}: Not connected to chat!
+(03:17:59)   [error] {main:249}: Not connected to chat!
+(03:17:59)   [error] {main:249}: Not connected to chat!
+(03:17:59)   [error] {main:249}: Not connected to chat!
+(03:17:59)   [error] {main:249}: Not connected to chat!
+(03:17:59)   [error] {main:249}: Not connected to chat!
+(03:17:59)   [error] {main:249}: Not connected to chat!
+(03:17:59)   [error] {main:249}: Not connected to chat!
+(03:17:59)   [error] {main:249}: Not connected to chat!
+(03:17:59)   [error] {main:249}: Not connected to chat!
+(03:18:09)    [info] {main:351}: Exiting scats...

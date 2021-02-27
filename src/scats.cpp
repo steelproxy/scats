@@ -21,7 +21,10 @@
 #include "log.h"
 #include "server.h"
 #include "interactive.h"
+#include "chatlog.h"
 #include "cursesmode.h"
+#include "commandline.h"
+#include "statusline.h"
 #include <curses.h>
 
 #define DEFAULT_CONTACTS_FILE "contacts.txt"
@@ -31,23 +34,23 @@
 #define DEFAULT_LOG_FILE "log.txt"
 #define DEFAULT_TRUNCATE_LOG "false"
 #define DEFAULT_HISTORY_LEN "64"
+#define DEFAULT_CHAT_HISTORY_LEN "500"
+#define DEFAULT_SCROLLLOCK "false"
 
 using namespace std;
 
 // initialize command list
-const std::string commands[] = {"add-contact", "add-setting", "build", "change-setting",
-                                "chat", "clear", "delete-contact", "delete-setting", "exit", "help",
-                                "list-contacts", "list-settings", "nuke", "save-contacts", "save-settings"};
-const size_t commandsLen = 15;
-vector<string> commandHistory;
 
 WINDOW *wRoot;
 WINDOW *wStatusLine;
-WINDOW *wUserLog;
-WINDOW *wCommandLine;
 
 Log logger;
 sigjmp_buf sigintJumpPoint;
+
+SettingDB settingDatabase;
+ChatLog *chatLog;
+CommandLine *commandLine;
+StatusLine *statusLine;
 
 void SignalHandler(int sig)
 {
@@ -87,7 +90,19 @@ int main(int argc, char **argv)
     atexit(Cleanup);
 
     // start curses mode
-    StartCurses();
+    initscr(); // start curses mode
+    cbreak();  // don't require newline
+    noecho();  // don't echo commands, we'll control that
+
+    // setup status lie
+    statusLine = new StatusLine();
+
+    // setup chat log
+    chatLog = new ChatLog();
+
+    // setup command line
+    commandLine = new CommandLine();
+    commandLine->AddCommands({"help", "add-contact", "delete-contact", "list-contacts", "add-setting", "delete-setting", "list-settings", "nuke", "save-settings", "change-setting", "clear", "save-contacts", "server", "client", "exit", "build"});
 
     // create log file if necessary
     if (!FileExists(DEFAULT_LOG_FILE))
@@ -141,7 +156,6 @@ int main(int argc, char **argv)
     }
 
     // load settings
-    SettingDB settingDatabase;
     try
     {
         settingDatabase.open(DEFAULT_SETTINGS_FILE);
@@ -157,7 +171,9 @@ int main(int argc, char **argv)
     DefSet("contactDatabasePath", DEFAULT_CONTACTS_FILE, "Path to contact database.");
     DefSet("logLevel", DEFAULT_LOG_LEVEL, "Minimum severity level to print to log.");
     DefSet("commandHistoryLength", DEFAULT_HISTORY_LEN, "Maximum number of commands to be kept in history.");
-    logger.setLevel(LevelToI(getSet(settingDatabase, "logLevel")));
+    DefSet("chatHistoryLength", DEFAULT_CHAT_HISTORY_LEN, "Maximum chat entries to keep in memory.");
+    DefSet("scrollLock", DEFAULT_SCROLLLOCK, "Disables autoscrolling.");
+    logger.setLevel(LevelToI(getSet("logLevel")));
     IfSet("userHandle")
     {
         InteractiveSetUserHandle(settingDatabase);
@@ -174,29 +190,15 @@ int main(int argc, char **argv)
             exceptionLog(ERROR, msg);
         }
     }
-    // TODO fix resize
-    // get command history vector length
-    size_t commandHistoryLen = 0;
-    try
-    {
-        commandHistoryLen = stoi(getSet(settingDatabase, "commandHistoryLength"));
-    }
-    catch (const std::exception &e)
-    {
-        quickLog(ERROR, "Invalid value for commandHistoryLength!");
-        exceptionLog(ERROR, e.what());
-        settingDatabase.searchKey("commandHistoryLength").setValue(DEFAULT_HISTORY_LEN);
-        commandHistoryLen = stoi(DEFAULT_HISTORY_LEN);
-    }
 
     // create contacts file if necessary
-    if (!FileExists(getSet(settingDatabase, "contactDatabasePath")))
+    if (!FileExists(getSet("contactDatabasePath")))
     {
         ofstream contactFile;
-        quickPrintLog(VERBOSE, "Contact database file not found at: " << getSet(settingDatabase, "contactDatabasePath"));
+        quickPrintLog(VERBOSE, "Contact database file not found at: " << getSet("contactDatabasePath"));
         quickPrintLog(WARNING, "Contact database does not exist!");
         quickPrintLog(INFO, "Creating contact database.");
-        contactFile.open(getSet(settingDatabase, "contactDatabasePath"), ios::out);
+        contactFile.open(getSet("contactDatabasePath"), ios::out);
         if (contactFile.fail())
         {
             quickPrintLog(ERROR, "Unable to create contact database!");
@@ -209,7 +211,7 @@ int main(int argc, char **argv)
     quickPrintLog(INFO, "Loading contact database...");
     try
     {
-        contactDatabase.open(getSet(settingDatabase, "contactDatabasePath"));
+        contactDatabase.open(getSet("contactDatabasePath"));
         contactDatabase.load();
     }
     catch (const char *msg)
@@ -227,44 +229,27 @@ int main(int argc, char **argv)
         while (sigsetjmp(sigintJumpPoint, 1) != 0)
             ; // set jump to beginning of loop
 
-        // status line
-        wmove(wStatusLine, 0, 0);
-        wclrtoeol(wStatusLine);
-        wprintw(wStatusLine, "%s [%s] Connected: %s", makeTimestamp().c_str(), getSet(settingDatabase, "userHandle").c_str(), (connectedToServer()) ? "true" : "false");
-        wrefresh(wStatusLine);
-
-        wrefresh(wCommandLine);
         // user prompt
         string userInput;
         userInput = string(); // clear string
-        ncOutCmd("[" << getSet(settingDatabase, "userHandle").c_str() << "]: ");
-        GetConsoleInput(true, userInput);
+        ncOutCmd("[" << getSet("userHandle").c_str() << "]: ");
+        commandLine->PrintPrompt();
+        userInput = GetConsoleInput(true);
 
         // extract command substring
         string commandSubStr;
         if (userInput.empty() || userInput.at(0) != '/') // check if input is a command
         {
-            if(connectedToServer() && !userInput.empty())
+            if (connectedToServer() && !userInput.empty())
             {
                 SendChat(userInput);
-                ncOutUsr("[" << getSet(settingDatabase, "userHandle").c_str() << "]: " << userInput);
+                ncOutUsr("[" << getSet("userHandle").c_str() << "]: " << userInput);
                 continue;
             }
             quickPrintLog(ERROR, "Not connected to chat!");
             continue;
         }
         commandSubStr = userInput.substr(1); // extract command after '/'
-
-        // push command history
-        if (commandHistory.size() < commandHistoryLen) // if there is room left in the history vector
-        {
-            commandHistory.push_back(commandSubStr); // push back last command
-        }
-        else
-        {
-            commandHistory.erase(commandHistory.begin()); // erase first command in history vector
-            commandHistory.push_back(commandSubStr);      // push back last command
-        }
 
         if (commandSubStr == "help") // display help
         {
@@ -309,7 +294,7 @@ int main(int argc, char **argv)
         {
             string nukePrompt;
             ncOutCmd("Would you like to delete your user files? (y/n): ");
-            GetConsoleInput(false, nukePrompt);
+            nukePrompt = GetConsoleInput(false);
             if (nukePrompt == "y")
             {
                 ncOutUsr("Deleting log file...");
@@ -325,7 +310,7 @@ int main(int argc, char **argv)
                 }
 
                 ncOutUsr("Deleting contact database...");
-                if (remove(getSet(settingDatabase, "contactDatabasePath").c_str()) != 0) // delete contact database
+                if (remove(getSet("contactDatabasePath").c_str()) != 0) // delete contact database
                 {
                     ncOutUsr("Unable to delete contact database!");
                 }
@@ -343,18 +328,23 @@ int main(int argc, char **argv)
         }
         else if (commandSubStr == "clear") // clear screen
         {
-            wclear(wUserLog);
-            wmove(wUserLog, 0, 0);
-            wrefresh(wUserLog);
+            chatLog->Clear();
         }
         else if (commandSubStr == "save-contacts") // save contacts
         {
             quickPrintLog(INFO, "Saving contact file...");
             contactDatabase.save();
         }
+        else if (commandSubStr == "save")
+        {
+            quickPrintLog(INFO, "Saving files...");
+            contactDatabase.save();
+            settingDatabase.save();
+        }
         else if (commandSubStr == "server") // start chat server
         {
-            quickPrintLog(INFO, "Starting server on port: " << "...");
+            quickPrintLog(INFO, "Starting server on port: "
+                                    << "...");
             StartServer(25565);
         }
         else if (commandSubStr == "client")

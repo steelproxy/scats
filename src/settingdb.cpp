@@ -236,6 +236,29 @@ bool FileExists(string path)
     {
         return true;
     }
-    
+
     return false;
+}
+
+std::string getSet(std::string targetKey)
+{
+    std::string result = settingDatabase.searchKey(targetKey).getValue();
+    return result;
+}
+
+int getIntSet(std::string targetKey)
+{
+    string query = settingDatabase.searchKey(targetKey).getValue();
+
+    int result;
+    try
+    {
+        result = stoi(query);
+    }
+    catch (const std::exception &e)
+    {
+       return 1000;
+    }
+
+    return result;
 }

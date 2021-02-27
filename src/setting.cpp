@@ -75,6 +75,11 @@ string Setting::getDescription()
     return this->description;
 }
 
+string Setting::getDefault()
+{
+    return this->def;
+}
+
 void Setting::setKey(string newKey)
 {
     this->key = newKey;
@@ -90,6 +95,11 @@ void Setting::setDescription(string newDescription)
     this->description = newDescription;
 }
 
+void Setting::setDefault(string newDefault)
+{
+    this->def = newDefault;
+}
+
 string Setting::toString()
 {
     ostringstream stringBuilder;
@@ -99,24 +109,18 @@ string Setting::toString()
 
 bool Setting::empty()
 {
-    if(this -> key.empty() || this -> value.empty() || this -> description.empty())
+    if (this->key.empty() || this->value.empty() || this->description.empty())
         return true;
     return false;
 }
 
-bool operator ==(Setting s1, Setting s2)
+bool operator==(Setting s1, Setting s2)
 {
-    if(s1.key == s2.key &&
-       s1.value == s2.value &&
-       s1.description == s2.description)
+    if (s1.key == s2.key &&
+        s1.value == s2.value &&
+        s1.description == s2.description)
     {
-       return true;
+        return true;
     }
     return false;
-}
-
-std::string getSet(SettingDB &database, std::string targetKey)
-{
-    std::string result = database.searchKey(targetKey).getValue();
-    return result;
 }

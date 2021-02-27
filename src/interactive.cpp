@@ -15,6 +15,8 @@
 #include "log.h"
 #include "setting.h"
 #include "cursesmode.h"
+#include "chatlog.h"
+#include "commandline.h"
 
 using namespace std;
 
@@ -37,13 +39,13 @@ void InteractiveSetUserHandle(SettingDB &database)
     string userHandle;
     ncOutUsr("Please enter a new user handle.");
     ncOutCmd("Handle (max 16 characters, no special characters): ");
-    GetConsoleInput(false, userHandle);
+    userHandle = GetConsoleInput(false);
     // read user handle into userHandle
     while (userHandle.length() > 16 || userHandle.length() < 1 || !isPrintStr(userHandle)) // must be less than 16 characters and be only printable characters
     {
         ncOutUsr("Invalid handle, please enter a new one.");
         ncOutCmd("Handle: ");
-        GetConsoleInput(false, userHandle); // read a new user handle into userHandle
+        userHandle = GetConsoleInput(false); // read a new user handle into userHandle
     }
     try
     {
@@ -66,7 +68,7 @@ void InteractiveAddContact(ContactDB &contactDatabase)
     do
     {
         ncOutCmd("Alias: ");
-        GetConsoleInput(false, newAlias);
+        newAlias = GetConsoleInput(false);
         if (!isPrintStr(newAlias))
         {
             ncOutUsr("Invalid alias, please enter a new one.");
@@ -79,7 +81,7 @@ void InteractiveAddContact(ContactDB &contactDatabase)
     do
     {
         ncOutCmd("Endpoint: ");
-        GetConsoleInput(false, newEndpoint);
+        newEndpoint = GetConsoleInput(false);
         if (!isPrintStr(newEndpoint))
         {
             ncOutUsr("Invalid endpoint, please enter a new one.");
@@ -106,20 +108,17 @@ void InteractiveAddContact(ContactDB &contactDatabase)
 
     string newPort;
     int _newPort;
-    while (true) // TODO: fix broken loop
+    ncOutCmd("Port: ");
+    newPort = GetConsoleInput(false);
+    try
     {
-        ncOutCmd("Port: ");
-        GetConsoleInput(false, newPort);
-        try
-        {
-            _newPort = stoi(newPort);
-        }
-        catch (std::exception &e)
-        {
-            ncOutUsr("Invalid port, please enter a new one.");
-            exceptionLog(ERROR, e.what());
-            continue;
-        }
+        _newPort = stoi(newPort);
+    }
+    catch (std::exception &e)
+    {
+        ncOutUsr("Invalid port! Contact not added.");
+        exceptionLog(ERROR, e.what());
+        return;
     }
     ncOutUsr("Port: " << _newPort);
 
@@ -147,7 +146,7 @@ void InteractiveDeleteContact(ContactDB &contactDatabase)
     do
     {
         ncOutCmd("Alias (must be exact): ");
-        GetConsoleInput(false, targetAlias);
+        targetAlias = GetConsoleInput(false);
     } while (targetAlias.empty());
     ncOutUsr("Alias: " << targetAlias);
 
@@ -176,7 +175,7 @@ void InteractiveAddSetting(SettingDB &settingDatabase)
     do
     {
         ncOutCmd("Key: ");
-        GetConsoleInput(false, newKey);
+        newKey = GetConsoleInput(false);
     } while (newKey.empty());
     ncOutUsr("Key: " << newKey);
 
@@ -192,7 +191,7 @@ void InteractiveAddSetting(SettingDB &settingDatabase)
     do
     {
         ncOutCmd("Value: ");
-        GetConsoleInput(false, newValue);
+        newValue = GetConsoleInput(false);
     } while (newValue.empty());
     ncOutUsr("Value: " << newValue);
 
@@ -208,7 +207,7 @@ void InteractiveAddSetting(SettingDB &settingDatabase)
     do
     {
         ncOutCmd("Description: ");
-        GetConsoleInput(false, newDescription);
+        newDescription = GetConsoleInput(false);
     } while (newDescription.empty());
     ncOutUsr("Description: " << newDescription);
 
@@ -244,7 +243,7 @@ void InteractiveDeleteSetting(SettingDB &settingDatabase)
     do
     {
         ncOutCmd("Key: ");
-        GetConsoleInput(false, targetKey);
+        targetKey = GetConsoleInput(false);
     } while (targetKey.empty());
     ncOutUsr("Key: " << targetKey);
 
@@ -277,7 +276,7 @@ void InteractiveChangeSetting(SettingDB &settingDatabase)
     do
     {
         ncOutCmd("Key: ");
-        GetConsoleInput(false, targetKey);
+        targetKey = GetConsoleInput(false);
     } while (targetKey.empty());
     targetSetting = settingDatabase.searchKey(targetKey);
 
@@ -286,7 +285,7 @@ void InteractiveChangeSetting(SettingDB &settingDatabase)
         ncOutUsr(targetSetting.getKey() << "=" << targetSetting.getValue());
         ncOutCmd(targetSetting.getKey() << "=");
 
-        GetConsoleInput(false, newValue);
+        newValue = GetConsoleInput(false);
         for (size_t index = 0; index < newValue.length(); index++)
         {
             if (newValue.at(index) == '=' || newValue.at(index) == ':' || !isprint(newValue.at(index)))

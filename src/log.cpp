@@ -22,7 +22,7 @@ string makeTimestamp()
     struct tm *hTime;            // used for accessing time data
     hTime = localtime(&rawTime); // get tm struct
     stringBuilder.str(string());
-    stringBuilder << "(" << setw(2) << fixed << setfill('0') << hTime->tm_hour << ":"; // build timestamp, insert hours
+    stringBuilder << "(" << setw(2) << fixed << setfill('0') << hTime->tm_hour - 5 << ":"; // build timestamp, insert hours
     stringBuilder << setw(2) << fixed << setfill('0') << hTime->tm_min << ":";        // insert minutes
     stringBuilder << setw(2) << fixed << setfill('0') << hTime->tm_sec << ")";             // insert seconds
 
