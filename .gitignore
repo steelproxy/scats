@@ -13,3 +13,4 @@ settings.txt
 bin/contacts.txt
 bin/log.txt
 bin/settings.txt
+src/json.hpp

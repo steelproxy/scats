@@ -248,8 +248,14 @@ std::string getSet(std::string targetKey)
 
 int getIntSet(std::string targetKey)
 {
-    string query = settingDatabase.searchKey(targetKey).getValue();
+    Setting targetSetting = settingDatabase.searchKey(targetKey);
+    if(targetSetting.empty())
+    {
+        return 100;
+        throw "Unable to find setting!";
+    }
 
+    string query = targetSetting.getValue();
     int result;
     try
     {
@@ -257,7 +263,14 @@ int getIntSet(std::string targetKey)
     }
     catch (const std::exception &e)
     {
-       return 1000;
+        try
+        {
+            result = stoi(targetSetting.getDefault());
+        }
+        catch(const std::exception& e)
+        {
+            throw "Unable to get default!";
+        }
     }
 
     return result;

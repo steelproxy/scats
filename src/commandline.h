@@ -31,6 +31,8 @@ public:
     void AddCommands(std::vector<std::string> newCommands);
 
 private:
+    void Redraw(std::string &out, size_t pos, size_t starting);
+
     WINDOW *wCommandLine;
     size_t commandHistoryIndex;
     std::vector<std::string> commandHistory;

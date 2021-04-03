@@ -244,9 +244,11 @@ int main(int argc, char **argv)
             {
                 SendChat(userInput);
                 ncOutUsr("[" << getSet("userHandle").c_str() << "]: " << userInput);
-                continue;
             }
-            quickPrintLog(ERROR, "Not connected to chat!");
+            else
+            {
+                quickPrintLog(ERROR, "Not connected to chat!");
+            }
             continue;
         }
         commandSubStr = userInput.substr(1); // extract command after '/'

@@ -49,7 +49,7 @@ void InteractiveSetUserHandle(SettingDB &database)
     }
     try
     {
-        database.addSetting(Setting("userHandle", userHandle, "Name used to identify yourself to others."));
+        database.addSetting(Setting("userHandle", userHandle, "unknown", "Name used to identify yourself to others."));
     }
     catch (const char *msg)
     {
@@ -221,7 +221,7 @@ void InteractiveAddSetting(SettingDB &settingDatabase)
 
     try
     {
-        settingDatabase.addSetting(Setting(newKey, newValue, newDescription));
+        settingDatabase.addSetting(Setting(newKey, newValue, newValue, newDescription));
     }
     catch (const char *msg)
     {
@@ -271,6 +271,7 @@ void InteractiveChangeSetting(SettingDB &settingDatabase)
     Setting targetSetting;
     string newValue;
     string oldDescription;
+    string oldDefault;
 
     string targetKey;
     do
@@ -292,11 +293,12 @@ void InteractiveChangeSetting(SettingDB &settingDatabase)
                 newValue.at(index) = ' ';
         }
         oldDescription = targetSetting.getDescription();
+        oldDefault = targetSetting.getDefault();
 
         try
         {
             settingDatabase.deleteSetting(targetSetting);
-            settingDatabase.addSetting(Setting(targetKey, newValue, oldDescription));
+            settingDatabase.addSetting(Setting(targetKey, newValue, oldDefault, oldDescription));
         }
         catch (const char *msg)
         {

@@ -12,7 +12,6 @@
 
 using namespace std;
 
-// TODO: Fix weird ass time error, potentially related to UTC
 string makeTimestamp()
 {
     std::ostringstream stringBuilder;
@@ -22,8 +21,8 @@ string makeTimestamp()
     struct tm *hTime;            // used for accessing time data
     hTime = localtime(&rawTime); // get tm struct
     stringBuilder.str(string());
-    stringBuilder << "(" << setw(2) << fixed << setfill('0') << hTime->tm_hour - 5 << ":"; // build timestamp, insert hours
-    stringBuilder << setw(2) << fixed << setfill('0') << hTime->tm_min << ":";        // insert minutes
+    stringBuilder << "(" << setw(2) << fixed << setfill('0') << hTime->tm_hour - 5 << ":"; // build timestamp, insert hours NOTE: the -5 is probably some UTC shit, idk i j copied this line
+    stringBuilder << setw(2) << fixed << setfill('0') << hTime->tm_min << ":";             // insert minutes
     stringBuilder << setw(2) << fixed << setfill('0') << hTime->tm_sec << ")";             // insert seconds
 
     std::string timestamp;           // used for storing timestamp
@@ -83,29 +82,20 @@ void Log::writeLine(LogLevel level, const char *func, const int line, std::strin
         throw "Unable to open file!";
     }
 
-    string timestamp = makeTimestamp();
-    switch (level)
+    ostringstream ssformattedFunc;
+    string formattedFunc;
+    ssformattedFunc << "{" << func << ":" << line << "}: ";
+    formattedFunc = ssformattedFunc.str();
+
+    static size_t longestFunc = 0;
+    if (formattedFunc.length() > longestFunc)
     {
-    case VERBOSE: // if severe level
-        this->file << timestamp << setw(12) << fixed << " [verbose] {" << func << ":" << line << "}: " << message << endl;
-        break;
-
-    case INFO: // if INFO level
-        this->file << timestamp << setw(12) << fixed << " [info] {" << func << ":" << line << "}: " << message << endl;
-        break;
-
-    case WARNING: // if warning level
-        this->file << timestamp << setw(12) << fixed << " [warning] {" << func << ":" << line << "}: " << message << endl;
-        break;
-
-    case ERROR: // if error level
-        this->file << timestamp << setw(12) << fixed << " [error] {" << func << ":" << line << "}: " << message << endl;
-        break;
-
-    case SEVERE: // if severe level
-        this->file << timestamp << setw(12) << fixed << " [severe] {" << func << ":" << line << "}: " << message << endl;
-        break;
+        longestFunc = formattedFunc.length();
     }
+
+    static const char *severityString[5] = {" [verbose] ", " [info] ", " [warning] ", " [error] ", " [severe] "};
+
+    this->file << makeTimestamp() << setw(12) << fixed << severityString[level] << setw(longestFunc) << formattedFunc << message << endl;
 }
 
 void Log::setLevel(LogLevel newLevel)

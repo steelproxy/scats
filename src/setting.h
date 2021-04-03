@@ -19,11 +19,21 @@
 ///
 /// @brief Macro for quick default setting.
 ///
-#define DefSet(key, default, description)                         \
-    if (settingDatabase.searchKey(key).getValue() == string()) \
+#define DefSet(key, default, description)                     \
+{ \
+    Setting query = settingDatabase.searchKey(key); \
+    if (query == string()) \
     {                                                                    \
-        settingDatabase.addSetting(Setting(key, default, description));  \
-    }
+        settingDatabase.addSetting(Setting(key, default, default, description));  \
+    } \
+    else \
+    { \
+        settingDatabase.deleteSetting(query); \
+        query.setDefault(default); \
+        query.setDescription(description); \
+        settingDatabase.addSetting(query); \   
+    } \
+}
 
 ///
 ///
@@ -45,7 +55,7 @@ public:
     /// @param newKey New key.
     /// @param newValue New value.
     /// @param newDescription New description.
-    Setting(std::string newKey, std::string newValue, std::string newDescription);
+    Setting(std::string newKey, std::string newValue, std::string newDefaultValue, std::string newDescription);
 
     ///
     /// @brief Gets Setting key.
@@ -101,7 +111,7 @@ private:
     std::string key;
     std::string value;
     std::string description;
-    std::string def;
+    std::string defaultValue;
 };
 
 ///

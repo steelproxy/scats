@@ -8,8 +8,9 @@
 StatusLine::StatusLine()
 {
     // make status line window
-    wStatusLine = newwin(1, getmaxx(stdscr), 0, 0);
+    wStatusLine = newwin(2, getmaxx(stdscr), 0, 0);
 
+    mvwhline(wStatusLine, 1,0,0, '_');
     // make status line thread
     pthread_create(&statusLineThread, NULL, &StatusLine::RedrawHelper, this);
 }

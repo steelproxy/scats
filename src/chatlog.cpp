@@ -11,13 +11,13 @@ ChatLog::ChatLog()
     int maxY;
     int maxX;
     getmaxyx(stdscr, maxY, maxX);               // get terminal dimensions
-    _wChatLog = newwin(maxY - 2, maxX, 1, 0); // make windows
+    _wChatLog = newwin(maxY - 4, maxX, 2, 0); // make windows
 
     keypad(_wChatLog, true);
     mouseinterval(0);
     mousemask(BUTTON4_PRESSED | BUTTON5_PRESSED, NULL);
     clearok(_wChatLog, true);
-    scrollok(_wChatLog, true); // enable scrolling
+    //scrollok(_wChatLog, true); // enable scrolling
     _chatHistoryIndex = 0;
 }
 
@@ -52,6 +52,7 @@ void ChatLog::Print(string out)
         _chatHistory.push_back(out);
     }
 
+    quickLog(VERBOSE, "scrollLock enabled: " << getSet("scrollLock"));
     string scrollLock = getSet("scrollLock");
     if (scrollLock != "true")
     {
@@ -69,6 +70,7 @@ void ChatLog::Print(string out)
 
 void ChatLog::Clear()
 {
+    statusLine -> Unread(false);
     wclear(_wChatLog);
     wmove(_wChatLog, 0, 0);
     _chatHistory.size();

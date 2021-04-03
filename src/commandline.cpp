@@ -6,14 +6,38 @@
 
 using namespace std;
 
+void CommandLine::Redraw(string &out, size_t pos, size_t starting)
+{
+    int maxX = getmaxx(wCommandLine);
+    string sReverseSubstring;
+    if(pos > maxX)
+    {
+        sReverseSubstring = out.substr(pos - maxX, pos);
+    }
+    else
+    {
+        sReverseSubstring = out.substr(0, maxX);
+    }
+
+    int yPos;
+    int xPos;
+    getyx(wCommandLine, yPos, xPos);
+    wmove(wCommandLine, yPos, starting);
+    wclrtoeol(wCommandLine);
+    wprintw(wCommandLine, "%s", sReverseSubstring.c_str());
+    wrefresh(wCommandLine);
+}
+
 CommandLine::CommandLine()
 {
     int maxY;
     int maxX;
     getmaxyx(stdscr, maxY, maxX); // get terminal dimensions
-    wCommandLine = newwin(1, maxX, maxY - 1, 0);
+    wCommandLine = newwin(2, maxX, maxY - 2, 0);
 
     keypad(wCommandLine, true); // enable advanced key sequences
+    mvwhline(wCommandLine, 0, 0, 0, '_');
+    wrefresh(wCommandLine);
 
     commandHistoryIndex = 0;
 }
@@ -27,7 +51,7 @@ void CommandLine::Print(string out)
 
 void CommandLine::PrintPrompt()
 {
-    wmove(wCommandLine, 0, 0);
+    wmove(wCommandLine, 1, 0);
     wclrtoeol(wCommandLine);
     CommandLine::Print("[" + getSet("userHandle") + "]: ");
 }
@@ -51,20 +75,27 @@ string CommandLine::GetInput(bool lineEdit) // TODO: fix overflow
     while (charBuf != '\n')
     {
         wrefresh(wCommandLine);
+        Redraw(out, outPos, startingXPos);
 
         getyx(wCommandLine, _yPos, _xPos);
         SetCursorPosition(wCommandLine, _yPos, _xPos);
         charBuf = wgetch(wCommandLine);
 
-        quickLog(VERBOSE, " _xPos=" << _xPos << " _yPos=" << _yPos
-                                    << " startingXPos=" << startingXPos
-                                    << " outpos=" << outPos
-                                    << " charBuf=" << charBuf);
-
         if (checkPrintable(charBuf))
         {
-            winsch(wCommandLine, charBuf);       // insert character left of current cursor pos
-            wmove(wCommandLine, _yPos, ++_xPos); // move cursor forward one
+            /*if(outPos >= getmaxx(wCommandLine) - startingXPos)
+            {
+                quickPrintLog(VERBOSE, "Line overflow.");
+                wmove(wCommandLine, _yPos, startingXPos);
+                wclrtoeol(wCommandLine);
+                
+                string line;
+                line = out.substr(outPos - ((getmaxx(wCommandLine) - startingXPos)));
+                wprintw(wCommandLine, "%s", line.c_str());
+                getyx(wCommandLine, _yPos, _xPos);
+            }*/
+            //winsch(wCommandLine, charBuf);       // insert character left of current cursor pos
+            //wmove(wCommandLine, _yPos, ++_xPos); // move cursor forward one
             outPos++;
             wrefresh(wCommandLine);
         }
@@ -374,20 +405,24 @@ string CommandLine::GetInput(bool lineEdit) // TODO: fix overflow
     wmove(wCommandLine, _yPos, startingXPos);
     wclrtoeol(wCommandLine);
     wrefresh(wCommandLine);
-    quickLog(VERBOSE, "verbatim: \"" << out << "\"");
+    
+    quickLog(VERBOSE, " _xPos=" << _xPos << " _yPos=" << _yPos
+                                << " startingXPos=" << startingXPos
+                                << " outpos=" << outPos
+                                << " verbatim=" << out);
 
     return out;
 }
 
 void CommandLine::Clear()
 {
-    wmove(wCommandLine, 0, 0);
+    wmove(wCommandLine, 1, 0);
     wclrtoeol(wCommandLine);
 }
 
 void CommandLine::AddCommands(vector<string> newCommands)
 {
-    for(string command : newCommands)
+    for (string command : newCommands)
     {
         commands.push_back(command);
     }
