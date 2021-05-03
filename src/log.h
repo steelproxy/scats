@@ -21,7 +21,7 @@
 #define quickLog(level, message)                                                     \
     {                                                                                \
         std::ostringstream stringBuilder;                                            \
-        stringBuilder.str(string());                                          \
+        stringBuilder.str(std::string());                                          \
         stringBuilder << message;                                             \
         logger.writeLine(level, __FUNCTION__, __LINE__, stringBuilder.str()); \
     }

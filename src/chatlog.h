@@ -8,7 +8,7 @@
 #define ncOutUsr(message)                            \
     {                                                \
         std::ostringstream stringBuilder;            \
-        stringBuilder.str(string());                 \
+        stringBuilder.str(std::string());                 \
         stringBuilder << message;                    \
         std::string outString = stringBuilder.str(); \
         chatLog->Print(outString);                   \
@@ -23,6 +23,8 @@ public:
     void Clear();
     void ScrollUp();
     void ScrollDown();
+
+    void Resize();
 
 private:
     void Redraw();

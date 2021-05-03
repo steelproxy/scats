@@ -1,6 +1,0 @@
-contactDatabasePath=contacts.txt:Path to contact database.
-logLevel=info:Minimum severity level to print to log.
-commandHistoryLength=64:Maximum number of commands to be kept in history.
-userHandle=anonymous user:Name used to identify yourself to others.
-chatHistoryLength=500:Maximum chat entries to keep in memory.
-scrollLock=true:Disables autoscrolling.

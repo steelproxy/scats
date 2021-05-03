@@ -1,16 +1,27 @@
+#include <functional>
+#include <map>
 #include "commandline.h"
 #include "chatlog.h"
 #include "cursesmode.h"
+#include "statusline.h"
 #include "log.h"
 #include "setting.h"
+#include "commands/commands.h"
+#include "chat_message.hpp"
+#include "hotkey.h"
 
 using namespace std;
+
+void test()
+{
+    quickPrintLog(INFO, "you are gay.");
+}
 
 void CommandLine::Redraw(string &out, size_t pos, size_t starting)
 {
     int maxX = getmaxx(wCommandLine);
     string sReverseSubstring;
-    if(pos > maxX)
+    if (pos > maxX)
     {
         sReverseSubstring = out.substr(pos - maxX, pos);
     }
@@ -22,9 +33,13 @@ void CommandLine::Redraw(string &out, size_t pos, size_t starting)
     int yPos;
     int xPos;
     getyx(wCommandLine, yPos, xPos);
-    wmove(wCommandLine, yPos, starting);
+    mvwhline(wCommandLine, 0, 0, 0, maxX);
+
+    wmove(wCommandLine, 1, starting);
     wclrtoeol(wCommandLine);
     wprintw(wCommandLine, "%s", sReverseSubstring.c_str());
+    wmove(wCommandLine, 1, starting + pos);
+    SetCursorPosition(wCommandLine, 1, starting + pos);
     wrefresh(wCommandLine);
 }
 
@@ -36,10 +51,12 @@ CommandLine::CommandLine()
     wCommandLine = newwin(2, maxX, maxY - 2, 0);
 
     keypad(wCommandLine, true); // enable advanced key sequences
-    mvwhline(wCommandLine, 0, 0, 0, '_');
+    mvwhline(wCommandLine, 0, 0, 0, maxX);
     wrefresh(wCommandLine);
 
     commandHistoryIndex = 0;
+
+    //hotkeyMan.AddHotkey(ctrl('h'), test);
 }
 
 void CommandLine::Print(string out)
@@ -53,7 +70,7 @@ void CommandLine::PrintPrompt()
 {
     wmove(wCommandLine, 1, 0);
     wclrtoeol(wCommandLine);
-    CommandLine::Print("[" + getSet("userHandle") + "]: ");
+    CommandLine::Print("[" + _iniStructure["General"]["userHandle"] + "]: ");
 }
 
 string CommandLine::GetInput(bool lineEdit) // TODO: fix overflow
@@ -70,7 +87,8 @@ string CommandLine::GetInput(bool lineEdit) // TODO: fix overflow
     bool historyScrollDown = false;
 
     getyx(wCommandLine, _yPos, _xPos); // get current cursor position
-    startingXPos = _xPos;              // store starting cursor x position
+    _yPos = 1;
+    startingXPos = _xPos; // store starting cursor x position
 
     while (charBuf != '\n')
     {
@@ -78,7 +96,6 @@ string CommandLine::GetInput(bool lineEdit) // TODO: fix overflow
         Redraw(out, outPos, startingXPos);
 
         getyx(wCommandLine, _yPos, _xPos);
-        SetCursorPosition(wCommandLine, _yPos, _xPos);
         charBuf = wgetch(wCommandLine);
 
         if (checkPrintable(charBuf))
@@ -133,10 +150,10 @@ string CommandLine::GetInput(bool lineEdit) // TODO: fix overflow
                 continue;
             }
 
-            case KEY_BACKSPACE:
+            case 127:
             {
                 quickLog(VERBOSE, "got backspace.");
-                if (outPos > 0) // if not at beginning
+                if (outPos > 0) // if not; at beginning
                 {
                     mvwdelch(wCommandLine, _yPos,
                              _xPos - 1); // move to and erase previous character
@@ -297,9 +314,9 @@ string CommandLine::GetInput(bool lineEdit) // TODO: fix overflow
                 out.erase(out.begin());
 
                 bool found = false;
-                for (size_t commandIndex = 0; commandIndex < commands.size(); commandIndex++)
+                for (map<std::string, voidFunctionType>::iterator _iterator = commands.begin(); _iterator != commands.end(); _iterator++)
                 {
-                    string command = commands[commandIndex];
+                    string command = _iterator->first;
                     if (command.find(out, 0) != string::npos)
                     {
                         quickLog(VERBOSE, "found command matching query: " << out << "~="
@@ -348,20 +365,11 @@ string CommandLine::GetInput(bool lineEdit) // TODO: fix overflow
                 continue;
             }
 
-            case ctrl('h'):
+            case KEY_RESIZE:
             {
-                return "" + ctrl('h');
-            }
-
-            case ctrl('q'):
-            {
-                quickLog(VERBOSE, "got ctrl+q.");
-                exit(0);
-            }
-
-            case KEY_ESCAPE:
-            {
-                quickLog(VERBOSE, "got escape.");
+                statusLine->Resize();
+                chatLog->Resize();
+                this->Resize();
                 continue;
             }
 
@@ -373,6 +381,7 @@ string CommandLine::GetInput(bool lineEdit) // TODO: fix overflow
                 }
                 else
                 {
+                    //hotkeyMan.ProcessKey(charBuf);
                     quickLog(VERBOSE, "got non-printable character: " << charBuf);
                 }
                 continue;
@@ -405,12 +414,25 @@ string CommandLine::GetInput(bool lineEdit) // TODO: fix overflow
     wmove(wCommandLine, _yPos, startingXPos);
     wclrtoeol(wCommandLine);
     wrefresh(wCommandLine);
-    
+
     quickLog(VERBOSE, " _xPos=" << _xPos << " _yPos=" << _yPos
                                 << " startingXPos=" << startingXPos
                                 << " outpos=" << outPos
                                 << " verbatim=" << out);
 
+    if (out.length() > 1 && out.at(0) == '/' && lineEdit)
+    {
+        string outSub = out.substr(1);
+        for (map<std::string, voidFunctionType>::iterator _iterator = commands.begin(); _iterator != commands.end(); _iterator++)
+        {
+            string command = _iterator->first;
+            if (outSub == command)
+            {
+                quickPrintLog(VERBOSE, "Executing command: " << out);
+                _iterator->second();
+            }
+        }
+    }
     return out;
 }
 
@@ -420,10 +442,32 @@ void CommandLine::Clear()
     wclrtoeol(wCommandLine);
 }
 
-void CommandLine::AddCommands(vector<string> newCommands)
+void CommandLine::AddCommands()
 {
-    for (string command : newCommands)
-    {
-        commands.push_back(command);
-    }
+    commands.insert({"help", DisplayHelp});
+    commands.insert({"add-contact", InteractiveAddContact});
+    commands.insert({"delete-contact", InteractiveDeleteContact});
+    commands.insert({"list-contacts", InteractiveListContacts});
+    commands.insert({"list-settings", InteractiveListSettings});
+    commands.insert({"add-setting", InteractiveAddSetting});
+    commands.insert({"delete-setting", InteractiveDeleteSetting});
+    commands.insert({"nuke", InteractiveNuke});
+    commands.insert({"save-settings", SaveSettings});
+    commands.insert({"change-setting", InteractiveChangeSetting});
+    commands.insert({"clear", []() { chatLog->Clear(); }});
+    commands.insert({"server", []() { StartChatServer(_iniStructure["Server"]["Port"]); }});
+    commands.insert({"client", []() { StartChatClient(_iniStructure["Client"]["Host"], _iniStructure["Client"]["Port"]); }});
+    commands.insert({"exit", []() { quickPrintLog(INFO, "Exiting scats..."); exit(0); }});
+    commands.insert({"build", nullptr});
+    commands.insert({"list-ini", []() { ListINI(_iniStructure); }});
+}
+
+void CommandLine::Resize()
+{
+    int maxY;
+    int maxX;
+    getmaxyx(stdscr, maxY, maxX);
+
+    mvwin(wCommandLine, maxY - 2, 0);
+    wresize(wCommandLine, 2, maxX);
 }

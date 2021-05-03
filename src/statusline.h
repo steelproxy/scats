@@ -15,6 +15,11 @@ public:
     bool Unread();
     bool Unread(bool newUnread); 
 
+    void SetConnect(bool);
+    bool GetConnect();
+
+    void Resize();
+
 private:
     void Clear();
     
@@ -22,6 +27,7 @@ private:
     WINDOW* wStatusLine;
     WINDOW* wRoot;
     bool unread;
+    bool connected;
 };
 
 extern StatusLine *statusLine;

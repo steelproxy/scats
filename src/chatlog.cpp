@@ -10,7 +10,7 @@ ChatLog::ChatLog()
 {
     int maxY;
     int maxX;
-    getmaxyx(stdscr, maxY, maxX);               // get terminal dimensions
+    getmaxyx(stdscr, maxY, maxX);             // get terminal dimensions
     _wChatLog = newwin(maxY - 4, maxX, 2, 0); // make windows
 
     keypad(_wChatLog, true);
@@ -26,9 +26,13 @@ void ChatLog::Print(string out)
     int maxX;
     maxX = getmaxx(_wChatLog); // get terminal dimensions
 
+    int chatHistoryLength = getInt("General", "ChatHistoryLength", 500);
+    if(chatHistoryLength <= 0)
+    {
+        chatHistoryLength = 5;
+    }
     // push to chat history
-
-    if (_chatHistory.size() >= static_cast<long unsigned>(getIntSet("chatHistoryLength")))
+    if (_chatHistory.size() >= static_cast<long unsigned>(chatHistoryLength))
     {
         _chatHistory.erase(_chatHistory.begin());
     }
@@ -52,8 +56,8 @@ void ChatLog::Print(string out)
         _chatHistory.push_back(out);
     }
 
-    quickLog(VERBOSE, "scrollLock enabled: " << getSet("scrollLock"));
-    string scrollLock = getSet("scrollLock");
+    string scrollLock = _iniStructure["General"]["scrollLock"];
+    quickLog(VERBOSE, "scrollLock enabled: " << scrollLock);
     if (scrollLock != "true")
     {
         _chatHistoryIndex = _chatHistory.size();
@@ -70,12 +74,13 @@ void ChatLog::Print(string out)
 
 void ChatLog::Clear()
 {
-    statusLine -> Unread(false);
-    wclear(_wChatLog);
+    statusLine->Unread(false); // clear unread
+    wclear(_wChatLog);         // clear window
     wmove(_wChatLog, 0, 0);
-    _chatHistory.size();
-    _chatHistory.clear();
+
+    _chatHistory.clear(); // clear chat history
     _chatHistoryIndex = 0;
+
     wrefresh(_wChatLog);
 }
 
@@ -101,12 +106,13 @@ void ChatLog::ScrollDown()
 
 void ChatLog::Redraw()
 {
-    wclear(_wChatLog);
+    wclear(_wChatLog); // clear and redraw
+
     int col;
     int row;
-    getmaxyx(_wChatLog, col, row);
+    getmaxyx(_wChatLog, col, row); // get max terminal dimensions
 
-    if(_chatHistoryIndex == _chatHistory.size())
+    if (_chatHistoryIndex == _chatHistory.size()) // set last message read
         statusLine->Unread(false);
 
     for (int index = 0; index <= col; index++)
@@ -118,4 +124,17 @@ void ChatLog::Redraw()
     }
 
     wrefresh(_wChatLog);
+}
+
+void ChatLog::Resize()
+{
+    int maxY;
+    int maxX;
+    getmaxyx(stdscr, maxY, maxX); // get max terminal dimensions
+
+    wresize(_wChatLog, maxY - 4, maxX); // idk why tf i gotta go up 4 but ok, oh nvm i get it : if you ever get fried and forget this its because the statusline also occupies 2 columns
+    mvwin(_wChatLog, 2, 0);             // move under status line
+
+    _chatHistoryIndex = _chatHistory.size(); // scroll to bottom
+    Redraw();
 }

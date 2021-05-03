@@ -28,3 +28,15 @@ void RestoreCursorPosition()
     wmove(activeWindow, cursorY, cursorX);
     wrefresh(activeWindow);
 }
+
+bool isPrintStr(string str)
+{
+    for (size_t index = 0; index < str.length(); index++)
+    {
+        if (!checkPrintable(str.at(index)))
+        {
+            return false;
+        }
+    }
+    return true;
+}

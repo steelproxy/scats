@@ -1,5 +1,5 @@
 CC=g++
-CFLAGS=-std=c++11 -Wall -Wpedantic -g -lpthread -lncurses -fpermissive
+CFLAGS=-std=c++11 -Wall -Wpedantic -g -lpthread -lncurses -lboost_system -fpermissive
 
 OBJDIR=obj
 SRCDIR=src
@@ -7,6 +7,7 @@ BINDIR=bin
 TARGET=scats
 
 SOURCES  := $(wildcard $(SRCDIR)/*.cpp)
+SOURCES	 += $(wildcard $(SRCDIR)/*/*.cpp)
 INCLUDES := $(wildcard $(SRCDIR)/*.h)
 OBJECTS  := $(SOURCES:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)
 

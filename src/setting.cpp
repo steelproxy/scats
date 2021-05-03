@@ -1,133 +1,112 @@
-/** 
- *  @file   setting.cpp
- *  @brief  Implementation of Setting class.
- *  @author Collin Rodes
- *  @date   2020-12-11
- ***********************************************/
-
-#include <string>
 #include <iostream>
-#include <sstream>
+#include "ini.h"
+#include "log.h"
+#include "chatlog.h"
 #include "setting.h"
 
 using namespace std;
 
-Setting::Setting()
+mINI::INIFile *_iniFile;
+mINI::INIStructure _iniStructure;
+
+#define GetSet(section, key, def)                                                         \
+    if (_iniStructure.get(section).get(key) == "") \
+    {                                                                            \
+        _iniStructure[section][key] = def;                                     \
+    }
+
+void ApplyDefaults()
 {
-    this->key = string();
-    this->value = string();
-    this->description = string();
-    this->defaultValue = string();
+    GetSet("General", "LogLevel", DEFAULT_LOG_LEVEL);
+    GetSet("General", "CommandHistoryLength", DEFAULT_HISTORY_LEN);
+    GetSet("General", "ChatHistoryLength", DEFAULT_CHAT_HISTORY_LEN);
+    GetSet("General", "scrollLock", DEFAULT_SCROLLLOCK);
+    GetSet("Server", "maximumFileSize", "10MB");
+    GetSet("Server", "Port", "25565");
+    GetSet("Server", "MaxChatParticipants", "1");
+    
 }
 
-Setting::Setting(string newSetting)
+void LoadSettings()
 {
-    unsigned specialCount;
-    stringstream stringBuilder(newSetting);
+    _iniFile = new mINI::INIFile(DEFAULT_SETTING_FILENAME);
 
-    for (size_t index = 0; index < newSetting.length(); index++)
+    quickPrintLog(INFO, "Reading settings...");
+    if (!_iniFile->read(_iniStructure))
     {
-        if (newSetting.at(index) == ',')
+        quickPrintLog(ERROR, "Unable to read settings!");
+        throw "Unable to read settings!";
+    }
+    ApplyDefaults();
+    logger.setLevel(LevelToI(_iniStructure.get("General").get("logLevel")));
+}
+
+void SaveSettings()
+{
+    quickPrintLog(INFO, "Saving settings...");
+    if (!_iniFile->generate(_iniStructure))
+    {
+        quickPrintLog(ERROR, "Unable to save settings!");
+    }
+}
+
+void ListINI(mINI::INIStructure &_targetStructure)
+{
+    for (auto const &it : _targetStructure)
+    {
+        auto const &section = it.first;
+        auto const &collection = it.second;
+        ncOutUsr("[" << section << "]");
+        for (auto const &it2 : collection)
         {
-            specialCount++;
+            auto const &key = it2.first;
+            auto const &value = it2.second;
+            ncOutUsr(key << "=" << value);
         }
     }
-
-    string keyBuf;
-    string valueBuf;
-    string defaultValueBuf;
-    string descriptionBuf;
-    getline(stringBuilder, keyBuf, ',');
-    getline(stringBuilder, valueBuf, ',');
-    getline(stringBuilder, defaultValueBuf, ',');
-    getline(stringBuilder, descriptionBuf);
-
-    if (specialCount < 3)
-    {
-        this->key = string();
-        this->value = string();
-        this->defaultValue = string();
-        this->description = string();
-    }
-    else
-    {
-        this->key = keyBuf;
-        this->value = valueBuf;
-        this->defaultValue = defaultValueBuf;
-        this->description = descriptionBuf;
-    }
 }
 
-Setting::Setting(string newKey, string newValue, string newDefaultValue, string newDescription)
+const int getInt(string section, string key, int def)
 {
-    this->key = newKey;
-    this->value = newValue;
-    this->defaultValue = newDefaultValue;
-    this->description = newDescription;
+    string value = _iniStructure[section][key];
+    quickLog(VERBOSE, "section=" << section << " key=" << key << " value=" << value);
+
+    int _intValue = 0;
+    stringstream ssValue(value);
+    ssValue >> _intValue;
+
+    if(_intValue > 0)
+        return _intValue;
+    return def;
 }
 
-string Setting::getKey()
+bool FileExists(string path)
 {
-    return this->key;
-}
-
-string Setting::getValue()
-{
-    return this->value;
-}
-
-string Setting::getDefault()
-{
-    return this->defaultValue;
-}
-
-string Setting::getDescription()
-{
-    return this->description;
-}
-
-void Setting::setKey(string newKey)
-{
-    this->key = newKey;
-}
-
-void Setting::setValue(string newValue)
-{
-    this->value = newValue;
-}
-
-void Setting::setDefault(string newDefaultValue)
-{
-    this->defaultValue = newDefaultValue;
-}
-
-void Setting::setDescription(string newDescription)
-{
-    this->description = newDescription;
-}
-
-string Setting::toString()
-{
-    ostringstream stringBuilder;
-    stringBuilder << this->key << ',' << this->value << ',' << this->defaultValue << ',' << this->description;
-    return stringBuilder.str();
-}
-
-bool Setting::empty()
-{
-    if (this->key.empty() || this->value.empty() || this->defaultValue.empty() || this->description.empty())
-        return true;
-    return false;
-}
-
-bool operator==(Setting s1, Setting s2)
-{
-    if (s1.key == s2.key &&
-        s1.value == s2.value && 
-        s1.defaultValue == s2.defaultValue &&
-        s1.description == s2.description)
+    struct stat buffer;
+    if (stat(path.c_str(), &buffer) == 0)
     {
         return true;
     }
+
     return false;
+}
+
+void SanitizeINIString(string &dirtyString)
+{
+    for (size_t index = 0; index < dirtyString.length(); index++)
+    {
+        switch (dirtyString.at(index))
+        {
+        case '[':
+        case ']':
+        case '=':
+        case '#':
+        case ';':
+            dirtyString.erase(dirtyString.begin() + index);
+            break;
+
+        default:
+            break;
+        }
+    }
 }

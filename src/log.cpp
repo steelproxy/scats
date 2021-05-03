@@ -8,6 +8,7 @@
 #include <sstream>
 #include <iostream>
 #include <iomanip>
+#include <ctime>
 #include "log.h"
 
 using namespace std;
@@ -20,10 +21,12 @@ string makeTimestamp()
 
     struct tm *hTime;            // used for accessing time data
     hTime = localtime(&rawTime); // get tm struct
+    
+    char buffer[80];
+    strftime(buffer, 80, "%T", hTime);
+
     stringBuilder.str(string());
-    stringBuilder << "(" << setw(2) << fixed << setfill('0') << hTime->tm_hour - 5 << ":"; // build timestamp, insert hours NOTE: the -5 is probably some UTC shit, idk i j copied this line
-    stringBuilder << setw(2) << fixed << setfill('0') << hTime->tm_min << ":";             // insert minutes
-    stringBuilder << setw(2) << fixed << setfill('0') << hTime->tm_sec << ")";             // insert seconds
+    stringBuilder << "(" << buffer << ")";           // insert seconds
 
     std::string timestamp;           // used for storing timestamp
     timestamp = stringBuilder.str(); // store string timestamp
