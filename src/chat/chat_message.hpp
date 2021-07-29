@@ -15,9 +15,9 @@
 #include <cstdlib>
 #include <cstring>
 #include <string>
-#include "chatlog.h"
-#include "setting.h"
-#include "log.h"
+#include "../ui/chatlog.h"
+#include "../setting/setting.h"
+#include "../log/log.h"
 
 class chat_message
 {

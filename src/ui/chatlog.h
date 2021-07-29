@@ -25,9 +25,10 @@ public:
     void ScrollDown();
 
     void Resize();
+    void Redraw();
 
 private:
-    void Redraw();
+
 
     WINDOW* _wChatLog;
     size_t _chatHistoryIndex;

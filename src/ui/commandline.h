@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 #include <map>
-#include "hotkey.h"
+#include "../ui/hotkey.h"
 
 #define KEY_ESCAPE 27
 #define KEY_DELETE 330
@@ -38,11 +38,11 @@ public:
 private:
     void Redraw(std::string &out, size_t pos, size_t starting);
 
-    WINDOW *wCommandLine;
-    size_t commandHistoryIndex;
-    std::vector<std::string> commandHistory;
-    std::map<std::string, voidFunctionType> commands;
-    HotkeyManager hotkeyMan;
+    WINDOW *_wCommandLine;
+    size_t _commandHistoryIndex;
+    std::vector<std::string> _commandHistory;
+    std::map<std::string, voidFunctionType> _commands;
+    HotkeyManager _hotkeyMan;
 };
 
 extern CommandLine *commandLine;

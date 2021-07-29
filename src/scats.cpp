@@ -15,15 +15,13 @@
 #include <signal.h>
 #include <vector>
 #include <map>
-#include "chatlog.h"
-#include "commandline.h"
-#include "cursesmode.h"
-#include "log.h"
-#include "setting.h"
-#include "statusline.h"
-#include "commands/commands.h"
-
-using namespace std;
+#include "./ui/chatlog.h"
+#include "./ui/commandline.h"
+#include "./ui/cursesmode.h"
+#include "./log/log.h"
+#include "./setting/setting.h"
+#include "./ui/statusline.h"
+#include "./commands/commands.h"
 
 WINDOW *wRoot;
 WINDOW *wStatusLine;
@@ -45,13 +43,11 @@ void SignalHandler(int sig)
     }
 }
 
-
 void Cleanup()
 {
     endwin();       // end curses mode
     logger.close(); // close log file
 }
-
 
 int main(int argc, char **argv)
 {
@@ -75,10 +71,10 @@ int main(int argc, char **argv)
     // create log file if necessary
     if (!FileExists(DEFAULT_LOG_FILE))
     {
-        ofstream logFile;
+        std::ofstream logFile;
         ncOutUsr("Log file does not exist!");
         ncOutUsr("Creating log file...");
-        logFile.open(DEFAULT_LOG_FILE, ios::out);
+        logFile.open(DEFAULT_LOG_FILE, std::ios::out);
         if (logFile.fail())
         {
             ncOutUsr("Unable to create log file!");
@@ -104,11 +100,11 @@ int main(int argc, char **argv)
     bool newSettingFile = false;
     if (!FileExists(DEFAULT_SETTINGS_FILE))
     {
-        ofstream settingFile;
+        std::ofstream settingFile;
         newSettingFile = true;
         quickPrintLog(WARNING, "Setting database does not exist!");
         quickPrintLog(INFO, "Creating setting database...");
-        settingFile.open(DEFAULT_SETTINGS_FILE, ios::out);
+        settingFile.open(DEFAULT_SETTINGS_FILE, std::ios::out);
         if (settingFile.fail())
         {
             quickPrintLog(ERROR, "Unable to create setting database!");
@@ -148,24 +144,24 @@ int main(int argc, char **argv)
         }
     }
 
-    // capture SIGINT's
-    signal(SIGINT, SignalHandler);
-
     // interactive loop
     for (;;)
     {
         while (sigsetjmp(sigintJumpPoint, 1) != 0)
             ; // set jump to beginning of loop
 
+        // capture SIGINT's
+        signal(SIGINT, SignalHandler);
+        
         // user prompt
-        string userInput;
-        userInput = string(); // clear string
+        std::string userInput;
+        userInput = std::string(); // clear std::string
         ncOutCmd("[" << _iniStructure["General"]["userHandle"].c_str() << "]: ");
         commandLine->PrintPrompt();
         userInput = GetConsoleInput(true);
 
         // extract command substring
-        string commandSubStr;
+        std::string commandSubStr;
         if (userInput.empty() || userInput.at(0) != '/') // check if input is a command
         {
             if (/*connectedToServer()*/ !userInput.empty())
@@ -180,7 +176,7 @@ int main(int argc, char **argv)
             continue;
         }
         commandSubStr = userInput.substr(1); // extract command after '/'
-        if (commandSubStr == "build") // rebuild scats
+        if (commandSubStr == "build")        // rebuild scats
         {
             quickPrintLog(INFO, "Exiting, rebuilding, and relaunching scats...");
             system("cd ..; make; cd bin; ./scats");

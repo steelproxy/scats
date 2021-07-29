@@ -1,16 +1,14 @@
-#include "../chatlog.h"
-#include "../cursesmode.h"
-#include "../commandline.h"
-#include "../setting.h"
-#include "../log.h"
-
-using namespace std;
+#include "../ui/chatlog.h"
+#include "../ui/cursesmode.h"
+#include "../ui/commandline.h"
+#include "../setting/setting.h"
+#include "../log/log.h"
 
 void InteractiveAddContact()
 {
     quickPrintLog(INFO, "Adding new contact...");
 
-    string newAlias;
+    std::string newAlias;
     do
     {
         ncOutCmd("Alias: ");
@@ -24,7 +22,7 @@ void InteractiveAddContact()
     ncOutUsr("Alias: " << newAlias);
     SanitizeINIString(newAlias);
 
-    string newEndpoint;
+    std::string newEndpoint;
     do
     {
         ncOutCmd("Endpoint: ");
@@ -38,7 +36,7 @@ void InteractiveAddContact()
     ncOutUsr("Endpoint: " << newEndpoint);
     SanitizeINIString(newEndpoint);
 
-    string newPort;
+    std::string newPort;
     ncOutCmd("Port: ");
     newPort = GetConsoleInput(false);
     try

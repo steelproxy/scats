@@ -1,15 +1,13 @@
-#include "../setting.h"
-#include "../commandline.h"
-#include "../chatlog.h"
-#include "../log.h"
-
-using namespace std;
+#include "../ui/commandline.h"
+#include "../ui/chatlog.h"
+#include "../setting/setting.h"
+#include "../log/log.h"
 
 void InteractiveDeleteContact()
 {
     quickPrintLog(INFO, "Deleting contact...");
 
-    string targetAlias;
+    std::string targetAlias;
     do
     {
         ncOutCmd("Alias (must be exact): ");

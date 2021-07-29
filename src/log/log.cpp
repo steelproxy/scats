@@ -11,9 +11,8 @@
 #include <ctime>
 #include "log.h"
 
-using namespace std;
 
-string makeTimestamp()
+std::string makeTimestamp()
 {
     std::ostringstream stringBuilder;
     time_t rawTime; // used for storing result of time()
@@ -25,31 +24,31 @@ string makeTimestamp()
     char buffer[80];
     strftime(buffer, 80, "%T", hTime);
 
-    stringBuilder.str(string());
+    stringBuilder.str(std::string());
     stringBuilder << "(" << buffer << ")";           // insert seconds
 
     std::string timestamp;           // used for storing timestamp
-    timestamp = stringBuilder.str(); // store string timestamp
+    timestamp = stringBuilder.str(); // store std::string timestamp
     return timestamp;
 }
 
 Log::Log() // default constructor
 {
     this->level = INFO;
-    this->path = string(); // set default empty string
+    this->path = std::string(); // set default empty std::string
 }
 
-Log::Log(string newPath) // string constructor, open path
+Log::Log(std::string newPath) // std::string constructor, open path
 {
     this->level = INFO;
-    this->file.open(newPath, ios::app); // open file
+    this->file.open(newPath, std::ios::app); // open file
     this->path = newPath;               // set new path
 }
 
-void Log::open(string newPath) // opens the log file
+void Log::open(std::string newPath) // opens the log file
 {
     this->path = newPath;               // set new path
-    this->file.open(newPath, ios::app); // open file
+    this->file.open(newPath, std::ios::app); // open file
     if (this->file.fail())              // if file fails
     {
         throw "Unable to open file!";
@@ -64,10 +63,10 @@ void Log::close() // close the log file
 void Log::truncate() // truncate log, reopen in trunc mode
 {
     this->file.close();                                 // close file for reopening
-    this->file.open(this->path, ios::trunc | ios::out); // reopen file in truncated mode
+    this->file.open(this->path, std::ios::trunc | std::ios::out); // reopen file in truncated mode
     if (this->file.fail())                              // if it fails to open
     {
-        this->file = ofstream(); // set default empty ofstream
+        this->file = std::ofstream(); // set default empty std::ofstream
         throw "Unable to open file!";
     }
 }
@@ -81,12 +80,12 @@ void Log::writeLine(LogLevel level, const char *func, const int line, std::strin
 
     if (!(this->file.is_open()) || !(this->file.good())) // check if file is okay for writing
     {
-        this->file = ofstream();
-        throw "Unable to open file!";
+        this->file = std::ofstream();
+        //throw "Unable to open file!";
     }
 
-    ostringstream ssformattedFunc;
-    string formattedFunc;
+    std::ostringstream ssformattedFunc;
+    std::string formattedFunc;
     ssformattedFunc << "{" << func << ":" << line << "}: ";
     formattedFunc = ssformattedFunc.str();
 
@@ -98,7 +97,7 @@ void Log::writeLine(LogLevel level, const char *func, const int line, std::strin
 
     static const char *severityString[5] = {" [verbose] ", " [info] ", " [warning] ", " [error] ", " [severe] "};
 
-    this->file << makeTimestamp() << setw(12) << fixed << severityString[level] << setw(longestFunc) << formattedFunc << message << endl;
+    this->file << makeTimestamp() << std::setw(12) << std::fixed << severityString[level] << std::setw(longestFunc) << formattedFunc << message << std::endl;
 }
 
 void Log::setLevel(LogLevel newLevel)
@@ -106,7 +105,7 @@ void Log::setLevel(LogLevel newLevel)
     this->level = newLevel;
 }
 
-LogLevel LevelToI(string level)
+LogLevel LevelToI(std::string level)
 {
     if (level == "verbose")
     {

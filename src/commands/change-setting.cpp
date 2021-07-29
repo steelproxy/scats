@@ -1,19 +1,17 @@
-#include "../commandline.h"
-#include "../chatlog.h"
-#include "../log.h"
-#include "../setting.h"
-
-using namespace std;
+#include "../ui/commandline.h"
+#include "../ui/chatlog.h"
+#include "../log/log.h"
+#include "../setting/setting.h"
 
 void InteractiveChangeSetting()
 {
     quickPrintLog(INFO, "Changing setting...");
 
-    string newValue;
-    string oldDescription;
-    string oldDefault;
+    std::string newValue;
+    std::string oldDescription;
+    std::string oldDefault;
 
-    string targetSection;
+    std::string targetSection;
     do
     {
         ncOutCmd("Section: ");
@@ -25,7 +23,7 @@ void InteractiveChangeSetting()
         return;
     }
 
-    string targetKey;
+    std::string targetKey;
     do
     {
         ncOutCmd("Key: ");

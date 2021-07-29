@@ -1,14 +1,12 @@
 #include <string>
-#include "../chatlog.h"
-#include "../commandline.h"
-#include "../setting.h"
-#include "../log.h"
-
-using namespace std;
+#include "../ui/chatlog.h"
+#include "../ui/commandline.h"
+#include "../setting/setting.h"
+#include "../log/log.h"
 
 void InteractiveNuke()
 {
-    string nukePrompt;
+    std::string nukePrompt;
     ncOutCmd("Would you like to delete your user files? (y/n): ");
     nukePrompt = GetConsoleInput(false);
     if (nukePrompt == "y")

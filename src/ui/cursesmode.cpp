@@ -1,9 +1,7 @@
 #include "cursesmode.h"
-#include "log.h"
+#include "../log/log.h"
 #include <curses.h>
 #include <vector>
-
-using namespace std;
 
 WINDOW* activeWindow;
 int cursorY;
@@ -29,7 +27,7 @@ void RestoreCursorPosition()
     wrefresh(activeWindow);
 }
 
-bool isPrintStr(string str)
+bool isPrintStr(std::string str)
 {
     for (size_t index = 0; index < str.length(); index++)
     {

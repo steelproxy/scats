@@ -1,10 +1,8 @@
 #include <iostream>
 #include "ini.h"
-#include "log.h"
-#include "chatlog.h"
-#include "setting.h"
-
-using namespace std;
+#include "../log/log.h"
+#include "../ui/chatlog.h"
+#include "../setting/setting.h"
 
 mINI::INIFile *_iniFile;
 mINI::INIStructure _iniStructure;
@@ -66,13 +64,13 @@ void ListINI(mINI::INIStructure &_targetStructure)
     }
 }
 
-const int getInt(string section, string key, int def)
+const int getInt(std::string section, std::string key, int def)
 {
-    string value = _iniStructure[section][key];
+    std::string value = _iniStructure[section][key];
     quickLog(VERBOSE, "section=" << section << " key=" << key << " value=" << value);
 
     int _intValue = 0;
-    stringstream ssValue(value);
+    std::stringstream ssValue(value);
     ssValue >> _intValue;
 
     if(_intValue > 0)
@@ -80,7 +78,7 @@ const int getInt(string section, string key, int def)
     return def;
 }
 
-bool FileExists(string path)
+bool FileExists(std::string path)
 {
     struct stat buffer;
     if (stat(path.c_str(), &buffer) == 0)
@@ -91,7 +89,7 @@ bool FileExists(string path)
     return false;
 }
 
-void SanitizeINIString(string &dirtyString)
+void SanitizeINIString(std::string &dirtyString)
 {
     for (size_t index = 0; index < dirtyString.length(); index++)
     {

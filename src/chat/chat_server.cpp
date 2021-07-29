@@ -17,12 +17,10 @@
 #include <utility>
 #include <boost/asio.hpp>
 #include "chat_message.hpp"
-#include "chatlog.h"
-#include "commandline.h"
-#include "log.h"
-#include "setting.h"
-
-using boost::asio::ip::tcp;
+#include "../ui/chatlog.h"
+#include "../ui/commandline.h"
+#include "../log/log.h"
+#include "../setting/setting.h"
 
 //----------------------------------------------------------------------
 
@@ -106,7 +104,7 @@ class chat_session
       public std::enable_shared_from_this<chat_session>
 {
 public:
-  chat_session(tcp::socket socket, chat_room &room)
+  chat_session(boost::asio::ip::tcp::socket socket, chat_room &room)
       : socket_(std::move(socket)),
         room_(room)
   {
@@ -186,7 +184,7 @@ private:
                              });
   }
 
-  tcp::socket socket_;
+  boost::asio::ip::tcp::socket socket_;
   chat_room &room_;
   chat_message read_msg_;
   chat_message_queue write_msgs_;
@@ -198,7 +196,7 @@ class chat_server
 {
 public:
   chat_server(boost::asio::io_context &io_context,
-              const tcp::endpoint &endpoint)
+              const boost::asio::ip::tcp::endpoint &endpoint)
       : acceptor_(io_context, endpoint)
   {
     quickPrintLog(INFO, "Starting server...");
@@ -209,7 +207,7 @@ private:
   void do_accept()
   {
     acceptor_.async_accept(
-        [this](boost::system::error_code ec, tcp::socket socket) {
+        [this](boost::system::error_code ec, boost::asio::ip::tcp::socket socket) {
           if (!ec)
           {
             quickPrintLog(INFO, "Accepting connection....");
@@ -220,7 +218,7 @@ private:
         });
   }
 
-  tcp::acceptor acceptor_;
+  boost::asio::ip::tcp::acceptor acceptor_;
   chat_room room_;
 };
 
@@ -235,7 +233,7 @@ void StartChatServer(std::string port)
     std::list<chat_server> servers;
     for (int i = 0; i < 1; i++)
     {
-      tcp::endpoint endpoint(tcp::v4(), std::atoi(port.c_str()));
+      boost::asio::ip::tcp::endpoint endpoint(boost::asio::ip::tcp::v4(), std::atoi(port.c_str()));
       servers.emplace_back(io_context, endpoint);
     }
 

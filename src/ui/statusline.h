@@ -10,24 +10,23 @@ public:
     StatusLine();
 
     void *Redraw();
-    static void *RedrawHelper(void* context);
 
     bool Unread();
     bool Unread(bool newUnread); 
 
-    void SetConnect(bool);
+    void SetConnect(bool newConnected);
     bool GetConnect();
 
     void Resize();
 
 private:
     void Clear();
-    
-    pthread_t statusLineThread;
-    WINDOW* wStatusLine;
-    WINDOW* wRoot;
-    bool unread;
-    bool connected;
+    static void *RedrawHelper(void* context);
+
+    pthread_t _statusLineThread;
+    WINDOW* _wStatusLine;
+    bool _unread;
+    bool _connected;
 };
 
 extern StatusLine *statusLine;

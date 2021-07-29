@@ -1,15 +1,13 @@
-#include "../commandline.h"
-#include "../chatlog.h"
-#include "../log.h"
-#include "../setting.h"
-
-using namespace std;
+#include "../ui/commandline.h"
+#include "../ui/chatlog.h"
+#include "../log/log.h"
+#include "../setting/setting.h"
 
 void InteractiveDeleteSetting()
 {
     quickPrintLog(INFO, "Deleting setting...");
 
-    string targetSection;
+    std::string targetSection;
     do
     {
         ncOutCmd("Section: ");
@@ -17,7 +15,7 @@ void InteractiveDeleteSetting()
     } while (targetSection.empty());
     ncOutUsr("Section: " << targetSection);
 
-    string targetKey;
+    std::string targetKey;
     do
     {
         ncOutCmd("Key: ");

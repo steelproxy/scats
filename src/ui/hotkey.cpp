@@ -1,5 +1,5 @@
 #include "hotkey.h"
-#include "log.h"
+#include "../log/log.h"
 
 HotkeyManager::HotkeyManager()
 {
@@ -8,7 +8,7 @@ HotkeyManager::HotkeyManager()
 
 int HotkeyManager::AddHotkey(int key, voidFunctionType func)
 {
-    for(auto iterator = hotkeys.begin(); iterator != hotkeys.end(); iterator++)
+    for(auto iterator = this->_hotkeys.begin(); iterator != this->_hotkeys.end(); iterator++)
     {
         if(iterator -> first == key)
         {
@@ -17,29 +17,30 @@ int HotkeyManager::AddHotkey(int key, voidFunctionType func)
         }
     }
 
-    hotkeys.insert({key, func});
+    this->_hotkeys.insert({key, func});
     quickLog(INFO, "Hotkey " << key << " has been bound.");
+    return 0;
 }
 
 int HotkeyManager::DeleteHotkey(int key)
 {
-    for(auto iterator = hotkeys.begin(); iterator != hotkeys.end(); iterator++)
+    for(auto iterator = this->_hotkeys.begin(); iterator != this->_hotkeys.end(); iterator++)
     {
         if(iterator -> first == key)
         {
-            hotkeys.erase(iterator);
+            this->_hotkeys.erase(iterator);
             quickLog(INFO, "Hotkey " << key << " erased.");
             return 0;
         }
     }
 
     quickLog(ERROR, "Hotkey " << key << " was not bound and hasn't been deleted.");
-    return -1;
+    return 1;
 }
 
 void HotkeyManager::ProcessKey(int key)
 {
-    for(auto iterator = hotkeys.begin(); iterator != hotkeys.end(); iterator++)
+    for(auto iterator = this->_hotkeys.begin(); iterator != this->_hotkeys.end(); iterator++)
     {
         if(iterator -> first == key)
         {

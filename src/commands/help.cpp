@@ -1,7 +1,5 @@
-#include "../chatlog.h"
-#include "../log.h"
-
-using namespace std;
+#include "../ui/chatlog.h"
+#include "../log/log.h"
 
 void DisplayHelp()
 {

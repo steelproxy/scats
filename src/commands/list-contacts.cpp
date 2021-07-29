@@ -1,8 +1,6 @@
-#include "../chatlog.h"
-#include "../log.h"
-#include "../setting.h"
-
-using namespace std;
+#include "../ui/chatlog.h"
+#include "../log/log.h"
+#include "../setting/setting.h"
 
 void InteractiveListContacts()
 {
@@ -13,7 +11,7 @@ void InteractiveListContacts()
                 auto const &section = it.first;
                 auto const &collection = it.second;
                 size_t foundAt = 0;
-                if ((foundAt = section.find("contact/", 0)) != string::npos)
+                if ((foundAt = section.find("contact/", 0)) != std::string::npos)
                 {
                     ncOutUsr("[" << section.substr(foundAt) << "]");
                     for (auto const &it2 : collection)

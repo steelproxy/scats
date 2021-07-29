@@ -1,16 +1,14 @@
-#include "../commandline.h"
-#include "../chatlog.h"
-#include "../log.h"
-#include "../setting.h"
-#include "../cursesmode.h"
-
-using namespace std;
+#include "../ui/commandline.h"
+#include "../ui/chatlog.h"
+#include "../ui/cursesmode.h"
+#include "../log/log.h"
+#include "../setting/setting.h"
 
 void InteractiveSetUserHandle()
 {
     quickPrintLog(INFO, "Setting new user handle...");
 
-    string userHandle;
+    std::string userHandle;
     ncOutUsr("Please enter a new user handle.");
     ncOutCmd("Handle (max 16 characters, no special characters): ");
     userHandle = GetConsoleInput(false);

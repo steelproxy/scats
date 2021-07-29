@@ -10,7 +10,7 @@
 
 #include <vector>
 #include <curses.h>
-#include "../setting.h"
+#include "../setting/setting.h"
 
 /// 
 /// @brief Interactive function for setting user handle.
@@ -50,5 +50,7 @@ void InteractiveListContacts();
 void InteractiveListSettings();
 
 void InteractiveNuke();
+
+void InteractiveEditSettings();
 
 #endif

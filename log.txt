@@ -1,0 +1,283 @@
+      (04:15:53)     [info]      {main:97}: Starting scats...
+(04:15:53)     [info] {LoadSettings:32}: Reading settings...
+(04:15:55)     [info]   {ProcessKey:47}: Hotkey 27 executing...
+(04:16:18)     [info] {InteractiveEditSettingsCleanup:16}: Caught sigint, exiting settings editor...
+(04:16:18)     [info]                  {SignalHandler:41}: Sigint caught.
+(04:16:20)    [error]                          {main:174}: Not connected to chat!
+(04:16:20)    [error]                          {main:174}: Not connected to chat!
+(04:16:20)    [error]                          {main:174}: Not connected to chat!
+(04:16:20)    [error]                          {main:174}: Not connected to chat!
+(04:16:21)    [error]                          {main:174}: Not connected to chat!
+(04:16:27)     [info]                     {ProcessKey:47}: Hotkey 27 executing...
+(04:16:32)     [info] {InteractiveEditSettingsCleanup:16}: Caught sigint, exiting settings editor...
+(04:16:32)     [info]                  {SignalHandler:41}: Sigint caught.
+(04:16:35)     [info]                     {ProcessKey:47}: Hotkey 27 executing...
+(04:16:36)     [info] {InteractiveEditSettingsCleanup:16}: Caught sigint, exiting settings editor...
+(04:16:36)     [info]                  {SignalHandler:41}: Sigint caught.
+(04:16:41)     [info]                     {ProcessKey:47}: Hotkey 27 executing...
+(04:16:44)     [info] {InteractiveEditSettingsCleanup:16}: Caught sigint, exiting settings editor...
+(04:16:44)     [info]                  {SignalHandler:41}: Sigint caught.
+(04:16:46)     [info]                     {ProcessKey:47}: Hotkey 27 executing...
+(04:16:50)     [info] {InteractiveEditSettingsCleanup:16}: Caught sigint, exiting settings editor...
+(04:16:50)     [info]                  {SignalHandler:41}: Sigint caught.
+(04:16:59)    [error]                          {main:174}: Not connected to chat!
+(04:16:59)    [error]                          {main:174}: Not connected to chat!
+(04:17:00)    [error]                          {main:174}: Not connected to chat!
+(04:17:02)    [error]                          {main:174}: Not connected to chat!
+(04:17:03)    [error]                          {main:174}: Not connected to chat!
+(04:17:03)    [error]                          {main:174}: Not connected to chat!
+(04:17:03)    [error]                          {main:174}: Not connected to chat!
+(04:17:03)    [error]                          {main:174}: Not connected to chat!
+(04:17:03)    [error]                          {main:174}: Not connected to chat!
+(04:17:03)    [error]                          {main:174}: Not connected to chat!
+(04:17:03)    [error]                          {main:174}: Not connected to chat!
+(04:17:03)    [error]                          {main:174}: Not connected to chat!
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
+(04:17:14)    [error]                     {ProcessKey:53}: Hotkey -1 was not bound and hasn't been executed.
