@@ -6,9 +6,11 @@
 #include <vector>
 #include <map>
 #include "../ui/hotkey.h"
+#include "../commands/commands.h"
 
 #define KEY_ESCAPE 27
 #define KEY_DELETE 330
+#define __KEY_BACKSPACE 127
 #define ctrl(x) ((x)&0x1f)
 
 #define ncOutCmd(message)                        \
@@ -41,7 +43,7 @@ private:
     WINDOW *_wCommandLine;
     size_t _commandHistoryIndex;
     std::vector<std::string> _commandHistory;
-    std::map<std::string, voidFunctionType> _commands;
+    std::vector<Command> _commands;
     HotkeyManager _hotkeyMan;
 };
 

@@ -1,187 +1,221 @@
 make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 make: *** No rule to make target 'all'.  Stop.
  
-# GNU Make 4.2.1
-# Built for x86_64-redhat-linux-gnu
-# Copyright (C) 1988-2016 Free Software Foundation, Inc.
+# GNU Make 4.3
+# Built for x86_64-pc-linux-gnu
+# Copyright (C) 1988-2020 Free Software Foundation, Inc.
 # License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Thu Jul 29 07:20:12 2021
+# Make data base, printed on Thu Jul 29 20:09:41 2021
 
 # Variables
 
+# environment
+GDK_BACKEND = x11
+# environment
+LC_ALL = C
+# environment
+NO_AT_BRIDGE = 1
+# makefile (from 'Makefile', line 4)
+OBJDIR = obj
+# environment
+GJS_DEBUG_OUTPUT = stderr
+# makefile (from 'Makefile', line 6)
+BINDIR = bin
+# environment
+VSCODE_IPC_HOOK_EXTHOST = /run/user/974/vscode-ipc-f82bb106-d9d3-45a7-88ac-48516538f698.sock
+# environment
+VSCODE_CWD = /home/anon
+# environment
+GDM_LANG = en_US.UTF-8
+# default
+MAKE_COMMAND := make
 # automatic
-<D = $(patsubst %/,%,$(dir $<))
+@D = $(patsubst %/,%,$(dir $@))
+# environment
+VSCODE_BROWSER_CODE_LOADING = bypassHeatCheck
+# environment
+VSCODE_HANDLES_UNCAUGHT_ERRORS = true
+# default
+.VARIABLES := 
+# environment
+PWD = /home/anon/Desktop/scats
 # automatic
-?F = $(notdir $?)
+%D = $(patsubst %/,%,$(dir $%))
+# environment
+MAIL = /var/spool/mail/anon
+# automatic
+^D = $(patsubst %/,%,$(dir $^))
+# environment
+VSCODE_LOG_STACK = false
+# automatic
+%F = $(notdir $%)
+# environment
+VSCODE_CODE_CACHE_PATH = /home/anon/.config/Code/CachedData/c3f126316369cd610563c75b1b1725e0679adfb3
+# environment
+LANG = C
+# environment
+XAUTHORITY = /run/user/974/.mutter-Xwaylandauth.JXUF70
+# default
+.LOADED := 
+# default
+.INCLUDE_DIRS = /usr/include /usr/local/include /usr/include
+# makefile
+MAKEFLAGS = pqrR
+# makefile
+CURDIR := /home/anon/Desktop/scats
+# environment
+VSCODE_PIPE_LOGGING = true
+# environment
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = true
+# automatic
+*D = $(patsubst %/,%,$(dir $*))
+# environment
+MFLAGS = -pqrR
+# environment
+SSH_AUTH_SOCK = /run/user/974/keyring/ssh
 # default
 .SHELLFLAGS := -c
 # environment
-XDG_SESSION_CLASS = user
+WAYLAND_DISPLAY = wayland-0
+# automatic
++D = $(patsubst %/,%,$(dir $+))
 # environment
-VSCODE_AGENT_FOLDER = /home/anon/.vscode-server
+XDG_SESSION_DESKTOP = gnome
 # environment
-XDG_SESSION_TYPE = tty
+VSCODE_CRASH_REPORTER_START_OPTIONS = {"companyName":"Microsoft","productName":"VSCode","submitURL":"appcenter://code?aid=fba07a4d-84bd-4fc8-a125-9640fc8ce171&uid=7b5818ec-6778-4aca-8ea5-72ae5570f830&iid=7b5818ec-6778-4aca-8ea5-72ae5570f830&sid=7b5818ec-6778-4aca-8ea5-72ae5570f830","uploadToServer":true}
+# makefile (from 'Makefile', line 1)
+MAKEFILE_LIST := Makefile
+# automatic
+@F = $(notdir $@)
 # environment
-VSCODE_LOG_NATIVE = false
-# makefile (from 'Makefile', line 7)
-TARGET = scats
+VSCODE_VERBOSE_LOGGING = true
+# environment
+VSCODE_PID = 104845
+# environment
+XDG_SESSION_TYPE = wayland
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
 # makefile (from 'Makefile', line 11)
 INCLUDES := src/scats.h
+# environment
+SESSION_MANAGER = local/anon-pc:@/tmp/.ICE-unix/81084,unix/anon-pc:/tmp/.ICE-unix/81084
 # automatic
-@D = $(patsubst %/,%,$(dir $@))
+*F = $(notdir $*)
+# environment
+CHROME_DESKTOP = code-url-handler.desktop
+# environment
+DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/974/bus
 # automatic
-@F = $(notdir $@)
+<D = $(patsubst %/,%,$(dir $<))
+# environment
+VSCODE_NLS_CONFIG = {"locale":"en-us","availableLanguages":{},"_languagePackSupport":true}
+# environment
+BREAKPAD_DUMP_LOCATION = /home/anon/.config/Code/exthost Crash Reports
 # default
-MAKE_VERSION := 4.2.1
-# makefile
-CURDIR := /home/anon/Working/scats
+MAKE_HOST := x86_64-pc-linux-gnu
 # makefile
 SHELL = /bin/sh
-# environment
-VSCODE_NLS_CONFIG = {"locale":"en","availableLanguages":{}}
-# environment
-_ = /usr/bin/make
-# makefile (from 'Makefile', line 2)
-CFLAGS = -std=c++11 -Wall -Wpedantic -g -lpthread -lncurses -lboost_system -fpermissive
-# makefile (from 'Makefile', line 1)
-MAKEFILE_LIST :=  Makefile
-# environment
-HISTCONTROL = ignoredups
-# 'override' directive
-GNUMAKEFLAGS := 
-# makefile (from 'Makefile', line 10)
-SOURCES := src/scats.cpp src/ui/cursesmode.cpp src/ui/statusline.cpp src/ui/commandline.cpp src/ui/chatlog.cpp src/ui/hotkey.cpp src/log/log.cpp src/setting/setting.cpp src/chat/chat_server.cpp src/chat/chat_client.cpp src/commands/delete-contact.cpp src/commands/delete-setting.cpp src/commands/nuke.cpp src/commands/set-user-handle.cpp src/commands/change-contact.cpp src/commands/change-setting.cpp src/commands/list-settings.cpp src/commands/list-contacts.cpp src/commands/edit-settings.cpp src/commands/help.cpp src/commands/add-setting.cpp src/commands/add-contact.cpp
-# environment
-DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus
-# environment
-VSCODE_VERBOSE_LOGGING = true
-# environment
-LESSOPEN = ||/usr/bin/lesspipe.sh %s
-# environment
-VSCODE_CWD = /home/anon
-# environment
-SSH_CONNECTION = 2603:6011:2639:60bd:8039:863f:480c:a98b 60412 2604:a880:400:d0::1a6d:a001 1000
-# environment
-PATH = /home/anon/.vscode-server/bin/c3f126316369cd610563c75b1b1725e0679adfb3/bin:/home/anon/.vscode-server/bin/c3f126316369cd610563c75b1b1725e0679adfb3/bin:/home/anon/.local/bin:/home/anon/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin
-# environment
-VSCODE_IPC_HOOK_CLI = /run/user/1000/vscode-ipc-3374d0b3-1cfe-466d-a468-43580966146b.sock
-# environment
-XDG_RUNTIME_DIR = /run/user/1000
-# environment
-VSCODE_LOG_STACK = false
-# environment
-SELINUX_USE_CURRENT_RANGE = 
 # default
-.FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink guile load
-# makefile (from 'Makefile', line 5)
-SRCDIR = src
-# automatic
-%F = $(notdir $%)
+MAKECMDGOALS := all
 # environment
-VSCODE_PIPE_LOGGING = true
+GJS_DEBUG_TOPICS = JS ERROR;JS LOG
 # environment
-PWD = /home/anon/Working/scats
-# default
-.LOADED := 
-# automatic
-*D = $(patsubst %/,%,$(dir $*))
-# environment
-VSCODE_AMD_ENTRYPOINT = vs/server/remoteExtensionHostProcess
-# environment
-HOME = /home/anon
-# environment
-LOGNAME = anon
-# environment
-APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = true
-# automatic
-+F = $(notdir $+)
-# environment
-SELINUX_LEVEL_REQUESTED = 
-# environment
-VSCODE_HANDLES_UNCAUGHT_ERRORS = true
-# automatic
-^D = $(patsubst %/,%,$(dir $^))
-# environment
-HOSTNAME = anon-dev-server
+SHLVL = 0
 # environment
 MAKELEVEL := 0
 # default
 MAKE = $(MAKE_COMMAND)
-# default
-MAKECMDGOALS := all
 # environment
-SHLVL = 2
-# makefile (from 'Makefile', line 6)
-BINDIR = bin
-# makefile (from 'Makefile', line 1)
-CC = g++
-# environment
-XDG_SESSION_ID = 139
-# environment
-USER = anon
-# makefile
-.DEFAULT_GOAL := build
-# automatic
-%D = $(patsubst %/,%,$(dir $%))
-# default
-MAKE_COMMAND := make
-# environment
-OLDPWD = /home/anon/.vscode-server/bin/c3f126316369cd610563c75b1b1725e0679adfb3
-# default
-.VARIABLES := 
-# automatic
-*F = $(notdir $*)
-# makefile
-MAKEFLAGS = pqrR
-# environment
-MFLAGS = -pqrR
-# environment
-SSH_CLIENT = 2603:6011:2639:60bd:8039:863f:480c:a98b 60412 1000
-# environment
-MAIL = /var/spool/mail/anon
-# automatic
-+D = $(patsubst %/,%,$(dir $+))
-# environment
-BROWSER = /home/anon/.vscode-server/bin/c3f126316369cd610563c75b1b1725e0679adfb3/bin/helpers/browser.sh
+PATH = /usr/local/bin:/usr/bin:/usr/local/sbin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl
 # default
 MAKEFILES := 
-# automatic
-<F = $(notdir $<)
-# makefile (from 'Makefile', line 4)
-OBJDIR = obj
 # environment
-LC_ALL = C
+MOTD_SHOWN = pam
 # automatic
 ^F = $(notdir $^)
 # environment
-SELINUX_ROLE_REQUESTED = 
-# default
-SUFFIXES := 
+INVOCATION_ID = 18c3c8d8e6c44b49ae34729b2cfa211c
 # environment
-HISTSIZE = 1000
-# default
-.INCLUDE_DIRS = /usr/include /usr/local/include /usr/include
+VSCODE_LOG_NATIVE = false
 # environment
-VSCODE_INJECT_NODE_MODULE_LOOKUP_PATH = /home/anon/.vscode-server/bin/c3f126316369cd610563c75b1b1725e0679adfb3/remote/node_modules
+USERNAME = anon
+# environment
+GNOME_SETUP_DISPLAY = :1
+# automatic
+?F = $(notdir $?)
+# environment
+XDG_CURRENT_DESKTOP = GNOME
+# automatic
++F = $(notdir $+)
+# environment
+DESKTOP_SESSION = gnome
+# environment
+ORIGINAL_XDG_CURRENT_DESKTOP = GNOME
+# makefile (from 'Makefile', line 12)
+OBJECTS := obj/scats.o obj/chat/chat_client.o obj/chat/chat_server.o obj/commands/add-contact.o obj/commands/add-setting.o obj/commands/change-contact.o obj/commands/change-setting.o obj/commands/delete-contact.o obj/commands/delete-setting.o obj/commands/edit-settings.o obj/commands/help.o obj/commands/list-contacts.o obj/commands/list-settings.o obj/commands/nuke.o obj/commands/set-user-handle.o obj/log/log.o obj/setting/setting.o obj/ui/chatlog.o obj/ui/commandline.o obj/ui/cursesmode.o obj/ui/hotkey.o obj/ui/statusline.o
+# 'override' directive
+GNUMAKEFLAGS := 
+# environment
+LOGNAME = anon
+# environment
+GIO_LAUNCHED_DESKTOP_FILE = /usr/share/applications/visual-studio-code.desktop
+# makefile
+.DEFAULT_GOAL := build
+# environment
+SYSTEMD_EXEC_PID = 81099
+# environment
+DISPLAY = :0
+# environment
+USER = anon
+# default
+MAKE_VERSION := 4.3
+# environment
+MANAGERPID = 81042
+# environment
+GIO_LAUNCHED_DESKTOP_FILE_PID = 104845
+# environment
+_ = /usr/bin/make
+# environment
+XDG_RUNTIME_DIR = /run/user/974
+# makefile (from 'Makefile', line 2)
+CFLAGS = -std=c++11 -Wall -Wpedantic -g -lpthread -lncurses -lboost_system -fpermissive
+# environment
+JOURNAL_STREAM = 7:137716
+# environment
+XDG_SESSION_CLASS = user
+# environment
+VSCODE_AMD_ENTRYPOINT = vs/workbench/services/extensions/node/extensionHostProcess
+# environment
+HOME = /home/anon
+# environment
+ELECTRON_RUN_AS_NODE = 1
+# environment
+VSCODE_IPC_HOOK = /run/user/974/vscode-dcaf2c08-1.58.2-main.sock
+# makefile (from 'Makefile', line 5)
+SRCDIR = src
 # default
 .RECIPEPREFIX := 
-# makefile (from 'Makefile', line 12)
-OBJECTS := obj/scats.o obj/ui/cursesmode.o obj/ui/statusline.o obj/ui/commandline.o obj/ui/chatlog.o obj/ui/hotkey.o obj/log/log.o obj/setting/setting.o obj/chat/chat_server.o obj/chat/chat_client.o obj/commands/delete-contact.o obj/commands/delete-setting.o obj/commands/nuke.o obj/commands/set-user-handle.o obj/commands/change-contact.o obj/commands/change-setting.o obj/commands/list-settings.o obj/commands/list-contacts.o obj/commands/edit-settings.o obj/commands/help.o obj/commands/add-setting.o obj/commands/add-contact.o
+# automatic
+<F = $(notdir $<)
 # default
-MAKE_HOST := x86_64-redhat-linux-gnu
+SUFFIXES := 
+# makefile (from 'Makefile', line 7)
+TARGET = scats
+# default
+.FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell nocomment grouped-target extra-prereqs archives jobserver output-sync check-symlink guile load
+# makefile (from 'Makefile', line 1)
+CC = g++
+# makefile (from 'Makefile', line 10)
+SOURCES := src/scats.cpp src/chat/chat_client.cpp src/chat/chat_server.cpp src/commands/add-contact.cpp src/commands/add-setting.cpp src/commands/change-contact.cpp src/commands/change-setting.cpp src/commands/delete-contact.cpp src/commands/delete-setting.cpp src/commands/edit-settings.cpp src/commands/help.cpp src/commands/list-contacts.cpp src/commands/list-settings.cpp src/commands/nuke.cpp src/commands/set-user-handle.cpp src/log/log.cpp src/setting/setting.cpp src/ui/chatlog.cpp src/ui/commandline.cpp src/ui/cursesmode.cpp src/ui/hotkey.cpp src/ui/statusline.cpp
 # environment
-LANG = C
+XDG_MENU_PREFIX = gnome-
 # environment
-VSCODE_EXTHOST_WILL_SEND_SOCKET = true
-# environment
-MOTD_SHOWN = pam
+GDMSESSION = gnome
 # variable set hash-table stats:
-# Load=84/1024=8%, Rehash=0, Collisions=10/126=8%
+# Load=101/1024=10%, Rehash=0, Collisions=4/148=3%
 
 # Pattern-specific Variable Values
 
@@ -189,17 +223,15 @@ MOTD_SHOWN = pam
 
 # Directories
 
-# src/commands (device 64513, inode 266720): 15 files, no impossibilities.
-# src/chat (device 64513, inode 262301): 5 files, no impossibilities.
-# src/setting (device 64513, inode 266837): 5 files, no impossibilities.
-# . (device 64513, inode 262224): 12 files, no impossibilities.
-# src/log (device 64513, inode 266838): 4 files, no impossibilities.
-# src/scats.h (device 64513, inode 266829): could not be opened.
-# src/scats.cpp (device 64513, inode 266747): could not be opened.
-# src/ui (device 64513, inode 266836): 12 files, no impossibilities.
-# src (device 64513, inode 266719): 9 files, no impossibilities.
+# src/log (device 65026, inode 5243109): 4 files, no impossibilities.
+# src/setting (device 65026, inode 5243149): 5 files, no impossibilities.
+# src/ui (device 65026, inode 5243190): 13 files, no impossibilities.
+# src (device 65026, inode 5243090): 9 files, no impossibilities.
+# src/commands (device 65026, inode 5243095): 16 files, no impossibilities.
+# . (device 65026, inode 5242988): 15 files, no impossibilities.
+# src/chat (device 65026, inode 5243091): 5 files, no impossibilities.
 
-# 62 files, no impossibilities in 9 directories.
+# 67 files, no impossibilities in 7 directories.
 
 # Implicit Rules
 
@@ -207,25 +239,24 @@ MOTD_SHOWN = pam
 
 # Files
 
-obj/commands/set-user-handle.o: src/commands/set-user-handle.cpp src/scats.h
+obj/ui/statusline.o: src/ui/statusline.cpp src/scats.h
 #  Implicit rule search has not been done.
-#  Implicit/static pattern stem: 'commands/set-user-handle'
+#  Implicit/static pattern stem: 'ui/statusline'
 #  Modification time never checked.
 #  File has not been updated.
 #  recipe to execute (from 'Makefile', line 20):
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
 # Not a target:
-src/ui/cursesmode.cpp:
+src/commands/edit-settings.cpp:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
 
 # Not a target:
-all:
-#  Command line target.
-#  Implicit rule search has been done.
-#  File does not exist.
+src/commands/add-contact.cpp:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
 #  File has not been updated.
 
 obj/commands/list-settings.o: src/commands/list-settings.cpp src/scats.h
@@ -237,43 +268,7 @@ obj/commands/list-settings.o: src/commands/list-settings.cpp src/scats.h
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
 # Not a target:
-src/commands/delete-contact.cpp:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-
-obj/commands/delete-setting.o: src/commands/delete-setting.cpp src/scats.h
-#  Implicit rule search has not been done.
-#  Implicit/static pattern stem: 'commands/delete-setting'
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'Makefile', line 20):
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
-
-obj/chat/chat_server.o: src/chat/chat_server.cpp src/scats.h
-#  Implicit rule search has not been done.
-#  Implicit/static pattern stem: 'chat/chat_server'
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'Makefile', line 20):
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
-
-obj/commands/edit-settings.o: src/commands/edit-settings.cpp src/scats.h
-#  Implicit rule search has not been done.
-#  Implicit/static pattern stem: 'commands/edit-settings'
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'Makefile', line 20):
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
-
-# Not a target:
-src/setting/setting.cpp:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-
-# Not a target:
-src/commands/list-contacts.cpp:
+src/scats.h:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
@@ -281,6 +276,67 @@ src/commands/list-contacts.cpp:
 obj/ui/chatlog.o: src/ui/chatlog.cpp src/scats.h
 #  Implicit rule search has not been done.
 #  Implicit/static pattern stem: 'ui/chatlog'
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 20):
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+
+# Not a target:
+src/commands/nuke.cpp:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+src/commands/list-settings.cpp:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+src/commands/help.cpp:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+obj/commands/set-user-handle.o: src/commands/set-user-handle.cpp src/scats.h
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: 'commands/set-user-handle'
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 20):
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+
+# Not a target:
+src/ui/chatlog.cpp:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+Makefile:
+#  Implicit rule search has been done.
+#  Last modified 2021-07-29 02:23:15.720059458
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+src/setting/setting.cpp:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+obj/chat/chat_client.o: src/chat/chat_client.cpp src/scats.h
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: 'chat/chat_client'
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 20):
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+
+obj/commands/delete-setting.o: src/commands/delete-setting.cpp src/scats.h
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: 'commands/delete-setting'
 #  Modification time never checked.
 #  File has not been updated.
 #  recipe to execute (from 'Makefile', line 20):
@@ -294,103 +350,9 @@ obj/ui/commandline.o: src/ui/commandline.cpp src/scats.h
 #  recipe to execute (from 'Makefile', line 20):
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
-# Not a target:
-Makefile:
-#  Implicit rule search has been done.
-#  Last modified 2021-04-12 01:14:29
-#  File has been updated.
-#  Successfully updated.
-
-obj/log/log.o: src/log/log.cpp src/scats.h
-#  Implicit rule search has not been done.
-#  Implicit/static pattern stem: 'log/log'
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'Makefile', line 20):
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
-
-# Not a target:
-src/ui/hotkey.cpp:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-
-# Not a target:
-src/commands/help.cpp:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-
-build: bin/scats
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-
-# Not a target:
-src/commands/add-setting.cpp:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-
-obj/ui/statusline.o: src/ui/statusline.cpp src/scats.h
-#  Implicit rule search has not been done.
-#  Implicit/static pattern stem: 'ui/statusline'
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'Makefile', line 20):
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
-
 obj/commands/nuke.o: src/commands/nuke.cpp src/scats.h
 #  Implicit rule search has not been done.
 #  Implicit/static pattern stem: 'commands/nuke'
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'Makefile', line 20):
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
-
-obj/scats.o: src/scats.cpp src/scats.h
-#  Implicit rule search has not been done.
-#  Implicit/static pattern stem: 'scats'
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'Makefile', line 20):
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
-
-# Not a target:
-src/chat/chat_client.cpp:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-
-# Not a target:
-src/commands/change-setting.cpp:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-
-# Not a target:
-src/commands/add-contact.cpp:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-
-# Not a target:
-src/commands/set-user-handle.cpp:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-
-obj/commands/change-contact.o: src/commands/change-contact.cpp src/scats.h
-#  Implicit rule search has not been done.
-#  Implicit/static pattern stem: 'commands/change-contact'
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'Makefile', line 20):
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
-
-obj/commands/add-contact.o: src/commands/add-contact.cpp src/scats.h
-#  Implicit rule search has not been done.
-#  Implicit/static pattern stem: 'commands/add-contact'
 #  Modification time never checked.
 #  File has not been updated.
 #  recipe to execute (from 'Makefile', line 20):
@@ -405,25 +367,34 @@ obj/ui/cursesmode.o: src/ui/cursesmode.cpp src/scats.h
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
 # Not a target:
-.DEFAULT:
+src/scats.cpp:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+obj/commands/add-contact.o: src/commands/add-contact.cpp src/scats.h
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: 'commands/add-contact'
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 20):
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+
+clean:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 23):
+	rm $(OBJDIR)/*.o $(BINDIR)/$(TARGET)
+
+# Not a target:
+src/commands/set-user-handle.cpp:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
 
 # Not a target:
-src/commands/list-settings.cpp:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-
-# Not a target:
-src/commands/delete-setting.cpp:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-
-# Not a target:
-src/chat/chat_server.cpp:
+src/ui/hotkey.cpp:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
@@ -435,6 +406,54 @@ written:
 #  recipe to execute (from 'Makefile', line 26):
 	wc $(SRCDIR)/*.cpp $(SRCDIR)/*.h
 
+# Not a target:
+src/log/log.cpp:
+ 
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+obj/log/log.o: src/log/log.cpp src/scats.h
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: 'log/log'
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 20):
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+
+obj/commands/change-contact.o: src/commands/change-contact.cpp src/scats.h
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: 'commands/change-contact'
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 20):
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+
+# Not a target:
+.DEFAULT:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+src/chat/chat_client.cpp:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+src/ui/cursesmode.cpp:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+all:
+#  Command line target.
+#  Implicit rule search has been done.
+#  File does not exist.
+#  File has not been updated.
+
 obj/commands/delete-contact.o: src/commands/delete-contact.cpp src/scats.h
 #  Implicit rule search has not been done.
 #  Implicit/static pattern stem: 'commands/delete-contact'
@@ -444,23 +463,31 @@ obj/commands/delete-contact.o: src/commands/delete-contact.cpp src/scats.h
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
 # Not a target:
-src/commands/edit-settings.cpp:
+src/commands/delete-contact.cpp:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
 
-clean:
+obj/setting/setting.o: src/setting/setting.cpp src/scats.h
 #  Implicit rule search has not been done.
+#  Implicit/static pattern stem: 'setting/setting'
 #  Modification time never checked.
 #  File has not been updated.
-#  recipe to execute (from 'Makefile', line 23):
-	rm $(OBJDIR)/*.o $(BINDIR)/$(TARGET)
+#  recipe to execute (from 'Makefile', line 20):
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
-# Not a target:
-src/ui/chatlog.cpp:
+build: bin/scats
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
+
+obj/commands/change-setting.o: src/commands/change-setting.cpp src/scats.h
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: 'commands/change-setting'
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 20):
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
 # Not a target:
 src/ui/commandline.cpp:
@@ -468,17 +495,98 @@ src/ui/commandline.cpp:
 #  Modification time never checked.
 #  File has not been updated.
 
-obj/commands/help.o: src/commands/help.cpp src/scats.h
+# Not a target:
+src/commands/change-setting.cpp:
 #  Implicit rule search has not been done.
-#  Implicit/static pattern stem: 'commands/help'
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+src/commands/list-contacts.cpp:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+obj/chat/chat_server.o: src/chat/chat_server.cpp src/scats.h
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: 'chat/chat_server'
 #  Modification time never checked.
 #  File has not been updated.
 #  recipe to execute (from 'Makefile', line 20):
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
-obj/setting/setting.o: src/setting/setting.cpp src/scats.h
+# Not a target:
+src/commands/change-contact.cpp:
 #  Implicit rule search has not been done.
-#  Implicit/static pattern stem: 'setting/setting'
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+src/ui/statusline.cpp:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+src/commands/delete-setting.cpp:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+bin/scats: obj/scats.o obj/chat/chat_client.o obj/chat/chat_server.o obj/commands/add-contact.o obj/commands/add-setting.o obj/commands/change-contact.o obj/commands/change-setting.o obj/commands/delete-contact.o obj/commands/delete-setting.o obj/commands/edit-settings.o obj/commands/help.o obj/commands/list-contacts.o obj/commands/list-settings.o obj/commands/nuke.o obj/commands/set-user-handle.o obj/log/log.o obj/setting/setting.o obj/ui/chatlog.o obj/ui/commandline.o obj/ui/cursesmode.o obj/ui/hotkey.o obj/ui/statusline.o
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 17):
+	$(CC) $(CFLAGS) -o $@ $(OBJECTS)
+
+obj/commands/add-setting.o: src/commands/add-setting.cpp src/scats.h
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: 'commands/add-setting'
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 20):
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+
+obj/commands/edit-settings.o: src/commands/edit-settings.cpp src/scats.h
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: 'commands/edit-settings'
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 20):
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+
+obj/scats.o: src/scats.cpp src/scats.h
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: 'scats'
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 20):
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+
+obj/ui/hotkey.o: src/ui/hotkey.cpp src/scats.h
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: 'ui/hotkey'
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 20):
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+
+# Not a target:
+src/chat/chat_server.cpp:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+src/commands/add-setting.cpp:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+obj/commands/help.o: src/commands/help.cpp src/scats.h
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: 'commands/help'
 #  Modification time never checked.
 #  File has not been updated.
 #  recipe to execute (from 'Makefile', line 20):
@@ -492,95 +600,20 @@ obj/commands/list-contacts.o: src/commands/list-contacts.cpp src/scats.h
 #  recipe to execute (from 'Makefile', line 20):
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
-# Not a target:
-src/log/log.cpp:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-
-# Not a target:
-src/scats.h:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-
-obj/ui/hotkey.o: src/ui/hotkey.cpp src/scats.h
-#  Implicit rule search has not been done.
-#  Implicit/static pattern stem: 'ui/hotkey'
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'Makefile', line 20):
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
-
-# Not a target:
-src/ui/statusline.cpp:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-
-# Not a target:
-src/commands/nuke.cpp:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-
-obj/commands/add-setting.o: src/commands/add-setting.cpp src/scats.h
-#  Implicit rule search has not been done.
-#  Implicit/static pattern stem: 'commands/add-setting'
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'Makefile', line 20):
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
-
-# Not a target:
-src/scats.cpp:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-
-obj/chat/chat_client.o: src/chat/chat_client.cpp src/scats.h
-#  Implicit rule search has not been done.
-#  Implicit/static pattern stem: 'chat/chat_client'
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'Makefile', line 20):
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
-
-# Not a target:
-src/commands/change-contact.cpp:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-
-bin/scats: obj/scats.o obj/ui/cursesmode.o obj/ui/statusline.o obj/ui/commandline.o obj/ui/chatlog.o obj/ui/hotkey.o obj/log/log.o obj/setting/setting.o obj/chat/chat_server.o obj/chat/chat_client.o obj/commands/delete-contact.o obj/commands/delete-setting.o obj/commands/nuke.o obj/commands/set-user-handle.o obj/commands/change-contact.o obj/commands/change-setting.o obj/commands/list-settings.o obj/commands/list-contacts.o obj/commands/edit-settings.o obj/commands/help.o obj/commands/add-setting.o obj/commands/add-contact.o
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'Makefile', line 17):
-	$(CC) $(CFLAGS) -o $@ $(OBJECTS)
-
-obj/commands/change-setting.o: src/commands/change-setting.cpp src/scats.h
-#  Implicit rule search has not been done.
-#  Implicit/static pattern stem: 'commands/change-setting'
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'Makefile', line 20):
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
-
 # files hash-table stats:
-# Load=53/1024=5%, Rehash=0, Collisions=7/153=5%
+# Load=53/1024=5%, Rehash=0, Collisions=5/153=3%
 # VPATH Search Paths
 
 # No 'vpath' search paths.
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 133 / storage = 2196 B / avg = 16 B
-# current buf: size = 8162 B / used = 2196 B / count = 133 / avg = 16 B
+# strcache buffers: 1 (0) / strings = 138 / storage = 2234 B / avg = 16 B
+# current buf: size = 8162 B / used = 2234 B / count = 138 / avg = 16 B
 
-# strcache performance: lookups = 201 / hit rate = 33%
+# strcache performance: lookups = 204 / hit rate = 32%
 # hash-table stats:
-# Load=133/8192=2%, Rehash=0, Collisions=8/201=4%
-# Finished Make data base on Thu Jul 29 07:20:12 2021
+# Load=138/8192=2%, Rehash=0, Collisions=3/204=1%
+# Finished Make data base on Thu Jul 29 20:09:41 2021
 
  

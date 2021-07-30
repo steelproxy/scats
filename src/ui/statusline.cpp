@@ -34,6 +34,26 @@ void* StatusLine::Redraw()
     {
         // clear status line
         this -> Clear();
+
+        // get max terminal dimensions
+        int maxTermY;
+        int maxTermX;
+        getmaxyx(this->_wStatusLine, maxTermY, maxTermX);
+
+        // get max window dimensions
+        int maxWinY;
+        int maxWinX;
+        getmaxyx(this->_wStatusLine, maxWinY, maxWinX);
+
+        // resize window if necessary
+        if(maxWinY < 2 || (maxWinX-maxTermX) != 0)
+        {
+            if(wresize(this->_wStatusLine, 2, maxTermX) == ERR)
+            {
+                quickLog(ERROR, "Unable to resize status line window!");
+                return;
+            }
+        }
         
         // get user values
         std::string timestamp = makeTimestamp();
@@ -50,7 +70,7 @@ void* StatusLine::Redraw()
         }
 
         wrefresh(this->_wStatusLine);
-        RestoreCursorPosition();
+        //RestoreCursorPosition();
         sleep(1);
     }
 }

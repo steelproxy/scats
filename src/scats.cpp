@@ -58,6 +58,7 @@ int main(int argc, char **argv)
     initscr(); // start curses mode
     cbreak();  // don't require newline
     noecho();  // don't echo commands, we'll control that
+    curs_set(0);
 
     // setup status lie
     statusLine = new StatusLine();
@@ -143,6 +144,7 @@ int main(int argc, char **argv)
             exceptionLog(ERROR, msg);
         }
     }
+
 
     // interactive loop
     for (;;)

@@ -122,18 +122,34 @@ void ChatLog::Redraw()
 {
     wclear(this->_wChatLog); // clear and redraw
 
-    int col;
-    int row;
-    getmaxyx(this->_wChatLog, col, row); // get max terminal dimensions
+    // get max terminal dimensions
+    int maxTermY;
+    int maxTermX;
+    getmaxyx(this->_wChatLog, maxTermY, maxTermX);
+
+    // get max window dimensions
+    int maxWinX;
+    int maxWinY;
+    getmaxyx(this->_wChatLog, maxWinX, maxWinY);
+
+   /* // resize if necessary
+    if((maxTermY - maxWinY) != 4 || (maxTermX - maxWinX) != 0)
+    {
+        if(wresize(this->_wChatLog, maxTermY - 4, maxTermX) == ERR)
+        {
+            quickLog(ERROR, "Failed to resize chatlog window!");
+            return;
+        }
+    }*/
 
     if (this->_chatHistoryIndex == this->_chatHistory.size()) // set last message read
         statusLine->Unread(false);
 
-    for (int index = 0; index <= col; index++)
+    for (int index = 0; index <= maxWinX; index++)
     {
         if (this->_chatHistoryIndex - index >= 0 && this->_chatHistoryIndex - index < this->_chatHistory.size())
         {
-            mvwprintw(this->_wChatLog, col - index, 0, "%s", this->_chatHistory.at(this->_chatHistoryIndex - index).c_str());
+            mvwprintw(this->_wChatLog, maxWinX - index, 0, "%s", this->_chatHistory.at(this->_chatHistoryIndex - index).c_str());
         }
     }
 
