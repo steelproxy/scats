@@ -6,25 +6,25 @@
 
 class StatusLine
 {
-public:
+  public:
     StatusLine();
 
     void *Redraw();
 
     bool Unread();
-    bool Unread(bool newUnread); 
+    bool Unread(bool newUnread);
 
     void SetConnect(bool newConnected);
     bool GetConnect();
 
     void Resize();
 
-private:
+  private:
     void Clear();
-    static void *RedrawHelper(void* context);
+    static void *RedrawHelper(void *context);
 
     pthread_t _statusLineThread;
-    WINDOW* _wStatusLine;
+    WINDOW *_wStatusLine;
     bool _unread;
     bool _connected;
 };

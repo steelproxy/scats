@@ -3,19 +3,19 @@
 
 #include <map>
 
-typedef void (*voidFunctionType)(void); 
+typedef void (*voidFunctionType)(void);
 
 class HotkeyManager
 {
-public:
+  public:
     HotkeyManager();
 
     int AddHotkey(int keycode, voidFunctionType);
     int DeleteHotkey(int keycode);
-    
+
     void ProcessKey(int keycode);
 
-private:
+  private:
     std::map<int, voidFunctionType> _hotkeys;
 };
 

@@ -20,7 +20,7 @@ $(OBJECTS): $(OBJDIR)/%.o : $(SRCDIR)/%.cpp $(INCLUDES)
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
 clean:
-	rm $(OBJDIR)/*.o $(BINDIR)/$(TARGET)
+	rm $(OBJDIR)/*/*.o $(BINDIR)/$(TARGET)
 
 written:
 	wc $(SRCDIR)/*.cpp $(SRCDIR)/*.h

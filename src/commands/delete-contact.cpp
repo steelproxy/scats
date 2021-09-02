@@ -1,7 +1,7 @@
-#include "../ui/commandline.h"
-#include "../ui/chatlog.h"
-#include "../setting/setting.h"
 #include "../log/log.h"
+#include "../setting/setting.h"
+#include "../ui/chatlog.h"
+#include "../ui/commandline.h"
 
 void InteractiveDeleteContact()
 {

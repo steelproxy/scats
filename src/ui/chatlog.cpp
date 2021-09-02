@@ -1,8 +1,8 @@
 #include "chatlog.h"
-#include "cursesmode.h"
-#include "../setting/setting.h"
-#include "statusline.h"
 #include "../log/log.h"
+#include "../setting/setting.h"
+#include "cursesmode.h"
+#include "statusline.h"
 
 ChatLog::ChatLog()
 {
@@ -32,18 +32,20 @@ void ChatLog::Print(std::string out)
     // get chat history length setting
     int chatHistoryLength;
     chatHistoryLength = getInt("General", "ChatHistoryLength", 500);
-    if(chatHistoryLength <= 0)
+    if (chatHistoryLength <= 0)
     {
         chatHistoryLength = std::stoi(DEFAULT_CHAT_HISTORY_LEN);
     }
 
     // if chat history has grown too large, erase first element
-    if (this->_chatHistory.size() >= static_cast<long unsigned>(chatHistoryLength))
+    if (this->_chatHistory.size() >=
+        static_cast<long unsigned>(chatHistoryLength))
     {
         this->_chatHistory.erase(this->_chatHistory.begin());
     }
 
-    // TODO: stop inserting output in lines, move functionality to ChatLog::Redraw()
+    // TODO: stop inserting output in lines, move functionality to
+    // ChatLog::Redraw()
     if (out.length() > static_cast<long unsigned>(maxX))
     {
         for (size_t currentX = 0; currentX < out.length(); currentX += maxX)
@@ -100,7 +102,8 @@ void ChatLog::Clear()
 
 void ChatLog::ScrollUp()
 {
-    if (this->_chatHistoryIndex > static_cast<long unsigned>(getmaxy(this->_wChatLog)))
+    if (this->_chatHistoryIndex >
+        static_cast<long unsigned>(getmaxy(this->_wChatLog)))
     {
         this->_chatHistoryIndex--;
         quickLog(VERBOSE, "index down = " << this->_chatHistoryIndex);
@@ -132,24 +135,29 @@ void ChatLog::Redraw()
     int maxWinY;
     getmaxyx(this->_wChatLog, maxWinX, maxWinY);
 
-   /* // resize if necessary
-    if((maxTermY - maxWinY) != 4 || (maxTermX - maxWinX) != 0)
-    {
-        if(wresize(this->_wChatLog, maxTermY - 4, maxTermX) == ERR)
-        {
-            quickLog(ERROR, "Failed to resize chatlog window!");
-            return;
-        }
-    }*/
+    // resize
+    int maxY;
+    int maxX;
+    getmaxyx(stdscr, maxY, maxX); // get max terminal dimensions
 
-    if (this->_chatHistoryIndex == this->_chatHistory.size()) // set last message read
+    wresize(this->_wChatLog, maxY - 4,
+            maxX); // idk why tf i gotta go up 4 but ok, oh nvm i get it : if
+                   // you ever get fried and forget this its because the
+                   // statusline also occupies 2 columns
+    mvwin(this->_wChatLog, 2, 0); // move under status line
+
+    if (this->_chatHistoryIndex ==
+        this->_chatHistory.size()) // set last message read
         statusLine->Unread(false);
 
     for (int index = 0; index <= maxWinX; index++)
     {
-        if (this->_chatHistoryIndex - index >= 0 && this->_chatHistoryIndex - index < this->_chatHistory.size())
+        if (this->_chatHistoryIndex - index >= 0 &&
+            this->_chatHistoryIndex - index < this->_chatHistory.size())
         {
-            mvwprintw(this->_wChatLog, maxWinX - index, 0, "%s", this->_chatHistory.at(this->_chatHistoryIndex - index).c_str());
+            mvwprintw(
+                this->_wChatLog, maxWinX - index, 0, "%s",
+                this->_chatHistory.at(this->_chatHistoryIndex - index).c_str());
         }
     }
 
@@ -158,13 +166,6 @@ void ChatLog::Redraw()
 
 void ChatLog::Resize()
 {
-    int maxY;
-    int maxX;
-    getmaxyx(stdscr, maxY, maxX); // get max terminal dimensions
-
-    wresize(this->_wChatLog, maxY - 4, maxX); // idk why tf i gotta go up 4 but ok, oh nvm i get it : if you ever get fried and forget this its because the statusline also occupies 2 columns
-    mvwin(this->_wChatLog, 2, 0);             // move under status line
-
     this->_chatHistoryIndex = this->_chatHistory.size(); // scroll to bottom
     Redraw();
 }

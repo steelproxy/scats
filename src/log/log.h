@@ -1,4 +1,4 @@
-/** 
+/**
  *  @file   log.h
  *  @brief  Log class definitions, and some useful curses magic
  *  @author Collin Rodes
@@ -11,34 +11,36 @@
 #include <curses.h>
 #undef timeout
 #include <fstream>
-#include <string>
 #include <sstream>
+#include <string>
+#include <fmt/core.h>
+#include <fmt/os.h>
 
 ///
 /// @brief Macro for formatting and printing messages to the log.
 /// @param level Log severity level.
 /// @param message Message to print to log.
-#define quickLog(level, message)                                                     \
-    {                                                                                \
-        std::ostringstream stringBuilder;                                            \
-        stringBuilder.str(std::string());                                          \
-        stringBuilder << message;                                             \
-        logger.writeLine(level, __FUNCTION__, __LINE__, stringBuilder.str()); \
+#define quickLog(level, message)                                               \
+    {                                                                          \
+        std::ostringstream stringBuilder;                                      \
+        stringBuilder.str(std::string());                                      \
+        stringBuilder << message;                                              \
+        logger.writeLine(level, __FUNCTION__, __LINE__, stringBuilder.str());  \
     }
 
 ///
 /// @brief Macro for formatting and printing messages to the log and user.
 /// @param level Log severity level.
 /// @param message Message to print to log and user.
-#define quickPrintLog(level, message) \
-    {                                 \
-        ncOutUsr(message);            \
-        quickLog(level, message);     \
+#define quickPrintLog(level, message)                                          \
+    {                                                                          \
+        ncOutUsr(message);                                                     \
+        quickLog(level, message);                                              \
     }
 
-#define exceptionLog(level, message)                      \
-    {                                                     \
-        quickLog(level, "Exception caught: " << message); \
+#define exceptionLog(level, message)                                           \
+    {                                                                          \
+        quickLog(level, "Exception caught: " << message);                      \
     }
 
 ///
@@ -59,12 +61,7 @@ std::string makeTimestamp();
 /// @brief Class for managing log.
 class Log
 {
-public:
-    ///
-    /// @brief Default constructor, all values empty, default level is INFO.
-    ///
-    Log();
-
+  public:
     ///
     /// @brief String constructor, opens log file at provided path.
     /// @param newPath Path to log file.
@@ -84,7 +81,8 @@ public:
     /// @param level Severity level of message.
     /// @param message Message to print to log.
     /// @exception "Unable to open file!" Unable to open log file.
-    void writeLine(LogLevel level, const char *func, const int line, std::string message);
+    void writeLine(LogLevel level, const char *func, const int line,
+                   const std::string &message);
 
     ///
     /// @brief Sets log severity level
@@ -96,15 +94,16 @@ public:
     /// @exception "Unable to open file!" Unable to open log file.
     void truncate();
 
-private:
+  private:
     int level;
-    std::ofstream file;
+    fmt::ostream file;
     std::string path;
 };
 
 /// @brief Converts a severity level string into LogLevel type.
 /// @param level Severity level string to be converted.
-/// @return Returns a LogLevel type of the equivalent severity, or INFO if invalid.
+/// @return Returns a LogLevel type of the equivalent severity, or INFO if
+/// invalid.
 LogLevel LevelToI(std::string level);
 
 extern int curY;

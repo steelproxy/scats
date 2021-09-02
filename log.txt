@@ -1,45 +1,14 @@
-      (20:21:53)     [info]      {main:98}: Starting scats...
-(20:21:53)     [info] {LoadSettings:32}: Reading settings...
-(20:22:03)  [verbose]    {GetInput:347}: got newline. ending input...
-(20:22:03)  [verbose]    {GetInput:383}:  _xPos=25 _yPos=1 startingXPos=13 outpos=11 verbatim=yo wassup g
-(20:22:03)  [verbose]       {getInt:70}: section=General key=ChatHistoryLength value=500
-(20:22:03)  [verbose]        {Print:69}: scrollLock enabled: false
-(20:22:03)  [verbose]    {GetInput:347}: got newline. ending input...
-(20:22:03)  [verbose]    {GetInput:383}:  _xPos=14 _yPos=1 startingXPos=13 outpos=0 verbatim=
-(20:22:03)  [verbose]       {getInt:70}: section=General key=ChatHistoryLength value=500
-(20:22:03)  [verbose]        {Print:69}: scrollLock enabled: false
-(20:22:03)    [error]        {main:176}: Not connected to chat!
-(20:22:08)  [verbose]    {GetInput:347}: got newline. ending input...
-(20:22:08)  [verbose]    {GetInput:383}:  _xPos=41 _yPos=1 startingXPos=13 outpos=34 verbatim=peeeeeeeeeeeeeeeeeeeeeeeeeeeeeenis
-(20:22:08)  [verbose]       {getInt:70}: section=General key=ChatHistoryLength value=500
-(20:22:08)  [verbose]        {Print:69}: scrollLock enabled: false
-(20:22:17)  [verbose]    {GetInput:347}: got newline. ending input...
-(20:22:17)  [verbose]    {GetInput:383}:  _xPos=14 _yPos=1 startingXPos=13 outpos=0 verbatim=
-(20:22:17)  [verbose]       {getInt:70}: section=General key=ChatHistoryLength value=500
-(20:22:17)  [verbose]        {Print:69}: scrollLock enabled: false
-(20:22:17)    [error]        {main:176}: Not connected to chat!
-(20:22:17)  [verbose]    {GetInput:347}: got newline. ending input...
-(20:22:17)  [verbose]    {GetInput:383}:  _xPos=14 _yPos=1 startingXPos=13 outpos=0 verbatim=
-(20:22:17)  [verbose]       {getInt:70}: section=General key=ChatHistoryLength value=500
-(20:22:17)  [verbose]        {Print:69}: scrollLock enabled: false
-(20:22:17)    [error]        {main:176}: Not connected to chat!
-(20:22:17)  [verbose]    {GetInput:347}: got newline. ending input...
-(20:22:17)  [verbose]    {GetInput:383}:  _xPos=14 _yPos=1 startingXPos=13 outpos=0 verbatim=
-(20:22:17)  [verbose]       {getInt:70}: section=General key=ChatHistoryLength value=500
-(20:22:17)  [verbose]        {Print:69}: scrollLock enabled: false
-(20:22:17)    [error]        {main:176}: Not connected to chat!
-(20:22:18)  [verbose]    {GetInput:347}: got newline. ending input...
-(20:22:18)  [verbose]    {GetInput:383}:  _xPos=14 _yPos=1 startingXPos=13 outpos=0 verbatim=
-(20:22:18)  [verbose]       {getInt:70}: section=General key=ChatHistoryLength value=500
-(20:22:18)  [verbose]        {Print:69}: scrollLock enabled: false
-(20:22:18)    [error]        {main:176}: Not connected to chat!
-(20:22:18)  [verbose]    {GetInput:347}: got newline. ending input...
-(20:22:18)  [verbose]    {GetInput:383}:  _xPos=14 _yPos=1 startingXPos=13 outpos=0 verbatim=
-(20:22:18)  [verbose]       {getInt:70}: section=General key=ChatHistoryLength value=500
-(20:22:18)  [verbose]        {Print:69}: scrollLock enabled: false
-(20:22:18)    [error]        {main:176}: Not connected to chat!
-(20:22:20)  [verbose]    {GetInput:347}: got newline. ending input...
-(20:22:20)  [verbose]    {GetInput:383}:  _xPos=19 _yPos=1 startingXPos=13 outpos=5 verbatim=/exit
-(20:22:20)  [verbose]       {getInt:70}: section=General key=ChatHistoryLength value=500
-(20:22:20)  [verbose]        {Print:69}: scrollLock enabled: false
-(20:22:20)  [verbose]    {GetInput:393}: Executing command: /exit
+      (20:40:43)     [info]      {main:98}: Starting scats...
+(20:40:43)     [info] {LoadSettings:31}: Reading settings...
+(20:40:44)  [verbose]       {getInt:69}: section=General key=ChatHistoryLength value=500
+(20:40:44)  [verbose]        {Print:71}: scrollLock enabled: false
+(20:40:44)     [info] {SignalHandler:41}: Sigint caught.
+(20:40:45)  [verbose]    {LineInput:167}: charBuf=47
+(20:40:45)  [verbose]    {LineInput:167}: charBuf=101
+(20:40:45)  [verbose]    {LineInput:167}: charBuf=120
+(20:40:46)  [verbose]    {LineInput:167}: charBuf=105
+(20:40:46)  [verbose]    {LineInput:167}: charBuf=116
+(20:40:46)  [verbose]    {LineInput:170}: startingXPos=13 lineBufPos=5 lineBuf=/exit
+(20:40:46)  [verbose]        {getInt:69}: section=General key=ChatHistoryLength value=500
+(20:40:46)  [verbose]         {Print:71}: scrollLock enabled: false
+(20:40:46)  [verbose]    {LineInput:183}: Executing command: /exit

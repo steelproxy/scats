@@ -1,15 +1,15 @@
-#include <iostream>
-#include "ini.h"
+#include "../setting/setting.h"
 #include "../log/log.h"
 #include "../ui/chatlog.h"
-#include "../setting/setting.h"
+#include "ini.h"
+#include <iostream>
 
 mINI::INIFile *_iniFile;
 mINI::INIStructure _iniStructure;
 
-#define GetSet(section, key, def)                                                         \
-    if (_iniStructure.get(section).get(key) == "") \
-    {                                                                            \
+#define GetSet(section, key, def)                                              \
+    if (_iniStructure.get(section).get(key) == "")                             \
+    {                                                                          \
         _iniStructure[section][key] = def;                                     \
     }
 
@@ -22,7 +22,6 @@ void ApplyDefaults()
     GetSet("Server", "maximumFileSize", "10MB");
     GetSet("Server", "Port", "25565");
     GetSet("Server", "MaxChatParticipants", "1");
-    
 }
 
 void LoadSettings()
@@ -67,13 +66,14 @@ void ListINI(mINI::INIStructure &_targetStructure)
 const int getInt(std::string section, std::string key, int def)
 {
     std::string value = _iniStructure[section][key];
-    quickLog(VERBOSE, "section=" << section << " key=" << key << " value=" << value);
+    quickLog(VERBOSE,
+             "section=" << section << " key=" << key << " value=" << value);
 
     int _intValue = 0;
     std::stringstream ssValue(value);
     ssValue >> _intValue;
 
-    if(_intValue > 0)
+    if (_intValue > 0)
         return _intValue;
     return def;
 }

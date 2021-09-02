@@ -59,17 +59,20 @@ void InteractiveEditSettings();
 
 typedef void (*voidFunctionType)(void);
 
-class Command {
-public:
-  Command(std::string newName, std::string newDescription, voidFunctionType newMainFunction)
-      : name(newName), description(newDescription), mainFunction(newMainFunction) {};
-  std::string name;
-  std::string description;
+class Command
+{
+  public:
+    Command(std::string newName, std::string newDescription,
+            voidFunctionType newMainFunction)
+        : name(newName), description(newDescription),
+          mainFunction(newMainFunction){};
+    std::string name;
+    std::string description;
 
-  void Execute() { this->mainFunction(); }
+    void Execute() { this->mainFunction(); }
 
-private:
-  voidFunctionType mainFunction;
+  private:
+    voidFunctionType mainFunction;
 };
 
 #endif

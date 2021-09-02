@@ -3,7 +3,6 @@ make: Entering directory '/home/anon/Desktop/scats'
 g++ -std=c++11 -Wall -Wpedantic -g -lpthread -lncurses -lboost_system -fpermissive  -c src/scats.cpp -o obj/scats.o
 g++ -std=c++11 -Wall -Wpedantic -g -lpthread -lncurses -lboost_system -fpermissive  -c src/chat/chat_client.cpp -o obj/chat/chat_client.o
 g++ -std=c++11 -Wall -Wpedantic -g -lpthread -lncurses -lboost_system -fpermissive  -c src/chat/chat_server.cpp -o obj/chat/chat_server.o
- 
 g++ -std=c++11 -Wall -Wpedantic -g -lpthread -lncurses -lboost_system -fpermissive  -c src/commands/add-contact.cpp -o obj/commands/add-contact.o
 g++ -std=c++11 -Wall -Wpedantic -g -lpthread -lncurses -lboost_system -fpermissive  -c src/commands/add-setting.cpp -o obj/commands/add-setting.o
 g++ -std=c++11 -Wall -Wpedantic -g -lpthread -lncurses -lboost_system -fpermissive  -c src/commands/change-contact.cpp -o obj/commands/change-contact.o
@@ -17,13 +16,13 @@ g++ -std=c++11 -Wall -Wpedantic -g -lpthread -lncurses -lboost_system -fpermissi
 g++ -std=c++11 -Wall -Wpedantic -g -lpthread -lncurses -lboost_system -fpermissive  -c src/commands/nuke.cpp -o obj/commands/nuke.o
 g++ -std=c++11 -Wall -Wpedantic -g -lpthread -lncurses -lboost_system -fpermissive  -c src/commands/set-user-handle.cpp -o obj/commands/set-user-handle.o
 g++ -std=c++11 -Wall -Wpedantic -g -lpthread -lncurses -lboost_system -fpermissive  -c src/log/log.cpp -o obj/log/log.o
+ 
 g++ -std=c++11 -Wall -Wpedantic -g -lpthread -lncurses -lboost_system -fpermissive  -c src/setting/setting.cpp -o obj/setting/setting.o
 g++ -std=c++11 -Wall -Wpedantic -g -lpthread -lncurses -lboost_system -fpermissive  -c src/ui/chatlog.cpp -o obj/ui/chatlog.o
 g++ -std=c++11 -Wall -Wpedantic -g -lpthread -lncurses -lboost_system -fpermissive  -c src/ui/commandline.cpp -o obj/ui/commandline.o
 g++ -std=c++11 -Wall -Wpedantic -g -lpthread -lncurses -lboost_system -fpermissive  -c src/ui/cursesmode.cpp -o obj/ui/cursesmode.o
 g++ -std=c++11 -Wall -Wpedantic -g -lpthread -lncurses -lboost_system -fpermissive  -c src/ui/hotkey.cpp -o obj/ui/hotkey.o
 g++ -std=c++11 -Wall -Wpedantic -g -lpthread -lncurses -lboost_system -fpermissive  -c src/ui/statusline.cpp -o obj/ui/statusline.o
- 
 g++ -std=c++11 -Wall -Wpedantic -g -lpthread -lncurses -lboost_system -fpermissive -o bin/scats obj/scats.o obj/chat/chat_client.o obj/chat/chat_server.o obj/commands/add-contact.o obj/commands/add-setting.o obj/commands/change-contact.o obj/commands/change-setting.o obj/commands/delete-contact.o obj/commands/delete-setting.o obj/commands/edit-settings.o obj/commands/help.o obj/commands/list-contacts.o obj/commands/list-settings.o obj/commands/nuke.o obj/commands/set-user-handle.o obj/log/log.o obj/setting/setting.o obj/ui/chatlog.o obj/ui/commandline.o obj/ui/cursesmode.o obj/ui/hotkey.o obj/ui/statusline.o
 make: Leaving directory '/home/anon/Desktop/scats'
  

@@ -2,21 +2,21 @@
 #define CHATLOG_H
 
 #include <curses.h>
-#include <vector>
 #include <string>
+#include <vector>
 
-#define ncOutUsr(message)                            \
-    {                                                \
-        std::ostringstream stringBuilder;            \
-        stringBuilder.str(std::string());                 \
-        stringBuilder << message;                    \
-        std::string outString = stringBuilder.str(); \
-        chatLog->Print(outString);                   \
+#define ncOutUsr(message)                                                      \
+    {                                                                          \
+        std::ostringstream stringBuilder;                                      \
+        stringBuilder.str(std::string());                                      \
+        stringBuilder << message;                                              \
+        std::string outString = stringBuilder.str();                           \
+        chatLog->Print(outString);                                             \
     }
 
 class ChatLog
 {
-public:
+  public:
     ChatLog();
 
     void Print(std::string out);
@@ -27,10 +27,8 @@ public:
     void Resize();
     void Redraw();
 
-private:
-
-
-    WINDOW* _wChatLog;
+  private:
+    WINDOW *_wChatLog;
     size_t _chatHistoryIndex;
     std::vector<std::string> _chatHistory;
 };

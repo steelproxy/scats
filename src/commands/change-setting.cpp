@@ -1,7 +1,7 @@
-#include "../ui/commandline.h"
-#include "../ui/chatlog.h"
 #include "../log/log.h"
 #include "../setting/setting.h"
+#include "../ui/chatlog.h"
+#include "../ui/commandline.h"
 
 void InteractiveChangeSetting()
 {
@@ -35,7 +35,8 @@ void InteractiveChangeSetting()
         return;
     }
 
-    ncOutUsr(targetKey << "=" << _iniStructure.get(targetSection).get(targetKey));
+    ncOutUsr(targetKey << "="
+                       << _iniStructure.get(targetSection).get(targetKey));
     do
     {
         ncOutCmd(targetKey << "=");

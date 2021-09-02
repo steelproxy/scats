@@ -1,5 +1,5 @@
-#include "../ui/chatlog.h"
 #include "../log/log.h"
+#include "../ui/chatlog.h"
 
 void DisplayHelp()
 {

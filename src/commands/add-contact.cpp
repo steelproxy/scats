@@ -1,8 +1,8 @@
-#include "../ui/chatlog.h"
-#include "../ui/cursesmode.h"
-#include "../ui/commandline.h"
-#include "../setting/setting.h"
 #include "../log/log.h"
+#include "../setting/setting.h"
+#include "../ui/chatlog.h"
+#include "../ui/commandline.h"
+#include "../ui/cursesmode.h"
 
 void InteractiveAddContact()
 {

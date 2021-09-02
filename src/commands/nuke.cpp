@@ -1,8 +1,8 @@
-#include <string>
+#include "../log/log.h"
+#include "../setting/setting.h"
 #include "../ui/chatlog.h"
 #include "../ui/commandline.h"
-#include "../setting/setting.h"
-#include "../log/log.h"
+#include <string>
 
 void InteractiveNuke()
 {
@@ -24,7 +24,8 @@ void InteractiveNuke()
         }
 
         ncOutUsr("Deleting contact database...");
-        if (remove(_iniStructure["General"]["contactDatabasePath"].c_str()) != 0) // delete contact database
+        if (remove(_iniStructure["General"]["contactDatabasePath"].c_str()) !=
+            0) // delete contact database
         {
             ncOutUsr("Unable to delete contact database!");
         }

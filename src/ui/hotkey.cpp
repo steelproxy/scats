@@ -1,16 +1,14 @@
 #include "hotkey.h"
 #include "../log/log.h"
 
-HotkeyManager::HotkeyManager()
-{
-
-}
+HotkeyManager::HotkeyManager() {}
 
 int HotkeyManager::AddHotkey(int key, voidFunctionType func)
 {
-    for(auto iterator = this->_hotkeys.begin(); iterator != this->_hotkeys.end(); iterator++)
+    for (auto iterator = this->_hotkeys.begin();
+         iterator != this->_hotkeys.end(); iterator++)
     {
-        if(iterator -> first == key)
+        if (iterator->first == key)
         {
             quickLog(ERROR, "Hotkey " << key << " already bound.");
             return 1;
@@ -24,9 +22,10 @@ int HotkeyManager::AddHotkey(int key, voidFunctionType func)
 
 int HotkeyManager::DeleteHotkey(int key)
 {
-    for(auto iterator = this->_hotkeys.begin(); iterator != this->_hotkeys.end(); iterator++)
+    for (auto iterator = this->_hotkeys.begin();
+         iterator != this->_hotkeys.end(); iterator++)
     {
-        if(iterator -> first == key)
+        if (iterator->first == key)
         {
             this->_hotkeys.erase(iterator);
             quickLog(INFO, "Hotkey " << key << " erased.");
@@ -34,21 +33,24 @@ int HotkeyManager::DeleteHotkey(int key)
         }
     }
 
-    quickLog(ERROR, "Hotkey " << key << " was not bound and hasn't been deleted.");
+    quickLog(ERROR,
+             "Hotkey " << key << " was not bound and hasn't been deleted.");
     return 1;
 }
 
 void HotkeyManager::ProcessKey(int key)
 {
-    for(auto iterator = this->_hotkeys.begin(); iterator != this->_hotkeys.end(); iterator++)
+    for (auto iterator = this->_hotkeys.begin();
+         iterator != this->_hotkeys.end(); iterator++)
     {
-        if(iterator -> first == key)
+        if (iterator->first == key)
         {
             quickLog(INFO, "Hotkey " << key << " executing...");
-            iterator -> second();
+            iterator->second();
             return;
         }
     }
 
-    quickLog(ERROR, "Hotkey " << key << " was not bound and hasn't been executed.");
+    quickLog(ERROR,
+             "Hotkey " << key << " was not bound and hasn't been executed.");
 }

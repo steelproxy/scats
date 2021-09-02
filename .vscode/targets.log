@@ -8,7 +8,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Thu Jul 29 20:09:41 2021
+# Make data base, printed on Wed Sep  1 16:11:37 2021
 
 # Variables
 
@@ -25,7 +25,7 @@ GJS_DEBUG_OUTPUT = stderr
 # makefile (from 'Makefile', line 6)
 BINDIR = bin
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/974/vscode-ipc-f82bb106-d9d3-45a7-88ac-48516538f698.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/974/vscode-ipc-c7a26b24-208a-46fa-930a-6af17db23227.sock
 # environment
 VSCODE_CWD = /home/anon
 # environment
@@ -57,7 +57,7 @@ VSCODE_CODE_CACHE_PATH = /home/anon/.config/Code/CachedData/c3f126316369cd610563
 # environment
 LANG = C
 # environment
-XAUTHORITY = /run/user/974/.mutter-Xwaylandauth.JXUF70
+XAUTHORITY = /run/user/974/.mutter-Xwaylandauth.T7QH80
 # default
 .LOADED := 
 # default
@@ -93,7 +93,7 @@ MAKEFILE_LIST := Makefile
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-VSCODE_PID = 104845
+VSCODE_PID = 1865
 # environment
 XDG_SESSION_TYPE = wayland
 # automatic
@@ -101,7 +101,7 @@ XDG_SESSION_TYPE = wayland
 # makefile (from 'Makefile', line 11)
 INCLUDES := src/scats.h
 # environment
-SESSION_MANAGER = local/anon-pc:@/tmp/.ICE-unix/81084,unix/anon-pc:/tmp/.ICE-unix/81084
+SESSION_MANAGER = local/anon-pc:@/tmp/.ICE-unix/1227,unix/anon-pc:/tmp/.ICE-unix/1227
 # automatic
 *F = $(notdir $*)
 # environment
@@ -137,7 +137,7 @@ MOTD_SHOWN = pam
 # automatic
 ^F = $(notdir $^)
 # environment
-INVOCATION_ID = 18c3c8d8e6c44b49ae34729b2cfa211c
+INVOCATION_ID = df657db2c30e488994a96356a321a5b1
 # environment
 VSCODE_LOG_NATIVE = false
 # environment
@@ -165,7 +165,7 @@ GIO_LAUNCHED_DESKTOP_FILE = /usr/share/applications/visual-studio-code.desktop
 # makefile
 .DEFAULT_GOAL := build
 # environment
-SYSTEMD_EXEC_PID = 81099
+SYSTEMD_EXEC_PID = 1242
 # environment
 DISPLAY = :0
 # environment
@@ -173,9 +173,9 @@ USER = anon
 # default
 MAKE_VERSION := 4.3
 # environment
-MANAGERPID = 81042
+MANAGERPID = 1185
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 104845
+GIO_LAUNCHED_DESKTOP_FILE_PID = 1865
 # environment
 _ = /usr/bin/make
 # environment
@@ -183,7 +183,7 @@ XDG_RUNTIME_DIR = /run/user/974
 # makefile (from 'Makefile', line 2)
 CFLAGS = -std=c++11 -Wall -Wpedantic -g -lpthread -lncurses -lboost_system -fpermissive
 # environment
-JOURNAL_STREAM = 7:137716
+JOURNAL_STREAM = 7:21597
 # environment
 XDG_SESSION_CLASS = user
 # environment
@@ -225,10 +225,10 @@ GDMSESSION = gnome
 
 # src/log (device 65026, inode 5243109): 4 files, no impossibilities.
 # src/setting (device 65026, inode 5243149): 5 files, no impossibilities.
-# src/ui (device 65026, inode 5243190): 13 files, no impossibilities.
+# src/ui (device 65026, inode 5243190): 12 files, no impossibilities.
 # src (device 65026, inode 5243090): 9 files, no impossibilities.
 # src/commands (device 65026, inode 5243095): 16 files, no impossibilities.
-# . (device 65026, inode 5242988): 15 files, no impossibilities.
+# . (device 65026, inode 5242988): 16 files, no impossibilities.
 # src/chat (device 65026, inode 5243091): 5 files, no impossibilities.
 
 # 67 files, no impossibilities in 7 directories.
@@ -308,6 +308,7 @@ obj/commands/set-user-handle.o: src/commands/set-user-handle.cpp src/scats.h
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
 # Not a target:
+ 
 src/ui/chatlog.cpp:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
@@ -316,7 +317,7 @@ src/ui/chatlog.cpp:
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2021-07-29 02:23:15.720059458
+#  Last modified 2021-08-11 20:40:02.035391036
 #  File has been updated.
 #  Successfully updated.
 
@@ -385,7 +386,7 @@ clean:
 #  Modification time never checked.
 #  File has not been updated.
 #  recipe to execute (from 'Makefile', line 23):
-	rm $(OBJDIR)/*.o $(BINDIR)/$(TARGET)
+	rm $(OBJDIR)/*/*.o $(BINDIR)/$(TARGET)
 
 # Not a target:
 src/commands/set-user-handle.cpp:
@@ -408,7 +409,6 @@ written:
 
 # Not a target:
 src/log/log.cpp:
- 
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
@@ -545,6 +545,7 @@ obj/commands/add-setting.o: src/commands/add-setting.cpp src/scats.h
 #  Implicit/static pattern stem: 'commands/add-setting'
 #  Modification time never checked.
 #  File has not been updated.
+ 
 #  recipe to execute (from 'Makefile', line 20):
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
@@ -608,12 +609,12 @@ obj/commands/list-contacts.o: src/commands/list-contacts.cpp src/scats.h
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 138 / storage = 2234 B / avg = 16 B
-# current buf: size = 8162 B / used = 2234 B / count = 138 / avg = 16 B
+# strcache buffers: 1 (0) / strings = 138 / storage = 2239 B / avg = 16 B
+# current buf: size = 8162 B / used = 2239 B / count = 138 / avg = 16 B
 
 # strcache performance: lookups = 204 / hit rate = 32%
 # hash-table stats:
 # Load=138/8192=2%, Rehash=0, Collisions=3/204=1%
-# Finished Make data base on Thu Jul 29 20:09:41 2021
+# Finished Make data base on Wed Sep  1 16:11:37 2021
 
  
