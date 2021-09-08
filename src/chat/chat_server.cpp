@@ -10,8 +10,8 @@
 
 #include "../log/log.h"
 #include "../setting/setting.h"
-#include "../ui/chatlog.h"
-#include "../ui/commandline.h"
+#include "../ui/chatlog/chatlog.h"
+#include "../ui/commandline/commandline.h"
 #include "chat_message.hpp"
 #include <boost/asio.hpp>
 #include <cstdlib>

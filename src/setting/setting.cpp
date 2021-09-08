@@ -1,6 +1,6 @@
 #include "../setting/setting.h"
 #include "../log/log.h"
-#include "../ui/chatlog.h"
+#include "../ui/chatlog/chatlog.h"
 #include "ini.h"
 #include <iostream>
 

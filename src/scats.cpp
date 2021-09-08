@@ -15,18 +15,18 @@
 #include <signal.h>
 #include <vector>
 #include <map>
-#include "./ui/chatlog.h"
-#include "./ui/commandline.h"
-#include "./ui/cursesmode.h"
+#include "./ui/chatlog/chatlog.h"
+#include "./ui/commandline/commandline.h"
+#include "./ui/isprint.h"
 #include "./log/log.h"
 #include "./setting/setting.h"
-#include "./ui/statusline.h"
+#include "./ui/statusline/statusline.h"
 #include "./commands/commands.h"
 
 WINDOW *wRoot;
 WINDOW *wStatusLine;
 
-Log logger;
+Log logger("log.txt");
 
 ChatLog *chatLog;
 CommandLine *commandLine;
@@ -86,8 +86,7 @@ int main(int argc, char **argv)
     // initialize logger
     try
     {
-        logger.open(DEFAULT_LOG_FILE);
-        logger.truncate();
+
     }
     catch (const char *msg)
     {

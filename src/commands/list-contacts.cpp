@@ -1,6 +1,6 @@
 #include "../log/log.h"
 #include "../setting/setting.h"
-#include "../ui/chatlog.h"
+#include "../ui/chatlog/chatlog.h"
 
 void InteractiveListContacts()
 {

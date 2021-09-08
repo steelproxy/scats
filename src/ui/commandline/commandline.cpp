@@ -1,14 +1,14 @@
-#include "commandline.h"
-#include "../chat/chat_message.hpp"
-#include "../commands/commands.h"
-#include "../log/log.h"
-#include "../setting/setting.h"
-#include "../ui/hotkey.h"
-#include "chatlog.h"
-#include "cursesmode.h"
-#include "statusline.h"
 #include <functional>
 #include <map>
+#include "commandline.h"
+#include "../hotkey/hotkey.h"
+#include "../chatlog/chatlog.h"
+#include "../isprint.h"
+#include "../statusline/statusline.h"
+#include "../../chat/chat_message.hpp"
+#include "../../commands/commands.h"
+#include "../../log/log.h"
+#include "../../setting/setting.h"
 
 void test() { quickPrintLog(INFO, "you are gay."); }
 
@@ -159,7 +159,7 @@ std::string CommandLine::LineInput()
             break;
 
         default:
-            if(checkPrintable(charBuf)) {
+            if(isPrintKey(charBuf)) {
             lineBuf.insert(lineBuf.begin() + lineBufPos++, charBuf);}
 
             break;
@@ -217,7 +217,7 @@ std::string CommandLine::GetInput(bool lineEdit) // TODO: fix overflow
 
         charBuf = wgetch(this->_wCommandLine);
 
-        if (checkPrintable(charBuf))
+        if (isPrintKey(charBuf))
         {
             /*if(outPos >= getmaxx(this->_wCommandLine) - startingXPos)
             {

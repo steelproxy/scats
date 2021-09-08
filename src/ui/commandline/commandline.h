@@ -1,8 +1,8 @@
 #ifndef COMMANDLINE_H
 #define COMMANDLINE_H
 
-#include "../commands/commands.h"
-#include "../ui/hotkey.h"
+#include "../../commands/commands.h"
+#include "../hotkey/hotkey.h"
 #include <curses.h>
 #include <map>
 #include <string>

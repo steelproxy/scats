@@ -65,12 +65,11 @@ class Log
     ///
     /// @brief String constructor, opens log file at provided path.
     /// @param newPath Path to log file.
-    Log(std::string newPath);
+    Log(std::string newPath) : file(fmt::output_file(newPath)), level(INFO) {}
 
     /// @brief Opens the log for writing.
     /// @param newPath Path to log file.
     /// @exception "Unable to open file!" Unable to open log file.
-    void open(std::string newPath);
 
     ///
     /// @brief Closes the log file.
@@ -92,7 +91,6 @@ class Log
     ///
     /// @brief Truncates log.
     /// @exception "Unable to open file!" Unable to open log file.
-    void truncate();
 
   private:
     int level;

@@ -1,17 +1,17 @@
 #include "statusline.h"
-#include "../log/log.h"
-#include "../setting/setting.h"
-#include "commandline.h"
-#include "cursesmode.h"
+#include "../../log/log.h"
+#include "../../setting/setting.h"
+#include "../commandline/commandline.h"
+#include "../isprint.h"
 #include <unistd.h>
 
 StatusLine::StatusLine()
 {
     // make status line window
-    this->_wStatusLine = newwin(2, getmaxx(stdscr), 0, 0);
+    this->_wStatusLine = newwin(STATUSLINE_Y_LEN, STATUSLINE_X_LEN, 0, 0);
 
     // make status line border
-    mvwhline(this->_wStatusLine, 1, 0, 0, getmaxx(stdscr));
+    mvwhline(this->_wStatusLine, 1, 0, 0, STATUSLINE_X_LEN);
 
     // make status line thread
     pthread_create(&(this->_statusLineThread), NULL, &StatusLine::RedrawHelper,
@@ -21,7 +21,7 @@ StatusLine::StatusLine()
 void StatusLine::Clear()
 {
     wclear(this->_wStatusLine);
-    mvwhline(this->_wStatusLine, 1, 0, 0, getmaxx(stdscr));
+    mvwhline(this->_wStatusLine, 1, 0, 0, STATUSLINE_X_LEN);
 }
 
 void StatusLine::Resize() { wresize(this->_wStatusLine, 2, getmaxx(stdscr)); }

@@ -9,9 +9,9 @@
 //
 
 #include "../log/log.h"
-#include "../ui/chatlog.h"
-#include "../ui/commandline.h"
-#include "../ui/statusline.h"
+#include "../ui/chatlog/chatlog.h"
+#include "../ui/commandline/commandline.h"
+#include "../ui/statusline/statusline.h"
 #include "chat_message.hpp"
 #include <boost/asio.hpp>
 #include <cstdlib>
@@ -20,7 +20,6 @@
 #include <thread>
 
 typedef std::deque<chat_message> chat_message_queue;
-
 class chat_client
 {
   public:

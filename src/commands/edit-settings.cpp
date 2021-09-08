@@ -1,9 +1,9 @@
 #include "../log/log.h"
 #include "../scats.h"
 #include "../setting/setting.h"
-#include "../ui/chatlog.h"
-#include "../ui/commandline.h"
-#include "../ui/cursesmode.h"
+#include "../ui/chatlog/chatlog.h"
+#include "../ui/commandline/commandline.h"
+#include "../ui/isprint.h"
 #include <curses.h>
 #include <signal.h>
 
@@ -192,7 +192,7 @@ void SettingsEditor::Focus()
                         newValue.erase(--cursorPos);
                     }
                 }
-                else if (checkPrintable(newKeyCode))
+                else if (isPrintKey(newKeyCode))
                 {
                     newValue.insert(cursorPos + newValue.begin(),
                                     (char)newKeyCode);

@@ -1,26 +1,22 @@
 CC=g++
-CFLAGS=-std=c++11 -Wall -Wpedantic -g -lpthread -lncurses -lboost_system -fpermissive
+CFLAGS=-std=c++11 -Wall -Wpedantic -g -lpthread -lncurses -lfmt -lboost_system -fpermissive
 
 OBJDIR=obj
 SRCDIR=src
 BINDIR=bin
 TARGET=scats
 
-SOURCES  := $(wildcard $(SRCDIR)/*.cpp)
-SOURCES	 += $(wildcard $(SRCDIR)/*/*.cpp)
-INCLUDES := $(wildcard $(SRCDIR)/*.h)
-OBJECTS  := $(SOURCES:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)
+# $(wildcard *.cpp /xxx/xxx/*.cpp): get all .cpp files from the current directory and dir "/xxx/xxx/"
+SRCS := $(shell find . -name "*.cpp")
+# $(patsubst %.cpp,%.o,$(SRCS)): substitute all ".cpp" file name strings to ".o" file name strings
+OBJS := $(patsubst %.cpp,%.o,$(SRCS))
 
-build: $(BINDIR)/$(TARGET)
-
-$(BINDIR)/$(TARGET): $(OBJECTS)
-	$(CC) $(CFLAGS) -o $@ $(OBJECTS)
-
-$(OBJECTS): $(OBJDIR)/%.o : $(SRCDIR)/%.cpp $(INCLUDES)
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
-
+all: $(TARGET)
+$(TARGET): $(OBJS)
+	$(CC) $(CFLAGS) o $@ $(OBJDIR)/*.o
+%.o: %.cpp
+	$(CC) $(CFLAGS) -c $< -o $(OBJDIR)/$(notdir $@)
 clean:
-	rm $(OBJDIR)/*/*.o $(BINDIR)/$(TARGET)
-
-written:
-	wc $(SRCDIR)/*.cpp $(SRCDIR)/*.h
+	rm -rf $(TARGET) *.o
+	
+.PHONY: all clean

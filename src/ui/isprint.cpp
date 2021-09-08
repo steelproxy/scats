@@ -1,13 +1,6 @@
-#include "cursesmode.h"
-#include "../log/log.h"
-#include <curses.h>
-#include <vector>
+#include "isprint.h"
 
-WINDOW *activeWindow;
-int cursorY;
-int cursorX;
-
-bool checkPrintable(int test)
+bool isPrintKey(int test)
 {
     if (test >= 32 && test <= 126)
         return true;
@@ -18,7 +11,7 @@ bool isPrintStr(std::string str)
 {
     for (size_t index = 0; index < str.length(); index++)
     {
-        if (!checkPrintable(str.at(index)))
+        if (!isPrintKey(str.at(index)))
         {
             return false;
         }

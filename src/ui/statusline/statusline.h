@@ -4,6 +4,10 @@
 #include <curses.h>
 #include <pthread.h>
 
+// dimensions
+#define STATUSLINE_Y_LEN 2
+#define STATUSLINE_X_LEN getmaxx(stdscr)
+
 class StatusLine
 {
   public:

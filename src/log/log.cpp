@@ -9,6 +9,7 @@
 #include <ctime>
 #include <fmt/format.h>
 #include <fmt/os.h>
+#include <fmt/chrono.h>
 #include <iomanip>
 #include <iostream>
 #include <sstream>
@@ -33,26 +34,9 @@ std::string makeTimestamp()
     return timestamp;
 }
 
-Log::Log(const std::string newPath) // std::string constructor, open path
-{
-    this->level = INFO;
-    this->file = fmt::output_file(newPath, ios::) // open file
-    this->path = newPath;                    // set new path
-}
-
-void Log::open(std::string newPath) // opens the log file
-{
-    this->path = newPath;                    // set new path
-    this->file.open(newPath, std::ios::app); // open file
-    if (this->file.fail())                   // if file fails
-    {
-        throw "Unable to open file!";
-    }
-}
-
 void Log::close() // close the log file
 {
-    this->file.flush();
+    //this->file.flush();
 }
 
 void Log::writeLine(LogLevel level, const char *func, const int line,
@@ -65,8 +49,8 @@ void Log::writeLine(LogLevel level, const char *func, const int line,
 
     // format function and line number
     std::string formattedFunc;
-    formattedFunc = fmt::format("{{{}:{}}}: ", func, line);
-    file.print(formattedFunc);
+    //formattedFunc = fmt::format("{{{}:{}}}: ", func, line);
+    //file.print(formattedFunc);
 
     // check longest function line
     static size_t longestFunc = 0;
@@ -78,10 +62,10 @@ void Log::writeLine(LogLevel level, const char *func, const int line,
     static const char *severityString[5] = {
         " [verbose] ", " [info] ", " [warning] ", " [error] ", " [severe] "};
 
-    this->file.print("({%H}:{%M}:{%S}) {:<d}")
-    this->file << makeTimestamp() << std::setw(12) << std::fixed
+   //this->file.print("{} {:>12}{}{:>{}}{}{}\n", makeTimestamp(), severityString[level], longestFunc, formattedFunc, message);
+    /*this->file << makeTimestamp() << std::setw(12) << std::fixed
                << severityString[level] << std::setw(longestFunc)
-               << formattedFunc << message << std::endl;
+               << formattedFunc << message << std::endl;*/
 }
 
 void Log::setLevel(LogLevel newLevel) { this->level = newLevel; }

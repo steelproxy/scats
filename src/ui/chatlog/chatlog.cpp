@@ -1,8 +1,8 @@
 #include "chatlog.h"
-#include "../log/log.h"
-#include "../setting/setting.h"
-#include "cursesmode.h"
-#include "statusline.h"
+#include "../../log/log.h"
+#include "../../setting/setting.h"
+#include "../isprint.h"
+#include "../statusline/statusline.h"
 
 ChatLog::ChatLog()
 {

@@ -4,7 +4,7 @@
 #include <curses.h>
 #include <string>
 
-bool checkPrintable(int test);
+bool isPrintKey(int test);
 void ResizeTerminals();
 bool isPrintStr(std::string);
 
