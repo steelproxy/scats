@@ -65,7 +65,7 @@ class Log
     ///
     /// @brief String constructor, opens log file at provided path.
     /// @param newPath Path to log file.
-    Log(std::string newPath) : file(fmt::output_file(newPath)), level(INFO) {}
+    Log(std::string newPath) :  level(INFO), file(fmt::output_file(newPath)){}
 
     /// @brief Opens the log for writing.
     /// @param newPath Path to log file.

@@ -46,12 +46,11 @@ void Log::writeLine(LogLevel level, const char *func, const int line,
     {
         return;
     }
-
+    
     // format function and line number
     std::string formattedFunc;
-    //formattedFunc = fmt::format("{{{}:{}}}: ", func, line);
-    //file.print(formattedFunc);
-
+    formattedFunc = fmt::format("{{{0}:{1}}}", func, line);
+    
     // check longest function line
     static size_t longestFunc = 0;
     if (formattedFunc.length() > longestFunc)
@@ -59,8 +58,14 @@ void Log::writeLine(LogLevel level, const char *func, const int line,
         longestFunc = formattedFunc.length();
     }
 
+    // format severity string
     static const char *severityString[5] = {
         " [verbose] ", " [info] ", " [warning] ", " [error] ", " [severe] "};
+    std::string formattedSeverityString;
+    formattedSeverityString = fmt::format("{:>12}", severityString[level]);
+    
+    // print message
+    file.print("{} {:>{}} {}: \"{}\" \n", makeTimestamp(), formattedFunc, longestFunc, formattedSeverityString, message);
 
    //this->file.print("{} {:>12}{}{:>{}}{}{}\n", makeTimestamp(), severityString[level], longestFunc, formattedFunc, message);
     /*this->file << makeTimestamp() << std::setw(12) << std::fixed

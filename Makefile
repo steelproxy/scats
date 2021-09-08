@@ -13,7 +13,7 @@ OBJS := $(patsubst %.cpp,%.o,$(SRCS))
 
 all: $(TARGET)
 $(TARGET): $(OBJS)
-	$(CC) $(CFLAGS) o $@ $(OBJDIR)/*.o
+	$(CC) $(CFLAGS) -o $(BINDIR)/$@ $(shell find $(OBJDIR) -name '*.o')
 %.o: %.cpp
 	$(CC) $(CFLAGS) -c $< -o $(OBJDIR)/$(notdir $@)
 clean:
