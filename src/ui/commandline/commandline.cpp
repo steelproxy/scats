@@ -174,6 +174,46 @@ std::string CommandLine::LineInput()
             continue;
             break;
 
+case '\t':
+            {
+                // TODO fix segfault for tab, think i solved it lineBuf.erase
+                // culprit?
+                quickLog(VERBOSE, "got tab.");
+
+                if (lineBuf.size() <= 1 || lineBuf.at(0) != '/')
+                {
+                    continue;
+                }
+
+                lineBuf.erase(lineBuf.begin());
+
+                bool found = false;
+                for (std::vector<Command>::iterator _iterator =
+                         this->_commands.begin();
+                     _iterator != this->_commands.end(); _iterator++)
+                {
+                    std::string command = _iterator->name;
+                    if (command.find(lineBuf, 0) != std::string::npos)
+                    {
+                        quickLog(VERBOSE, "found command matching query: "
+                                              << lineBuf << "~=" << command);
+
+                        lineBuf.clear();
+                        lineBuf += '/';
+                        lineBuf += command;
+                        lineBufPos = lineBuf.length();
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found)
+                {
+                    lineBuf.insert(lineBuf.begin(), '/');
+                }
+                this->Redraw(lineBuf, lineBufPos, startingXPos);
+                continue;
+            }
+
         default:
             if(isPrintKey(charBuf)) {
             lineBuf.insert(lineBuf.begin() + lineBufPos++, charBuf);}
