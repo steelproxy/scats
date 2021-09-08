@@ -60,17 +60,12 @@ void Log::writeLine(LogLevel level, const char *func, const int line,
 
     // format severity string
     static const char *severityString[5] = {
-        " [verbose] ", " [info] ", " [warning] ", " [error] ", " [severe] "};
+        "[verbose]", "[info]", "[warning]", "[error]", "[severe]"};
     std::string formattedSeverityString;
-    formattedSeverityString = fmt::format("{:>12}", severityString[level]);
+    formattedSeverityString = fmt::format("{:>9}", severityString[level]);
     
     // print message
     file.print("{} {:>{}} {}: \"{}\" \n", makeTimestamp(), formattedFunc, longestFunc, formattedSeverityString, message);
-
-   //this->file.print("{} {:>12}{}{:>{}}{}{}\n", makeTimestamp(), severityString[level], longestFunc, formattedFunc, message);
-    /*this->file << makeTimestamp() << std::setw(12) << std::fixed
-               << severityString[level] << std::setw(longestFunc)
-               << formattedFunc << message << std::endl;*/
 }
 
 void Log::setLevel(LogLevel newLevel) { this->level = newLevel; }
