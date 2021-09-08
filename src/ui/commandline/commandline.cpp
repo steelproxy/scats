@@ -14,7 +14,14 @@ void test() { quickPrintLog(INFO, "you are gay."); }
 
 void CommandLine::Redraw(std::string &out, size_t pos, size_t starting)
 {
-    int maxX = getmaxx(this->_wCommandLine);
+    // resize window as neccessary
+    int maxY;
+    int maxX;
+    getmaxyx(stdscr, maxY, maxX);
+
+    mvwin(this->_wCommandLine, maxY - 2, 0);
+    wresize(this->_wCommandLine, 2, maxX);
+
     int yPos;
     int xPos;
     getyx(this->_wCommandLine, yPos, xPos);
@@ -90,7 +97,6 @@ std::string CommandLine::LineInput()
 {
     std::string lineBuf;
 
-
     // get starting x position
     int startingXPos = getcurx(this->_wCommandLine);
 
@@ -160,6 +166,12 @@ std::string CommandLine::LineInput()
             {
                 lineBuf.erase(lineBuf.begin() + (--lineBufPos));
             }
+            break;
+
+        case KEY_RESIZE:
+            this->Redraw(lineBuf, lineBufPos, startingXPos);
+            chatLog->Redraw();
+            continue;
             break;
 
         default:
