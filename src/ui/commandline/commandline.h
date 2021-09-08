@@ -32,7 +32,6 @@ class CommandLine
 
     void Print(std::string out);
     void PrintPrompt();
-    std::string GetInput(bool lineEdit);
     std::string LineInput();
     void Clear();
     void AddCommands();
