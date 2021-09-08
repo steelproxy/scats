@@ -20,23 +20,16 @@ std::string makeTimestamp()
     time_t rawTime; // used for storing result of time()
     time(&rawTime); // get time
 
-    struct tm *hTime;            // used for accessing time data
-    hTime = localtime(&rawTime); // get tm struct
+    // format timestamp
+    std::string formattedTime;
+    formattedTime = fmt::format("({:%H:%M:%S})", fmt::localtime(rawTime));
 
-    char buffer[80];
-    strftime(buffer, 80, "%T", hTime);
-
-    stringBuilder.str(std::string());
-    stringBuilder << "(" << buffer << ")"; // insert seconds
-
-    std::string timestamp;           // used for storing timestamp
-    timestamp = stringBuilder.str(); // store std::string timestamp
-    return timestamp;
+    return formattedTime;
 }
 
 void Log::close() // close the log file
 {
-    //this->file.flush();
+    this->file.close();
 }
 
 void Log::writeLine(LogLevel level, const char *func, const int line,
