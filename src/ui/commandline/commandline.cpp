@@ -27,9 +27,9 @@ void CommandLine::Redraw(std::string &out, size_t pos, size_t starting)
 
     // print buffer by character and highlight selected character to simulate
     // character
-    for (int index = 0; index < out.length(); index++)
+    for (unsigned int index = 0; index < out.length(); index++)
     {
-        if (index == pos)
+        if (index == static_cast<unsigned int>(pos))
         {
             // set reverse attr
             wattron(this->_wCommandLine, A_REVERSE);
@@ -111,7 +111,7 @@ std::string CommandLine::LineInput()
             break;
 
         case KEY_RIGHT:
-            if (lineBufPos < lineBuf.length())
+            if (static_cast<unsigned int>(lineBufPos) < lineBuf.length())
             {
                 lineBufPos++;
                 quickLog(VERBOSE, "Got right. lineBufPos=" << lineBufPos);

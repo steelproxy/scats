@@ -180,7 +180,7 @@ void SettingsEditor::Focus()
                 }
                 else if (newKeyCode == KEY_RIGHT)
                 {
-                    if (cursorPos < newValue.length() - 1)
+                    if (static_cast<unsigned int>(cursorPos) < newValue.length() - 1)
                         cursorPos++;
                     else
                         continue;
@@ -199,9 +199,9 @@ void SettingsEditor::Focus()
                     cursorPos++;
                 }
                 wmove(this->wSettingsEditor, startingYPos, startingXPos);
-                for (int index = 0; index < newValue.length(); index++)
+                for (unsigned int index = 0; index < newValue.length(); index++)
                 {
-                    if (index == cursorPos)
+                    if (index == static_cast<unsigned int>(cursorPos))
                     {
                         wattron(this->wSettingsEditor, A_REVERSE);
                     }

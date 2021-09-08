@@ -128,6 +128,7 @@ void ChatLog::Redraw()
     // get max terminal dimensions
     int maxTermY;
     int maxTermX;
+    (void) maxTermY;
     getmaxyx(this->_wChatLog, maxTermY, maxTermX);
 
     // get max window dimensions

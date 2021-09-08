@@ -36,6 +36,7 @@ void *StatusLine::Redraw()
         // get max terminal dimensions
         int maxTermY;
         int maxTermX;
+        (void) maxTermY;
         getmaxyx(this->_wStatusLine, maxTermY, maxTermX);
 
         // get max window dimensions
