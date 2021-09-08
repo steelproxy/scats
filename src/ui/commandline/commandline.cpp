@@ -24,6 +24,7 @@ void CommandLine::Redraw(std::string &out, size_t pos, size_t starting)
     wmove(this->_wCommandLine, 1, starting);
     wclrtoeol(this->_wCommandLine);
 
+
     // print buffer by character and highlight selected character to simulate
     // character
     for (int index = 0; index < out.length(); index++)
@@ -89,13 +90,16 @@ std::string CommandLine::LineInput()
 {
     std::string lineBuf;
 
+
     // get starting x position
     int startingXPos = getcurx(this->_wCommandLine);
 
     int charBuf;
     int lineBufPos = 0;
+    this->Redraw(lineBuf, lineBufPos, startingXPos);
     while ((charBuf = wgetch(this->_wCommandLine)) != '\n')
     {
+        
         switch (charBuf)
         {
         case KEY_LEFT:
