@@ -1,3 +1,4 @@
+#include <curses.h>
 #include <functional>
 #include <map>
 #include "commandline.h"
@@ -10,17 +11,16 @@
 #include "../../log/log.h"
 #include "../../setting/setting.h"
 
-void test() { quickPrintLog(INFO, "you are gay."); }
-
 void CommandLine::Redraw(std::string &out, size_t pos, size_t starting)
 {
+
     // resize window as neccessary
     int maxY;
     int maxX;
     getmaxyx(stdscr, maxY, maxX);
 
-    mvwin(this->_wCommandLine, maxY - 2, 0);
     wresize(this->_wCommandLine, 2, maxX);
+    mvwin(this->_wCommandLine, maxY - 2, 0);
 
     int yPos;
     int xPos;
@@ -31,10 +31,18 @@ void CommandLine::Redraw(std::string &out, size_t pos, size_t starting)
     wmove(this->_wCommandLine, 1, starting);
     wclrtoeol(this->_wCommandLine);
 
+    unsigned int startIndex = 0;
+    if(maxX <= (starting + pos))
+    {
+        startIndex = ((starting + pos) - maxX) + 1;
+    }
+
 
     // print buffer by character and highlight selected character to simulate
+
+    // print buffer by character and hig
     // character
-    for (unsigned int index = 0; index < out.length(); index++)
+    for (unsigned int index = startIndex; index < out.length() && (index-startIndex) < maxX; index++)
     {
         if (index == static_cast<unsigned int>(pos))
         {
@@ -281,35 +289,6 @@ void CommandLine::AddCommands()
     _commands.emplace_back("clear", "Clears chat log.",
                            []() { chatLog->Clear(); });
     _commands.emplace_back("exit", "Exits.", []() { exit(0); });
-
-    /*    this->_commands.insert({"help", DisplayHelp});
-        this->_commands.insert({"add-contact", InteractiveAddContact});
-        this->_commands.insert({"delete-contact", InteractiveDeleteContact});
-        this->_commands.insert({"list-contacts", InteractiveListContacts});
-        this->_commands.insert({"list-settings", InteractiveListSettings});
-        this->_commands.insert({"add-setting", InteractiveAddSetting});
-        this->_commands.insert({"delete-setting", InteractiveDeleteSetting});
-        this->_commands.insert({"nuke", InteractiveNuke});
-        this->_commands.insert({"save-settings", SaveSettings});
-        this->_commands.insert({"change-setting", InteractiveChangeSetting});
-        this->_commands.insert({"clear", []() { chatLog->Clear(); }});
-        this->_commands.insert({"server", []() {
-        StartChatServer(_iniStructure["Server"]["Port"]); }});
-        this->_commands.insert({"client", []() {
-        StartChatClient(_iniStructure["Client"]["Host"],
-        _iniStructure["Client"]["Port"]); }}); this->_commands.insert({"exit",
-       []() { quickPrintLog(INFO, "Exiting scats..."); exit(0); }});
-        this->_commands.insert({"build", nullptr});
-        this->_commands.insert({"list-ini", []() { ListINI(_iniStructure);
-       }});*/
-}
-
-void CommandLine::Resize()
-{
-    int maxY;
-    int maxX;
-    getmaxyx(stdscr, maxY, maxX);
-
-    mvwin(this->_wCommandLine, maxY - 2, 0);
-    wresize(this->_wCommandLine, 2, maxX);
+    _commands.emplace_back("server", "Starts chat server.", [](){ commandLine->Clear(); commandLine->Print("Port: "); std::string port = commandLine->LineInput(); StartChatServer(port);});
+    _commands.emplace_back("client", "Starts chat client.", [](){ commandLine->Clear(); commandLine->Print("Host: "); std::string host = commandLine->LineInput(); commandLine->Clear(); commandLine->Print("Port: "); std::string port = commandLine->LineInput(); StartChatClient(host, port);});
 }
