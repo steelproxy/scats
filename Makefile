@@ -1,5 +1,5 @@
 CC=g++
-CFLAGS=-std=c++11 -Wall -Wpedantic -g -lpthread -lncurses -lfmt -lboost_system -fpermissive
+CFLAGS=-std=c++11 -Wall -Wpedantic -g -lpthread -lncurses -lfmt -lboost_system -luuid -fpermissive
 
 OBJDIR=obj
 SRCDIR=src

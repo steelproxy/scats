@@ -3,6 +3,7 @@
 #include "../ui/chatlog/chatlog.h"
 #include "ini.h"
 #include <iostream>
+#include <uuid/uuid.h>
 
 mINI::INIFile *_iniFile;
 mINI::INIStructure _iniStructure;
@@ -22,6 +23,16 @@ void ApplyDefaults()
     GetSet("Server", "maximumFileSize", "10MB");
     GetSet("Server", "Port", "25565");
     GetSet("Server", "MaxChatParticipants", "1");
+
+    // generate uuid
+    uuid_t out;
+    uuid_generate(out);
+
+    // print uuid
+    std::string uuidStr{ out, out + 16 };
+    quickPrintLog(VERBOSE, "uuid generated: " << uuidStr);
+    _iniStructure["General"]["TempUUID"] = uuidStr;
+
 }
 
 void LoadSettings()

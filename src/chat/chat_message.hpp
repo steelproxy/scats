@@ -14,6 +14,7 @@
 #include "../log/log.h"
 #include "../setting/setting.h"
 #include "../ui/chatlog/chatlog.h"
+#include <uuid/uuid.h>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -24,7 +25,7 @@ class chat_message
   public:
     enum
     {
-        header_length = 28
+        header_length = 28 + 16 + 2
     };
     enum
     {
@@ -78,8 +79,10 @@ class chat_message
     void encode_header()
     {
         char header[header_length + 1] = "";
-        std::sprintf(header, "scats-[%16s]%4d",
-                     _iniStructure["General"]["UserHandle"].c_str(),
+
+        // format header with username
+        std::sprintf(header, "scats-[%16s][%16s]%4d",
+                     _iniStructure["General"]["TempUUID"].c_str(), _iniStructure["General"]["UserHandle"].c_str(),
                      static_cast<int>(body_length_));
         std::memcpy(data_, header, header_length);
     }

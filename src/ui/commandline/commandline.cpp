@@ -1,6 +1,7 @@
 #include <curses.h>
 #include <functional>
 #include <map>
+#include <iomanip>
 #include "commandline.h"
 #include "../hotkey/hotkey.h"
 #include "../chatlog/chatlog.h"
@@ -34,7 +35,7 @@ void CommandLine::Redraw(std::string &out, size_t pos, size_t starting)
     unsigned int startIndex = 0;
     if(maxX <= (starting + pos))
     {
-        startIndex = ((starting + pos) - maxX) + 1;
+        startIndex = ((starting + pos) - maxX);
     }
 
 
@@ -42,11 +43,13 @@ void CommandLine::Redraw(std::string &out, size_t pos, size_t starting)
 
     // print buffer by character and hig
     // character
-    for (unsigned int index = startIndex; index < out.length() && (index-startIndex) < maxX; index++)
+    for (unsigned int index = startIndex; (index < out.length()) && ((index-startIndex) < maxX); index++)
     {
         if (index == static_cast<unsigned int>(pos))
         {
             // set reverse attr
+            quickPrintLog(INFO, "pos=" << index << " char=" << out.at(index));
+            quickPrintLog(INFO, std::setw(starting + pos + 1) << "v");
             wattron(this->_wCommandLine, A_REVERSE);
         }
         // print character
@@ -62,6 +65,7 @@ void CommandLine::Redraw(std::string &out, size_t pos, size_t starting)
     // print highlighted space to simulate cursor
     if (pos >= out.length())
     {
+        quickPrintLog(INFO, "simulated cursor");
         wattron(this->_wCommandLine, A_REVERSE);
         waddch(this->_wCommandLine, ' ');
         wattrset(this->_wCommandLine, A_NORMAL);

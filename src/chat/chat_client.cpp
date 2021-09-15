@@ -98,7 +98,7 @@ class chat_client
                     if (read_msg_.body_length() > 0)
                     {
 
-                        char header[28];
+                        char header[28 + 16 + 2];
                         strncpy(header, read_msg_.data(), 28);
 
                         std::string headerStr;
