@@ -8,10 +8,12 @@ typedef void (*t_voidFunction)(void);
 #define STRINGIFY_HELPER(x) #x
 #define STRINGIFY(x) STRINGIFY_HELPER(x)
 
-#define logAddHotkey(keycode, func) { \
-  quickLog(VERBOSE, "Adding hotkey... keycode=" << keycode << " func=" << STRINGIFY(func)); \
-  hotkeyMan->AddHotkey(keycode, func); \
-}
+#define logAddHotkey(keycode, func)                                            \
+    {                                                                          \
+        quickLog(VERBOSE, "Adding hotkey... keycode=" << keycode << " func="   \
+                                                      << STRINGIFY(func));     \
+        hotkeyMan->AddHotkey(keycode, func);                                   \
+    }
 
 class HotkeyManager
 {

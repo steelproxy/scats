@@ -47,12 +47,11 @@ void ChatLog::Print(std::string out)
     // TODO: stop inserting output in lines, move functionality to
     // ChatLog::Redraw()
     int expectedLength = out.length();
-    if(getBool("General", "showLineNumbers"))
+    if (getBool("General", "showLineNumbers"))
     {
         expectedLength += std::log10(_chatHistoryIndex) + 3;
-        out = std::to_string(_chatHistoryIndex) + ": " + out; 
+        out = std::to_string(_chatHistoryIndex) + ": " + out;
     }
-
 
     if (expectedLength > static_cast<long unsigned>(maxX))
     {
@@ -62,7 +61,7 @@ void ChatLog::Print(std::string out)
             chatLineStr = out.substr(currentX, maxX);
             if (this->_chatHistoryIndex == this->_chatHistory.size())
                 this->_chatHistoryIndex++;
-                this->_chatHistory.push_back(chatLineStr);
+            this->_chatHistory.push_back(chatLineStr);
             if (chatLineStr.length() < static_cast<long unsigned>(maxX))
                 break;
         }
@@ -136,7 +135,7 @@ void ChatLog::Redraw()
     // get max terminal dimensions
     int maxTermY;
     int maxTermX;
-    (void) maxTermY;
+    (void)maxTermY;
     getmaxyx(this->_wChatLog, maxTermY, maxTermX);
 
     // get max window dimensions

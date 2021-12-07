@@ -35,7 +35,8 @@ class CommandLine
     std::string LineInput();
     void Clear();
     void Resize();
-    typedef std::map<const std::string, std::pair<std::string, t_voidFunction>> t_commandMap;
+    typedef std::map<const std::string, std::pair<std::string, t_voidFunction>>
+        t_commandMap;
 
   private:
     void Redraw(std::string &out, size_t pos, size_t starting);

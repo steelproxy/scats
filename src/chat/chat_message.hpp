@@ -14,11 +14,11 @@
 #include "../log/log.h"
 #include "../setting/setting.h"
 #include "../ui/chatlog/chatlog.h"
-#include <uuid/uuid.h>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <string>
+#include <uuid/uuid.h>
 
 class chat_message
 {
@@ -82,7 +82,8 @@ class chat_message
 
         // format header with username
         std::sprintf(header, "scats-[%16s][%16s]%4d",
-                     _iniStructure["General"]["TempUUID"].c_str(), _iniStructure["General"]["UserHandle"].c_str(),
+                     _iniStructure["General"]["TempUUID"].c_str(),
+                     _iniStructure["General"]["UserHandle"].c_str(),
                      static_cast<int>(body_length_));
         std::memcpy(data_, header, header_length);
     }

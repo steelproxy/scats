@@ -4,7 +4,7 @@
 #include "ini.h"
 #include <map>
 
-//General
+// General
 //----------------------------------------------------------------
 #define DEFAULT_SETTINGS_FILE "settings.ini"
 #define DEFAULT_LOG_LEVEL "info"
@@ -20,15 +20,21 @@
 #define DEFAULT_SHOW_LINE_NUMBERS "true"
 //----------------------------------------------------------------
 
-const std::map<std::pair<const std::string, const std::string>, const std::string> _defaultMap = {
-    {std::make_pair("General", "chatHistoryLength"),    DEFAULT_CHAT_HISTORY_LEN},
-    {std::make_pair("General", "commandHistoryLength"), DEFAULT_HISTORY_LEN},
-    {std::make_pair("General", "logLevel"),             DEFAULT_LOG_LEVEL},
-    {std::make_pair("General", "scrollLock"),           DEFAULT_SCROLLLOCK},
-    {std::make_pair("General", "showLineNumbers"),      DEFAULT_SHOW_LINE_NUMBERS},
-    {std::make_pair("Server",  "maximumFileSize"),      DEFAULT_MAX_FILE_SIZE},
-    {std::make_pair("Server",  "port"),                 DEFAULT_SERVER_LISTEN_PORT},
-    {std::make_pair("Server",  "maxChatParticipants"),  DEFAULT_MAX_CHAT_PARTICIPANTS}};
+const std::map<std::pair<const std::string, const std::string>,
+               const std::string>
+    _defaultMap = {
+        {std::make_pair("General", "chatHistoryLength"),
+         DEFAULT_CHAT_HISTORY_LEN},
+        {std::make_pair("General", "commandHistoryLength"),
+         DEFAULT_HISTORY_LEN},
+        {std::make_pair("General", "logLevel"), DEFAULT_LOG_LEVEL},
+        {std::make_pair("General", "scrollLock"), DEFAULT_SCROLLLOCK},
+        {std::make_pair("General", "showLineNumbers"),
+         DEFAULT_SHOW_LINE_NUMBERS},
+        {std::make_pair("Server", "maximumFileSize"), DEFAULT_MAX_FILE_SIZE},
+        {std::make_pair("Server", "port"), DEFAULT_SERVER_LISTEN_PORT},
+        {std::make_pair("Server", "maxChatParticipants"),
+         DEFAULT_MAX_CHAT_PARTICIPANTS}};
 
 extern mINI::INIStructure _iniStructure;
 
@@ -36,7 +42,8 @@ void LoadSettings();
 void SaveSettings();
 
 bool FileExists(std::string);
-const int getInt(std::string, std::string); // todo: implement default value map search
+const int getInt(std::string,
+                 std::string); // todo: implement default value map search
 const bool getBool(std::string, std::string);
 
 void SanitizeINIString(std::string &dirtyString);

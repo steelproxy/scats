@@ -2,11 +2,10 @@
 #include "../log/log.h"
 #include "../ui/chatlog/chatlog.h"
 #include "ini.h"
+#include <cctype>
 #include <iostream>
 #include <map>
 #include <uuid/uuid.h>
-#include <cctype>
-
 
 mINI::INIFile *_iniFile;
 mINI::INIStructure _iniStructure;
@@ -18,10 +17,10 @@ mINI::INIStructure _iniStructure;
         _iniStructure[section][key] = def;                                     \
     }
 
-bool isNumber(const std::string& s)
+bool isNumber(const std::string &s)
 {
     return std::all_of(s.begin(), s.end(),
-                  [](char c){ return isdigit(c) != 0; });
+                       [](char c) { return isdigit(c) != 0; });
 }
 
 void ApplyDefaults()
@@ -33,9 +32,10 @@ void ApplyDefaults()
         auto const &key = it.first.second;
         auto const &value = it.second;
 
-        if(_iniStructure.get(section).get(key) == "")
+        if (_iniStructure.get(section).get(key) == "")
         {
-            _iniStructure[section][key] = _defaultMap.at(std::make_pair(section, key));
+            _iniStructure[section][key] =
+                _defaultMap.at(std::make_pair(section, key));
         }
     }
 
@@ -44,13 +44,12 @@ void ApplyDefaults()
     uuid_generate(out);
 
     // print uuid
-    std::string uuidStr{ out, out + 16 };
+    std::string uuidStr{out, out + 16};
     SanitizeINIString(uuidStr);
-    
+
     // use preUserPrint since chatlog hasnt been initialized
     preUserPrint(VERBOSE, "uuid generated: " << uuidStr);
     _iniStructure["General"]["TempUUID"] = uuidStr;
-
 }
 
 void LoadSettings()
@@ -70,15 +69,22 @@ void LoadSettings()
 
 void SaveSettings()
 {
-    if(preUser.empty()){
-        quickPrintLog(INFO, "Saving settings...");}
-    else{
-        preUserPrint(INFO, "Saving settings...");}
+    if (preUser.empty())
+    {
+        quickPrintLog(INFO, "Saving settings...");
+    }
+    else
+    {
+        preUserPrint(INFO, "Saving settings...");
+    }
     if (!_iniFile->generate(_iniStructure))
     {
-        if(preUser.empty()){
-        quickPrintLog(ERROR, "Unable to save settings!");}
-        else{
+        if (preUser.empty())
+        {
+            quickPrintLog(ERROR, "Unable to save settings!");
+        }
+        else
+        {
             preUserPrint(ERROR, "Unable to save settings!");
         }
     }
@@ -103,25 +109,28 @@ void ListINI(mINI::INIStructure &_targetStructure)
 const int getInt(std::string section, std::string key)
 {
     std::string targetValue = _iniStructure[section][key];
-    
-    // log the value
-    quickLog(VERBOSE,
-             "section=" << section << " key=" << key << " targetValue=" << targetValue);
 
-    const int defaultValue = std::stoi(_defaultMap.at(std::make_pair(section, key)));
-    if(!isNumber(targetValue) || targetValue == "")
+    // log the value
+    quickLog(VERBOSE, "section=" << section << " key=" << key
+                                 << " targetValue=" << targetValue);
+
+    const int defaultValue =
+        std::stoi(_defaultMap.at(std::make_pair(section, key)));
+    if (!isNumber(targetValue) || targetValue == "")
     {
         return defaultValue;
     }
     else
     {
-        try {
-            return std::stoi(targetValue);
-        } 
-        catch(std::exception e)
+        try
         {
-            exceptionLog(ERROR, 
-                "Unable to convert value! section=" << section << " key=" << key << " value=" << targetValue);
+            return std::stoi(targetValue);
+        }
+        catch (std::exception e)
+        {
+            exceptionLog(ERROR, "Unable to convert value! section="
+                                    << section << " key=" << key
+                                    << " value=" << targetValue);
             return defaultValue;
         }
     }
@@ -132,14 +141,15 @@ const bool getBool(std::string section, std::string key)
     std::string targetValue = _iniStructure[section][key];
 
     // log the value
-    quickLog(VERBOSE,
-             "section=" << section << " key=" << key << " value=" << targetValue);
-    
+    quickLog(VERBOSE, "section=" << section << " key=" << key
+                                 << " value=" << targetValue);
+
     // return default value
-    const std::string &defaultValue = _defaultMap.at(std::make_pair(section, key));
-    if(targetValue != "true" && targetValue != "false")
+    const std::string &defaultValue =
+        _defaultMap.at(std::make_pair(section, key));
+    if (targetValue != "true" && targetValue != "false")
     {
-        return (defaultValue == "true") ? true : false; 
+        return (defaultValue == "true") ? true : false;
     }
 
     // return calculated value
@@ -162,15 +172,15 @@ void SanitizeINIString(std::string &dirtyString)
     std::string cleanString;
     for (size_t index = 0; index < dirtyString.length(); index++)
     {
-        if(!isprint(dirtyString[index]) || dirtyString[index] == '[' ||
+        if (!isprint(dirtyString[index]) || dirtyString[index] == '[' ||
             dirtyString[index] == ']' || dirtyString[index] == '=' ||
             dirtyString[index] == '#' || dirtyString[index] == ';')
-            {
-                int keyValue = dirtyString[index];
-                std::string keyValueStr = std::to_string(keyValue);
+        {
+            int keyValue = dirtyString[index];
+            std::string keyValueStr = std::to_string(keyValue);
 
-                cleanString += '\\' + keyValueStr;
-            }
+            cleanString += '\\' + keyValueStr;
+        }
         else
         {
             cleanString += dirtyString[index];

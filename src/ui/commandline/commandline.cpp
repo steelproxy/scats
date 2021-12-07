@@ -1,16 +1,16 @@
-#include <curses.h>
-#include <functional>
-#include <map>
-#include <iomanip>
 #include "commandline.h"
-#include "../hotkey/hotkey.h"
-#include "../chatlog/chatlog.h"
-#include "../isprint.h"
-#include "../statusline/statusline.h"
 #include "../../chat/chat_message.hpp"
 #include "../../commands/commands.h"
 #include "../../log/log.h"
 #include "../../setting/setting.h"
+#include "../chatlog/chatlog.h"
+#include "../hotkey/hotkey.h"
+#include "../isprint.h"
+#include "../statusline/statusline.h"
+#include <curses.h>
+#include <functional>
+#include <iomanip>
+#include <map>
 
 void CommandLine::Redraw(std::string &out, size_t pos, size_t starting)
 {
@@ -33,17 +33,17 @@ void CommandLine::Redraw(std::string &out, size_t pos, size_t starting)
     wclrtoeol(this->_wCommandLine);
 
     unsigned int startIndex = 0;
-    if(maxX <= (starting + pos))
+    if (maxX <= (starting + pos))
     {
         startIndex = ((starting + pos) - maxX);
     }
-
 
     // print buffer by character and highlight selected character to simulate
 
     // print buffer by character and hig
     // character
-    for (unsigned int index = startIndex; (index < out.length()) && ((index-startIndex) < maxX); index++)
+    for (unsigned int index = startIndex;
+         (index < out.length()) && ((index - startIndex) < maxX); index++)
     {
         if (index == static_cast<unsigned int>(pos))
         {
@@ -65,7 +65,7 @@ void CommandLine::Redraw(std::string &out, size_t pos, size_t starting)
     // print highlighted space to simulate cursor
     if (pos >= out.length())
     {
-        //quickPrintLog(VERBOSE, "simulated cursor");
+        // quickPrintLog(VERBOSE, "simulated cursor");
         wattron(this->_wCommandLine, A_REVERSE);
         waddch(this->_wCommandLine, ' ');
         wattrset(this->_wCommandLine, A_NORMAL);
@@ -84,38 +84,64 @@ CommandLine::CommandLine()
 
     // setup window
     keypad(this->_wCommandLine, true); // enable advanced keyboard functions
-    mvwhline(this->_wCommandLine, 0, 0, 0, maxX); // draw horizontal bottom border
+    mvwhline(this->_wCommandLine, 0, 0, 0,
+             maxX); // draw horizontal bottom border
     wrefresh(this->_wCommandLine);
 
     // set history to beginning
     this->_commandHistoryIndex = 0;
 
     // todo: move this to scats.cpp
-    logAddHotkey(ctrl('h'),  DisplayHelp);
+    logAddHotkey(ctrl('h'), DisplayHelp);
     logAddHotkey(KEY_ESCAPE, InteractiveEditSettings);
-    logAddHotkey(KEY_MOUSE,  [](){commandLine -> HandleScroll();});
+    logAddHotkey(KEY_MOUSE, []() { commandLine->HandleScroll(); });
 }
 
-CommandLine::t_commandMap CommandLine::_newCommands = 
-{
+CommandLine::t_commandMap CommandLine::_newCommands = {
 
-    {"add-contact",    std::make_pair("Adds a contact.",     InteractiveAddContact)},
-    {"add-setting",    std::make_pair("Adds a new setting.", InteractiveAddSetting)},
-  //{"change-contact", std::make_pair("Changes a contact.",  InteractiveChangeContact)},
-    {"change-setting", std::make_pair("Changes settings.",   InteractiveChangeSetting)},
-    {"delete-contact", std::make_pair("Deletes a contact.",  InteractiveDeleteContact)},
-    {"delete-setting", std::make_pair("Deletes a setting.",  InteractiveDeleteSetting)},
-    {"edit-settings",  std::make_pair("Edits settings.",     InteractiveEditSettings)},
-    {"help",           std::make_pair("Displays help menu.", DisplayHelp)},
-    {"list-contacts",  std::make_pair("Lists contacts.",     InteractiveListContacts)},
-    {"list-settings",  std::make_pair("Lists settings.",     InteractiveListSettings)},
-    {"nuke",           std::make_pair("Deletes user files.", InteractiveNuke)},
-    {"set-user-handle",std::make_pair("Sets user handle.",   InteractiveSetUserHandle)},
-    {"save-settings",  std::make_pair("Saves all settings.", SaveSettings)},
-    {"clear",          std::make_pair("Clears chat log.",    []() { chatLog->Clear(); })},
-    {"exit",           std::make_pair("Exits.",              []() { exit(0); })},
-    {"server",         std::make_pair("Starts chat server.", [](){ commandLine->Clear(); commandLine->Print("Port: "); std::string port = commandLine->LineInput(); StartChatServer(port);})},
-    {"client",         std::make_pair("Starts chat client.", [](){ commandLine->Clear(); commandLine->Print("Host: "); std::string host = commandLine->LineInput(); commandLine->Clear(); commandLine->Print("Port: "); std::string port = commandLine->LineInput(); StartChatClient(host, port);})}
+    {"add-contact", std::make_pair("Adds a contact.", InteractiveAddContact)},
+    {"add-setting",
+     std::make_pair("Adds a new setting.", InteractiveAddSetting)},
+    //{"change-contact", std::make_pair("Changes a contact.",
+    // InteractiveChangeContact)},
+    {"change-setting",
+     std::make_pair("Changes settings.", InteractiveChangeSetting)},
+    {"delete-contact",
+     std::make_pair("Deletes a contact.", InteractiveDeleteContact)},
+    {"delete-setting",
+     std::make_pair("Deletes a setting.", InteractiveDeleteSetting)},
+    {"edit-settings",
+     std::make_pair("Edits settings.", InteractiveEditSettings)},
+    {"help", std::make_pair("Displays help menu.", DisplayHelp)},
+    {"list-contacts",
+     std::make_pair("Lists contacts.", InteractiveListContacts)},
+    {"list-settings",
+     std::make_pair("Lists settings.", InteractiveListSettings)},
+    {"nuke", std::make_pair("Deletes user files.", InteractiveNuke)},
+    {"set-user-handle",
+     std::make_pair("Sets user handle.", InteractiveSetUserHandle)},
+    {"save-settings", std::make_pair("Saves all settings.", SaveSettings)},
+    {"clear", std::make_pair("Clears chat log.", []() { chatLog->Clear(); })},
+    {"exit", std::make_pair("Exits.", []() { exit(0); })},
+    {"server", std::make_pair("Starts chat server.",
+                              []()
+                              {
+                                  commandLine->Clear();
+                                  commandLine->Print("Port: ");
+                                  std::string port = commandLine->LineInput();
+                                  StartChatServer(port);
+                              })},
+    {"client", std::make_pair("Starts chat client.",
+                              []()
+                              {
+                                  commandLine->Clear();
+                                  commandLine->Print("Host: ");
+                                  std::string host = commandLine->LineInput();
+                                  commandLine->Clear();
+                                  commandLine->Print("Port: ");
+                                  std::string port = commandLine->LineInput();
+                                  StartChatClient(host, port);
+                              })}
 
 };
 
@@ -173,7 +199,7 @@ std::string CommandLine::LineInput()
     this->Redraw(lineBuf, lineBufPos, startingXPos);
     while ((charBuf = wgetch(this->_wCommandLine)) != '\n')
     {
-        if(hotkeyMan->ProcessKey(charBuf))
+        if (hotkeyMan->ProcessKey(charBuf))
         {
             continue;
         }
@@ -204,9 +230,8 @@ std::string CommandLine::LineInput()
             // scroll history
             break;
 
-
         case __KEY_BACKSPACE:
-            if(lineBufPos > 0 && lineBuf.length() > 0)
+            if (lineBufPos > 0 && lineBuf.length() > 0)
             {
                 lineBuf.erase(lineBuf.begin() + (--lineBufPos));
             }
@@ -218,49 +243,51 @@ std::string CommandLine::LineInput()
             continue;
             break;
 
-case '\t':
+        case '\t':
+        {
+            // TODO fix segfault for tab, think i solved it lineBuf.erase
+            // culprit?
+            quickLog(VERBOSE, "got tab.");
+
+            if (lineBuf.size() <= 1 || lineBuf.at(0) != '/')
             {
-                // TODO fix segfault for tab, think i solved it lineBuf.erase
-                // culprit?
-                quickLog(VERBOSE, "got tab.");
-
-                if (lineBuf.size() <= 1 || lineBuf.at(0) != '/')
-                {
-                    continue;
-                }
-
-                lineBuf.erase(lineBuf.begin());
-
-                bool found = false;
-                for (std::vector<Command>::iterator _iterator =
-                         this->_commands.begin();
-                     _iterator != this->_commands.end(); _iterator++)
-                {
-                    std::string command = _iterator->name;
-                    if (command.find(lineBuf, 0) != std::string::npos)
-                    {
-                        quickLog(VERBOSE, "found command matching query: "
-                                              << lineBuf << "~=" << command);
-
-                        lineBuf.clear();
-                        lineBuf += '/';
-                        lineBuf += command;
-                        lineBufPos = lineBuf.length();
-                        found = true;
-                        break;
-                    }
-                }
-                if (!found)
-                {
-                    lineBuf.insert(lineBuf.begin(), '/');
-                }
-                this->Redraw(lineBuf, lineBufPos, startingXPos);
                 continue;
             }
 
+            lineBuf.erase(lineBuf.begin());
+
+            bool found = false;
+            for (std::vector<Command>::iterator _iterator =
+                     this->_commands.begin();
+                 _iterator != this->_commands.end(); _iterator++)
+            {
+                std::string command = _iterator->name;
+                if (command.find(lineBuf, 0) != std::string::npos)
+                {
+                    quickLog(VERBOSE, "found command matching query: "
+                                          << lineBuf << "~=" << command);
+
+                    lineBuf.clear();
+                    lineBuf += '/';
+                    lineBuf += command;
+                    lineBufPos = lineBuf.length();
+                    found = true;
+                    break;
+                }
+            }
+            if (!found)
+            {
+                lineBuf.insert(lineBuf.begin(), '/');
+            }
+            this->Redraw(lineBuf, lineBufPos, startingXPos);
+            continue;
+        }
+
         default:
-            if(isPrintKey(charBuf)) {
-            lineBuf.insert(lineBuf.begin() + lineBufPos++, charBuf);}
+            if (isPrintKey(charBuf))
+            {
+                lineBuf.insert(lineBuf.begin() + lineBufPos++, charBuf);
+            }
 
             break;
         }

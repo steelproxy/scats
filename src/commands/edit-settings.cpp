@@ -180,7 +180,8 @@ void SettingsEditor::Focus()
                 }
                 else if (newKeyCode == KEY_RIGHT)
                 {
-                    if (static_cast<unsigned int>(cursorPos) < newValue.length() - 1)
+                    if (static_cast<unsigned int>(cursorPos) <
+                        newValue.length() - 1)
                         cursorPos++;
                     else
                         continue;

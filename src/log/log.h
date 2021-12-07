@@ -10,28 +10,34 @@
 
 #include <curses.h>
 #undef timeout
+#include <fmt/core.h>
+#include <fmt/os.h>
 #include <fstream>
 #include <sstream>
 #include <string>
-#include <fmt/core.h>
-#include <fmt/os.h>
 #include <vector>
 
-#define preUserPrint(level, message) \
-    {                                    \                                      
-        std::ostringstream stringBuilder;  \                                    
-        stringBuilder.str(std::string());   \                                   
-        stringBuilder << message;            \
-        preUser.push_back(stringBuilder.str()); \                                    
+#define preUserPrint(level, message)                                           \
+    {                                                                          \
+        std::ostringstream stringBuilder;                                      \
+        stringBuilder.str(std::string());                                      \
+        stringBuilder << message;                                              \
+        preUser.push_back(stringBuilder.str());                                \
         logger.writeLine(level, __FUNCTION__, __LINE__, stringBuilder.str());  \
     }
 
-#define preLog(level, message) \
-    {                                    \                                      
-        std::ostringstream stringBuilder;  \                                    
-        stringBuilder.str(std::string());   \                                   
-        stringBuilder << message;            \                                 
-        preLog.push_back(logger.formatLine(level, __FUNCTION__, __LINE__, stringBuilder.str()));  \
+#define preLog(level, message)                                                 \
+    {                                                                          \
+        \                              
+        std::ostringstream stringBuilder;                                      \
+        \                            
+        stringBuilder.str(std::string());                                      \
+        \                        
+        stringBuilder                                                          \
+            << message;                                                        \
+        \                         
+        preLog.push_back(logger.formatLine(level, __FUNCTION__, __LINE__,      \
+                                           stringBuilder.str()));              \
     }
 
 ///
@@ -83,7 +89,7 @@ class Log
     ///
     /// @brief String constructor, opens log file at provided path.
     /// @param newPath Path to log file.
-    Log(std::string newPath) :  level(INFO), file(fmt::output_file(newPath)){}
+    Log(std::string newPath) : level(INFO), file(fmt::output_file(newPath)) {}
 
     /// @brief Opens the log for writing.
     /// @param newPath Path to log file.
@@ -101,9 +107,8 @@ class Log
     void writeLine(LogLevel level, const char *func, const int line,
                    const std::string &message);
 
-
     std::string formatLine(LogLevel level, const char *func, const int line,
-                   const std::string &message);
+                           const std::string &message);
     ///
     /// @brief Sets log severity level
     /// @param LogLevel Log severity level.
