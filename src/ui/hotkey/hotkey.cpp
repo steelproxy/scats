@@ -3,7 +3,7 @@
 
 HotkeyManager::HotkeyManager() {}
 
-int HotkeyManager::AddHotkey(int key, voidFunctionType func)
+int HotkeyManager::AddHotkey(int key, t_voidFunction func)
 {
     for (auto iterator = this->_hotkeys.begin();
          iterator != this->_hotkeys.end(); iterator++)

@@ -92,6 +92,28 @@ CommandLine::CommandLine()
     this->_hotkeyMan.AddHotkey(KEY_ESCAPE, InteractiveEditSettings);
 }
 
+CommandLine::t_commandMap CommandLine::_newCommands = 
+{
+
+    {"add-contact",    std::make_pair("Adds a contact.",     InteractiveAddContact)},
+    {"add-setting",    std::make_pair("Adds a new setting.", InteractiveAddSetting)},
+    {"change-setting", std::make_pair("Changes settings.",   InteractiveChangeSetting)},
+    {"delete-contact", std::make_pair("Deletes a contact.",  InteractiveDeleteContact)},
+    {"delete-setting", std::make_pair("Deletes a setting.",  InteractiveDeleteSetting)},
+    {"edit-settings",  std::make_pair("Edits settings.",     InteractiveEditSettings)},
+    {"help",           std::make_pair("Displays help menu.", DisplayHelp)},
+    {"list-contacts",  std::make_pair("Lists contacts.",     InteractiveListContacts)},
+    {"list-settings",  std::make_pair("Lists settings.",     InteractiveListSettings)},
+    {"nuke",           std::make_pair("Deletes user files.", InteractiveNuke)},
+    {"set-user-handle",std::make_pair("Sets user handle.",   InteractiveSetUserHandle)},
+    {"save-settings",  std::make_pair("Saves all settings.", SaveSettings)},
+    {"clear",          std::make_pair("Clears chat log.",    []() { chatLog->Clear(); })},
+    {"exit",           std::make_pair("Exits.",              []() { exit(0); })},
+    {"server",         std::make_pair("Starts chat server.", [](){ commandLine->Clear(); commandLine->Print("Port: "); std::string port = commandLine->LineInput(); StartChatServer(port);})},
+    {"client",         std::make_pair("Starts chat client.", [](){ commandLine->Clear(); commandLine->Print("Host: "); std::string host = commandLine->LineInput(); commandLine->Clear(); commandLine->Print("Port: "); std::string port = commandLine->LineInput(); StartChatClient(host, port);})}
+
+};
+
 void CommandLine::Print(std::string out)
 {
     Clear();
@@ -264,36 +286,4 @@ void CommandLine::Clear()
 {
     wmove(this->_wCommandLine, 1, 0);
     wclrtoeol(this->_wCommandLine);
-}
-
-void CommandLine::AddCommands()
-{
-    // set commands
-    _commands.emplace_back("add-contact", "Adds a contact.",
-                           InteractiveAddContact);
-    _commands.emplace_back("add-setting", "Adds a new setting.",
-                           InteractiveAddSetting);
-    _commands.emplace_back("change-setting", "Changes settings.",
-                           InteractiveChangeSetting);
-    _commands.emplace_back("delete-contact", "Deletes a contact.",
-                           InteractiveDeleteContact);
-    _commands.emplace_back("delete-setting", "Deletes a setting.",
-                           InteractiveDeleteSetting);
-    _commands.emplace_back("edit-settings", "Edits settings.",
-                           InteractiveEditSettings);
-    _commands.emplace_back("help", "Displays help menu.", DisplayHelp);
-    _commands.emplace_back("list-contacts", "Lists contacts.",
-                           InteractiveListContacts);
-    _commands.emplace_back("list-settings", "Lists settings.",
-                           InteractiveListSettings);
-    _commands.emplace_back("nuke", "Deletes user files.", InteractiveNuke);
-    _commands.emplace_back("set-user-handle", "Sets user handle.",
-                           InteractiveSetUserHandle);
-    _commands.emplace_back("save-settings", "Saves all settings.",
-                           SaveSettings);
-    _commands.emplace_back("clear", "Clears chat log.",
-                           []() { chatLog->Clear(); });
-    _commands.emplace_back("exit", "Exits.", []() { exit(0); });
-    _commands.emplace_back("server", "Starts chat server.", [](){ commandLine->Clear(); commandLine->Print("Port: "); std::string port = commandLine->LineInput(); StartChatServer(port);});
-    _commands.emplace_back("client", "Starts chat client.", [](){ commandLine->Clear(); commandLine->Print("Host: "); std::string host = commandLine->LineInput(); commandLine->Clear(); commandLine->Print("Port: "); std::string port = commandLine->LineInput(); StartChatClient(host, port);});
 }

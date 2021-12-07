@@ -23,7 +23,7 @@
 
 #define GetConsoleInput(lineedit) commandLine->LineInput()
 
-typedef void (*voidFunctionType)(void);
+typedef void (*t_voidFunction)(void);
 
 class CommandLine
 {
@@ -34,8 +34,8 @@ class CommandLine
     void PrintPrompt();
     std::string LineInput();
     void Clear();
-    void AddCommands();
     void Resize();
+    typedef std::map<const std::string, std::pair<std::string, t_voidFunction>> t_commandMap;
 
   private:
     void Redraw(std::string &out, size_t pos, size_t starting);
@@ -44,6 +44,7 @@ class CommandLine
     size_t _commandHistoryIndex;
     std::vector<std::string> _commandHistory;
     std::vector<Command> _commands;
+    static t_commandMap _newCommands;
     HotkeyManager _hotkeyMan;
 };
 

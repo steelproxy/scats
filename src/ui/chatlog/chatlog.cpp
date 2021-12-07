@@ -31,7 +31,7 @@ void ChatLog::Print(std::string out)
 
     // get chat history length setting
     int chatHistoryLength;
-    chatHistoryLength = getInt("General", "ChatHistoryLength", 500);
+    chatHistoryLength = getInt("General", "ChatHistoryLength");
     if (chatHistoryLength <= 0)
     {
         chatHistoryLength = std::stoi(DEFAULT_CHAT_HISTORY_LEN);

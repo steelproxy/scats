@@ -57,13 +57,13 @@ void InteractiveNuke();
 
 void InteractiveEditSettings();
 
-typedef void (*voidFunctionType)(void);
+typedef void (*t_voidFunction)(void);
 
 class Command
 {
   public:
     Command(std::string newName, std::string newDescription,
-            voidFunctionType newMainFunction)
+            t_voidFunction newMainFunction)
         : name(newName), description(newDescription),
           mainFunction(newMainFunction){};
     std::string name;
@@ -72,7 +72,7 @@ class Command
     void Execute() { this->mainFunction(); }
 
   private:
-    voidFunctionType mainFunction;
+    t_voidFunction mainFunction;
 };
 
 #endif

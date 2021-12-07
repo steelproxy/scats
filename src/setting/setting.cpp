@@ -5,12 +5,7 @@
 #include <iostream>
 #include <map>
 #include <uuid/uuid.h>
-
-//todo: move these somewhere else
-#define DEFAULT_MAX_FILE_SIZE "10mb"
-#define DEFAULT_PORT "25565"
-#define DEFAULT_MAX_CHAT_PARTICIPANTS "10"
-#define DEFAULT_SHOW_LINE_NUMBERS "true"
+#include <cctype>
 
 
 mINI::INIFile *_iniFile;
@@ -23,14 +18,11 @@ mINI::INIStructure _iniStructure;
         _iniStructure[section][key] = def;                                     \
     }
 
-std::map<std::pair<std::string, std::string>, std::string> _defaultMap = {{std::make_pair("General", "logLevel"), DEFAULT_LOG_LEVEL},
-                                                                          {std::make_pair("General", "commandHistoryLength"), DEFAULT_HISTORY_LEN},
-                                                                          {std::make_pair("General", "chatHistoryLength"), DEFAULT_CHAT_HISTORY_LEN},
-                                                                          {std::make_pair("General", "scrollLock"), DEFAULT_SCROLLLOCK},
-                                                                          {std::make_pair("General", "showLineNumbers"), DEFAULT_SHOW_LINE_NUMBERS},
-                                                                          {std::make_pair("Server", "maximumFileSize"), DEFAULT_MAX_FILE_SIZE},
-                                                                          {std::make_pair("Server", "port"), DEFAULT_PORT},
-                                                                          {std::make_pair("Server", "maxChatParticipants"), DEFAULT_MAX_CHAT_PARTICIPANTS}};
+bool isNumber(const std::string& s)
+{
+    return std::all_of(s.begin(), s.end(),
+                  [](char c){ return isdigit(c) != 0; });
+}
 
 void ApplyDefaults()
 {
@@ -43,7 +35,7 @@ void ApplyDefaults()
 
         if(_iniStructure.get(section).get(key) == "")
         {
-            _iniStructure[section][key] = _defaultMap[std::make_pair(section, key)];
+            _iniStructure[section][key] = _defaultMap.at(std::make_pair(section, key));
         }
     }
 
@@ -97,30 +89,43 @@ void ListINI(mINI::INIStructure &_targetStructure)
     }
 }
 
-const int getInt(std::string section, std::string key, int def)
+const int getInt(std::string section, std::string key)
 {
-    std::string value = _iniStructure[section][key];
+    std::string targetValue = _iniStructure[section][key];
+    
+    // log the value
     quickLog(VERBOSE,
-             "section=" << section << " key=" << key << " value=" << value);
+             "section=" << section << " key=" << key << " targetValue=" << targetValue);
 
-    int _intValue = 0;
-    std::stringstream ssValue(value);
-    ssValue >> _intValue;
-
-    if (_intValue > 0)
-        return _intValue;
-    return def;
+    const int defaultValue = std::stoi(_defaultMap.at(std::make_pair(section, key)));
+    if(!isNumber(targetValue))
+    {
+        return defaultValue;
+    }
+    else
+    {
+        try {
+            return std::stoi(targetValue);
+        } 
+        catch(std::exception e)
+        {
+            exceptionLog(ERROR, 
+                "Unable to convert value! section=" << section << " key=" << key << " value=" << targetValue);
+            return defaultValue;
+        }
+    }
 }
 
 const bool getBool(std::string section, std::string key)
 {
-    std::string defaultValue = _defaultMap[std::make_pair(section, key)];
     std::string targetValue = _iniStructure[section][key];
 
+    // log the value
     quickLog(VERBOSE,
              "section=" << section << " key=" << key << " value=" << targetValue);
     
     // return default value
+    const std::string &defaultValue = _defaultMap.at(std::make_pair(section, key));
     if(targetValue != "true" && targetValue != "false")
     {
         return (defaultValue == "true") ? true : false; 

@@ -68,7 +68,7 @@ int main(int argc, char **argv)
 
     // setup command line
     commandLine = new CommandLine();
-    commandLine->AddCommands();
+
     // create log file if necessary
     if (!FileExists(DEFAULT_LOG_FILE))
     {
