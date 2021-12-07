@@ -46,7 +46,9 @@ void ApplyDefaults()
     // print uuid
     std::string uuidStr{ out, out + 16 };
     SanitizeINIString(uuidStr);
-    quickPrintLog(VERBOSE, "uuid generated: " << uuidStr);
+    
+    // use preUserPrint since chatlog hasnt been initialized
+    preUserPrint(VERBOSE, "uuid generated: " << uuidStr);
     _iniStructure["General"]["TempUUID"] = uuidStr;
 
 }
@@ -55,10 +57,11 @@ void LoadSettings()
 {
     _iniFile = new mINI::INIFile(DEFAULT_SETTING_FILENAME);
 
-    quickPrintLog(INFO, "Reading settings...");
+    // preuserprint since chatlog hasn't been initialized yet
+    preUserPrint(INFO, "Reading settings...");
     if (!_iniFile->read(_iniStructure))
     {
-        quickPrintLog(ERROR, "Unable to read settings!");
+        preUserPrint(ERROR, "Unable to read settings!");
         throw "Unable to read settings!";
     }
     ApplyDefaults();
@@ -67,10 +70,17 @@ void LoadSettings()
 
 void SaveSettings()
 {
-    quickPrintLog(INFO, "Saving settings...");
+    if(preUser.empty()){
+        quickPrintLog(INFO, "Saving settings...");}
+    else{
+        preUserPrint(INFO, "Saving settings...");}
     if (!_iniFile->generate(_iniStructure))
     {
-        quickPrintLog(ERROR, "Unable to save settings!");
+        if(preUser.empty()){
+        quickPrintLog(ERROR, "Unable to save settings!");}
+        else{
+            preUserPrint(ERROR, "Unable to save settings!");
+        }
     }
 }
 
@@ -99,7 +109,7 @@ const int getInt(std::string section, std::string key)
              "section=" << section << " key=" << key << " targetValue=" << targetValue);
 
     const int defaultValue = std::stoi(_defaultMap.at(std::make_pair(section, key)));
-    if(!isNumber(targetValue))
+    if(!isNumber(targetValue) || targetValue == "")
     {
         return defaultValue;
     }

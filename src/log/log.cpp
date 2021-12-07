@@ -32,14 +32,9 @@ void Log::close() // close the log file
     this->file.close();
 }
 
-void Log::writeLine(LogLevel level, const char *func, const int line,
+std::string Log::formatLine(LogLevel level, const char *func, const int line,
                     const std::string &message) // write a line to the log file
 {
-    if (level < this->level)
-    {
-        return;
-    }
-    
     // format function and line number
     std::string formattedFunc;
     formattedFunc = fmt::format("{{{0}:{1}}}", func, line);
@@ -58,8 +53,19 @@ void Log::writeLine(LogLevel level, const char *func, const int line,
     formattedSeverityString = fmt::format("{:>9}", severityString[level]);
     
     // print message
-    file.print("{} {:>{}} {}: \"{}\" \n", makeTimestamp(), formattedFunc, longestFunc, formattedSeverityString, message);
+    std::string formattedMesssage = fmt::format("{} {:>{}} {}: \"{}\" \n", makeTimestamp(), formattedFunc, longestFunc, formattedSeverityString, message);
+    return formattedMesssage;
 }
+
+void Log::writeLine(LogLevel level, const char *func, const int line,
+                    const std::string &message)
+                    {
+                        if (level < this->level)
+                        {
+                            return;
+                        }
+                        file.print("{}", this->formatLine(level, func, line, message));
+                    }
 
 void Log::setLevel(LogLevel newLevel) { this->level = newLevel; }
 

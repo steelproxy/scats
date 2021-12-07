@@ -28,6 +28,9 @@ WINDOW *wStatusLine;
 
 Log logger("log.txt");
 
+// for messages printed before chatlog is initialized
+std::vector<std::string> preUser;
+
 ChatLog *chatLog;
 CommandLine *commandLine;
 StatusLine *statusLine;
@@ -61,44 +64,19 @@ int main(int argc, char **argv)
     noecho();  // don't echo commands, we'll control that
     curs_set(0);
 
-    // setup status lie
-    statusLine = new StatusLine();
-
-    // setup chat log
-    chatLog = new ChatLog();
-
-    // setup hotkey manager
-    hotkeyMan = new HotkeyManager();
-
-    // setup command line
-    commandLine = new CommandLine();
-
     // create log file if necessary
     if (!FileExists(DEFAULT_LOG_FILE))
     {
         std::ofstream logFile;
-        ncOutUsr("Log file does not exist!");
-        ncOutUsr("Creating log file...");
+        preUser.push_back("Log file does not exist!");
+        preUser.push_back("Creating log file...");
         logFile.open(DEFAULT_LOG_FILE, std::ios::out);
         if (logFile.fail())
         {
-            ncOutUsr("Unable to create log file!");
+            preUser.push_back("Unable to create log file!");
         }
         logFile.close();
     }
-
-    // initialize logger
-    try
-    {
-
-    }
-    catch (const char *msg)
-    {
-        ncOutUsr("Unable to open log file!"); // print error if fail
-    }
-
-    // start scats
-    quickPrintLog(INFO, "Starting scats...");
 
     // create settings file if necessary
     bool newSettingFile = false;
@@ -106,12 +84,12 @@ int main(int argc, char **argv)
     {
         std::ofstream settingFile;
         newSettingFile = true;
-        quickPrintLog(WARNING, "Setting database does not exist!");
-        quickPrintLog(INFO, "Creating setting database...");
+        preUserPrint(WARNING, "Setting database does not exist!");
+        preUserPrint(INFO, "Creating setting database...");
         settingFile.open(DEFAULT_SETTINGS_FILE, std::ios::out);
         if (settingFile.fail())
         {
-            quickPrintLog(ERROR, "Unable to create setting database!");
+            preUserPrint(ERROR, "Unable to create setting database!");
         }
         else
         {
@@ -143,10 +121,31 @@ int main(int argc, char **argv)
         }
         catch (const char *msg)
         {
-            quickPrintLog(ERROR, "Unable to save settings database!");
+            preUserPrint(ERROR, "Unable to save settings database!");
             exceptionLog(ERROR, msg);
         }
     }
+
+    // setup status lie
+    statusLine = new StatusLine();
+
+    // setup chat log
+    chatLog = new ChatLog();
+
+    // setup hotkey manager
+    hotkeyMan = new HotkeyManager();
+
+    // setup command line
+    commandLine = new CommandLine();
+
+    // print pre log que
+    for(auto message : preUser)
+    {
+       ncOutUsr(message);
+    }
+
+    // start scats
+    quickPrintLog(INFO, "Starting scats...");
 
     // interactive loop
     for (;;)

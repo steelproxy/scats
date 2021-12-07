@@ -43,7 +43,8 @@
         "typeinfo": "cpp",
         "utility": "cpp",
         "map": "cpp",
-        "iomanip": "cpp"
+        "iomanip": "cpp",
+        "iostream": "cpp"
     },
     "makefile.launchConfigurations": [
         {
