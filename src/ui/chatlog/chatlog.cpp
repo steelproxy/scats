@@ -46,15 +46,23 @@ void ChatLog::Print(std::string out)
 
     // TODO: stop inserting output in lines, move functionality to
     // ChatLog::Redraw()
-    if (out.length() > static_cast<long unsigned>(maxX))
+    int expectedLength = out.length();
+    if(getBool("General", "showLineNumbers"))
     {
-        for (size_t currentX = 0; currentX < out.length(); currentX += maxX)
+        expectedLength += std::log10(_chatHistoryIndex) + 3;
+        out = std::to_string(_chatHistoryIndex) + ": " + out; 
+    }
+
+
+    if (expectedLength > static_cast<long unsigned>(maxX))
+    {
+        for (size_t currentX = 0; currentX < expectedLength; currentX += maxX)
         {
             std::string chatLineStr;
             chatLineStr = out.substr(currentX, maxX);
             if (this->_chatHistoryIndex == this->_chatHistory.size())
                 this->_chatHistoryIndex++;
-            this->_chatHistory.push_back(chatLineStr);
+                this->_chatHistory.push_back(chatLineStr);
             if (chatLineStr.length() < static_cast<long unsigned>(maxX))
                 break;
         }

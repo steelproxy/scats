@@ -18,7 +18,8 @@ void LoadSettings();
 void SaveSettings();
 
 bool FileExists(std::string);
-const int getInt(std::string, std::string, int);
+const int getInt(std::string, std::string, int); // todo: implement default value map search
+const bool getBool(std::string, std::string);
 
 void SanitizeINIString(std::string &dirtyString);
 void ListINI(mINI::INIStructure &_targetStructure);

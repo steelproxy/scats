@@ -3,26 +3,49 @@
 #include "../ui/chatlog/chatlog.h"
 #include "ini.h"
 #include <iostream>
+#include <map>
 #include <uuid/uuid.h>
+
+//todo: move these somewhere else
+#define DEFAULT_MAX_FILE_SIZE "10mb"
+#define DEFAULT_PORT "25565"
+#define DEFAULT_MAX_CHAT_PARTICIPANTS "10"
+#define DEFAULT_SHOW_LINE_NUMBERS "true"
+
 
 mINI::INIFile *_iniFile;
 mINI::INIStructure _iniStructure;
 
+// ! deprecated in favor of _defaultMap
 #define GetSet(section, key, def)                                              \
     if (_iniStructure.get(section).get(key) == "")                             \
     {                                                                          \
         _iniStructure[section][key] = def;                                     \
     }
 
+std::map<std::pair<std::string, std::string>, std::string> _defaultMap = {{std::make_pair("General", "logLevel"), DEFAULT_LOG_LEVEL},
+                                                                          {std::make_pair("General", "commandHistoryLength"), DEFAULT_HISTORY_LEN},
+                                                                          {std::make_pair("General", "chatHistoryLength"), DEFAULT_CHAT_HISTORY_LEN},
+                                                                          {std::make_pair("General", "scrollLock"), DEFAULT_SCROLLLOCK},
+                                                                          {std::make_pair("General", "showLineNumbers"), DEFAULT_SHOW_LINE_NUMBERS},
+                                                                          {std::make_pair("Server", "maximumFileSize"), DEFAULT_MAX_FILE_SIZE},
+                                                                          {std::make_pair("Server", "port"), DEFAULT_PORT},
+                                                                          {std::make_pair("Server", "maxChatParticipants"), DEFAULT_MAX_CHAT_PARTICIPANTS}};
+
 void ApplyDefaults()
 {
-    GetSet("General", "LogLevel", DEFAULT_LOG_LEVEL);
-    GetSet("General", "CommandHistoryLength", DEFAULT_HISTORY_LEN);
-    GetSet("General", "ChatHistoryLength", DEFAULT_CHAT_HISTORY_LEN);
-    GetSet("General", "scrollLock", DEFAULT_SCROLLLOCK);
-    GetSet("Server", "maximumFileSize", "10MB");
-    GetSet("Server", "Port", "25565");
-    GetSet("Server", "MaxChatParticipants", "1");
+    // got rid of GetSet calls
+    for (auto const &it : _defaultMap)
+    {
+        auto const &section = it.first.first;
+        auto const &key = it.first.second;
+        auto const &value = it.second;
+
+        if(_iniStructure.get(section).get(key) == "")
+        {
+            _iniStructure[section][key] = _defaultMap[std::make_pair(section, key)];
+        }
+    }
 
     // generate uuid
     uuid_t out;
@@ -87,6 +110,24 @@ const int getInt(std::string section, std::string key, int def)
     if (_intValue > 0)
         return _intValue;
     return def;
+}
+
+const bool getBool(std::string section, std::string key)
+{
+    std::string defaultValue = _defaultMap[std::make_pair(section, key)];
+    std::string targetValue = _iniStructure[section][key];
+
+    quickLog(VERBOSE,
+             "section=" << section << " key=" << key << " value=" << targetValue);
+    
+    // return default value
+    if(targetValue != "true" && targetValue != "false")
+    {
+        return (defaultValue == "true") ? true : false; 
+    }
+
+    // return calculated value
+    return (targetValue == "true") ? true : false;
 }
 
 bool FileExists(std::string path)
