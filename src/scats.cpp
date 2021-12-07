@@ -67,11 +67,11 @@ int main(int argc, char **argv)
     // setup chat log
     chatLog = new ChatLog();
 
-    // setup command line
-    commandLine = new CommandLine();
-
     // setup hotkey manager
     hotkeyMan = new HotkeyManager();
+
+    // setup command line
+    commandLine = new CommandLine();
 
     // create log file if necessary
     if (!FileExists(DEFAULT_LOG_FILE))
