@@ -15,6 +15,24 @@
 #include <string>
 #include <fmt/core.h>
 #include <fmt/os.h>
+#include <vector>
+
+#define preUserPrint(level, message) \
+    {                                    \                                      
+        std::ostringstream stringBuilder;  \                                    
+        stringBuilder.str(std::string());   \                                   
+        stringBuilder << message;            \
+        preUser.push_back(stringBuilder.str()); \                                    
+        logger.writeLine(level, __FUNCTION__, __LINE__, stringBuilder.str());  \
+    }
+
+#define preLog(level, message) \
+    {                                    \                                      
+        std::ostringstream stringBuilder;  \                                    
+        stringBuilder.str(std::string());   \                                   
+        stringBuilder << message;            \                                 
+        preLog.push_back(logger.formatLine(level, __FUNCTION__, __LINE__, stringBuilder.str()));  \
+    }
 
 ///
 /// @brief Macro for formatting and printing messages to the log.
@@ -83,6 +101,9 @@ class Log
     void writeLine(LogLevel level, const char *func, const int line,
                    const std::string &message);
 
+
+    std::string formatLine(LogLevel level, const char *func, const int line,
+                   const std::string &message);
     ///
     /// @brief Sets log severity level
     /// @param LogLevel Log severity level.
@@ -107,5 +128,6 @@ LogLevel LevelToI(std::string level);
 extern int curY;
 extern int curX;
 extern Log logger;
+extern std::vector<std::string> preUser;
 
 #endif
