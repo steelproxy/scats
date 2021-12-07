@@ -31,6 +31,7 @@ Log logger("log.txt");
 ChatLog *chatLog;
 CommandLine *commandLine;
 StatusLine *statusLine;
+HotkeyManager *hotkeyMan;
 
 sigjmp_buf sigintJumpPoint;
 
@@ -68,6 +69,9 @@ int main(int argc, char **argv)
 
     // setup command line
     commandLine = new CommandLine();
+
+    // setup hotkey manager
+    hotkeyMan = new HotkeyManager();
 
     // create log file if necessary
     if (!FileExists(DEFAULT_LOG_FILE))
