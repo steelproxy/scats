@@ -45,6 +45,7 @@ void ApplyDefaults()
 
     // print uuid
     std::string uuidStr{ out, out + 16 };
+    SanitizeINIString(uuidStr);
     quickPrintLog(VERBOSE, "uuid generated: " << uuidStr);
     _iniStructure["General"]["TempUUID"] = uuidStr;
 
@@ -148,20 +149,22 @@ bool FileExists(std::string path)
 
 void SanitizeINIString(std::string &dirtyString)
 {
+    std::string cleanString;
     for (size_t index = 0; index < dirtyString.length(); index++)
     {
-        switch (dirtyString.at(index))
-        {
-        case '[':
-        case ']':
-        case '=':
-        case '#':
-        case ';':
-            dirtyString.erase(dirtyString.begin() + index);
-            break;
+        if(!isprint(dirtyString[index]) || dirtyString[index] == '[' ||
+            dirtyString[index] == ']' || dirtyString[index] == '=' ||
+            dirtyString[index] == '#' || dirtyString[index] == ';')
+            {
+                int keyValue = dirtyString[index];
+                std::string keyValueStr = std::to_string(keyValue);
 
-        default:
-            break;
+                cleanString += '\\' + keyValueStr;
+            }
+        else
+        {
+            cleanString += dirtyString[index];
         }
     }
+    dirtyString = cleanString;
 }
