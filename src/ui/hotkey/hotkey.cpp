@@ -38,7 +38,7 @@ int HotkeyManager::DeleteHotkey(int key)
     return 1;
 }
 
-void HotkeyManager::ProcessKey(int key)
+bool HotkeyManager::ProcessKey(int key)
 {
     for (auto iterator = this->_hotkeys.begin();
          iterator != this->_hotkeys.end(); iterator++)
@@ -47,10 +47,11 @@ void HotkeyManager::ProcessKey(int key)
         {
             quickLog(INFO, "Hotkey " << key << " executing...");
             iterator->second();
-            return;
+            return true;
         }
     }
 
     quickLog(ERROR,
              "Hotkey " << key << " was not bound and hasn't been executed.");
+    return false;
 }

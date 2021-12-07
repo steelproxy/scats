@@ -13,10 +13,12 @@ class HotkeyManager
     int AddHotkey(int keycode, t_voidFunction);
     int DeleteHotkey(int keycode);
 
-    void ProcessKey(int keycode);
+    bool ProcessKey(int keycode);
 
   private:
     std::map<int, t_voidFunction> _hotkeys;
 };
+
+extern HotkeyManager *hotkeyMan;
 
 #endif
