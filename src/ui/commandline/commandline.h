@@ -39,13 +39,13 @@ class CommandLine
 
   private:
     void Redraw(std::string &out, size_t pos, size_t starting);
+    void HandleScroll();
 
     WINDOW *_wCommandLine;
     size_t _commandHistoryIndex;
     std::vector<std::string> _commandHistory;
     std::vector<Command> _commands;
     static t_commandMap _newCommands;
-    HotkeyManager _hotkeyMan;
 };
 
 extern CommandLine *commandLine;

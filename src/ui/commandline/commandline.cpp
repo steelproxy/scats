@@ -85,11 +85,10 @@ CommandLine::CommandLine()
     mvwhline(this->_wCommandLine, 0, 0, 0, maxX);
     wrefresh(this->_wCommandLine);
 
-    this->_commandHistoryIndex = 0;
-
     // todo: move this to scats.cpp
-    this->_hotkeyMan.AddHotkey(ctrl('h'), DisplayHelp);
-    this->_hotkeyMan.AddHotkey(KEY_ESCAPE, InteractiveEditSettings);
+    hotkeyMan -> AddHotkey(ctrl('h'),  DisplayHelp);
+    hotkeyMan -> AddHotkey(KEY_ESCAPE, InteractiveEditSettings);
+    hotkeyMan -> AddHotkey(KEY_MOUSE,  [](){commandLine -> HandleScroll();});
 }
 
 CommandLine::t_commandMap CommandLine::_newCommands = 
@@ -97,6 +96,7 @@ CommandLine::t_commandMap CommandLine::_newCommands =
 
     {"add-contact",    std::make_pair("Adds a contact.",     InteractiveAddContact)},
     {"add-setting",    std::make_pair("Adds a new setting.", InteractiveAddSetting)},
+  //{"change-contact", std::make_pair("Changes a contact.",  InteractiveChangeContact)},
     {"change-setting", std::make_pair("Changes settings.",   InteractiveChangeSetting)},
     {"delete-contact", std::make_pair("Deletes a contact.",  InteractiveDeleteContact)},
     {"delete-setting", std::make_pair("Deletes a setting.",  InteractiveDeleteSetting)},
@@ -128,6 +128,34 @@ void CommandLine::PrintPrompt()
     CommandLine::Print("[" + _iniStructure["General"]["userHandle"] + "]: ");
 }
 
+void CommandLine::HandleScroll()
+{
+    MEVENT event;
+    if (getmouse(&event) == OK)
+    {
+        quickLog(VERBOSE, "Got mouse event ok.");
+        if (event.bstate & BUTTON4_PRESSED)
+        {
+            quickLog(VERBOSE, "Got mouse scroll up.");
+            chatLog->ScrollUp();
+        }
+        else if (event.bstate & BUTTON5_PRESSED)
+        {
+            quickLog(VERBOSE, "Got mouse scroll down.");
+            chatLog->ScrollDown();
+        }
+        else
+        {
+            return;
+        }
+    }
+    else
+    {
+        quickLog(ERROR, "Failed to get mouse event.");
+        return;
+    }
+}
+
 std::string CommandLine::LineInput()
 {
     std::string lineBuf;
@@ -140,7 +168,11 @@ std::string CommandLine::LineInput()
     this->Redraw(lineBuf, lineBufPos, startingXPos);
     while ((charBuf = wgetch(this->_wCommandLine)) != '\n')
     {
-        
+        if(hotkeyMan->ProcessKey(charBuf))
+        {
+            continue;
+        }
+
         switch (charBuf)
         {
         case KEY_LEFT:
@@ -167,34 +199,6 @@ std::string CommandLine::LineInput()
             // scroll history
             break;
 
-        case KEY_MOUSE:
-        {
-            MEVENT event;
-            if (getmouse(&event) == OK)
-            {
-                quickLog(VERBOSE, "Got mouse event ok.");
-                if (event.bstate & BUTTON4_PRESSED)
-                {
-                    quickLog(VERBOSE, "Got mouse scroll up.");
-                    chatLog->ScrollUp();
-                }
-                else if (event.bstate & BUTTON5_PRESSED)
-                {
-                    quickLog(VERBOSE, "Got mouse scroll down.");
-                    chatLog->ScrollDown();
-                }
-                else
-                {
-                    continue;
-                }
-            }
-            else
-            {
-                quickLog(ERROR, "Failed to get mouse event.");
-                continue;
-            }
-            continue;
-        }
 
         case __KEY_BACKSPACE:
             if(lineBufPos > 0 && lineBuf.length() > 0)
@@ -265,14 +269,14 @@ case '\t':
     if (lineBuf.length() > 1 && lineBuf.at(0) == '/')
     {
         std::string lineBufSub = lineBuf.substr(1);
-        for (std::vector<Command>::iterator _iterator = this->_commands.begin();
-             _iterator != this->_commands.end(); _iterator++)
+        for (t_commandMap::iterator _iterator = this->_newCommands.begin();
+             _iterator != this->_newCommands.end(); _iterator++)
         {
-            std::string command = _iterator->name;
-            if (lineBufSub == command)
+            std::string commandAlias = _iterator->first;
+            if (lineBufSub == commandAlias)
             {
                 quickPrintLog(VERBOSE, "Executing command: " << lineBuf);
-                _iterator->Execute();
+                _iterator->second.second();
             }
         }
     }
