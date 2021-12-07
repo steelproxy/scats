@@ -2,6 +2,7 @@
 #define SETTING_H
 
 #include "ini.h"
+#include <map>
 
 //General
 //----------------------------------------------------------------
