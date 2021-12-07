@@ -51,7 +51,7 @@ bool HotkeyManager::ProcessKey(int key)
         }
     }
 
-    quickLog(ERROR,
+    quickLog(VERBOSE,
              "Hotkey " << key << " was not bound and hasn't been executed.");
     return false;
 }

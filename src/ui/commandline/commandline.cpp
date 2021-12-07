@@ -65,7 +65,7 @@ void CommandLine::Redraw(std::string &out, size_t pos, size_t starting)
     // print highlighted space to simulate cursor
     if (pos >= out.length())
     {
-        quickPrintLog(VERBOSE, "simulated cursor");
+        //quickPrintLog(VERBOSE, "simulated cursor");
         wattron(this->_wCommandLine, A_REVERSE);
         waddch(this->_wCommandLine, ' ');
         wattrset(this->_wCommandLine, A_NORMAL);
@@ -91,9 +91,9 @@ CommandLine::CommandLine()
     this->_commandHistoryIndex = 0;
 
     // todo: move this to scats.cpp
-    hotkeyMan -> AddHotkey(ctrl('h'),  DisplayHelp);
-    hotkeyMan -> AddHotkey(KEY_ESCAPE, InteractiveEditSettings);
-    hotkeyMan -> AddHotkey(KEY_MOUSE,  [](){commandLine -> HandleScroll();});
+    logAddHotkey(ctrl('h'),  DisplayHelp);
+    logAddHotkey(KEY_ESCAPE, InteractiveEditSettings);
+    logAddHotkey(KEY_MOUSE,  [](){commandLine -> HandleScroll();});
 }
 
 CommandLine::t_commandMap CommandLine::_newCommands = 
