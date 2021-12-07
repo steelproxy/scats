@@ -76,14 +76,19 @@ void CommandLine::Redraw(std::string &out, size_t pos, size_t starting)
 
 CommandLine::CommandLine()
 {
+    // create window
     int maxY;
     int maxX;
-    getmaxyx(stdscr, maxY, maxX); // get terminal dimensions
+    getmaxyx(stdscr, maxY, maxX);
     this->_wCommandLine = newwin(2, maxX, maxY - 2, 0);
 
-    keypad(this->_wCommandLine, true); // enable advanced key sequences
-    mvwhline(this->_wCommandLine, 0, 0, 0, maxX);
+    // setup window
+    keypad(this->_wCommandLine, true); // enable advanced keyboard functions
+    mvwhline(this->_wCommandLine, 0, 0, 0, maxX); // draw horizontal bottom border
     wrefresh(this->_wCommandLine);
+
+    // set history to beginning
+    this->_commandHistoryIndex = 0;
 
     // todo: move this to scats.cpp
     hotkeyMan -> AddHotkey(ctrl('h'),  DisplayHelp);

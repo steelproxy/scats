@@ -31,7 +31,7 @@ void ChatLog::Print(std::string out)
 
     // get chat history length setting
     int chatHistoryLength;
-    chatHistoryLength = getInt("General", "ChatHistoryLength");
+    chatHistoryLength = getInt("General", "chatHistoryLength");
     if (chatHistoryLength <= 0)
     {
         chatHistoryLength = std::stoi(DEFAULT_CHAT_HISTORY_LEN);
@@ -74,7 +74,7 @@ void ChatLog::Print(std::string out)
         this->_chatHistory.push_back(out);
     }
 
-    // handle scrolllock scrolling
+    // handle scrollLock scrolling
     std::string scrollLock = _iniStructure.get("General").get("scrollLock");
     quickLog(VERBOSE, "scrollLock enabled: " << scrollLock);
     if (scrollLock != "true")
