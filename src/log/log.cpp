@@ -16,7 +16,6 @@
 
 std::string makeTimestamp()
 {
-    std::ostringstream stringBuilder;
     time_t rawTime; // used for storing result of time()
     time(&rawTime); // get time
 
@@ -72,7 +71,7 @@ void Log::writeLine(LogLevel level, const char *func, const int line,
 
 void Log::setLevel(LogLevel newLevel) { this->level = newLevel; }
 
-LogLevel LevelToI(std::string level)
+LogLevel LevelToI(const std::string &level)
 {
     if (level == "verbose")
     {

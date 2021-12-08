@@ -62,7 +62,7 @@ typedef void (*t_voidFunction)(void);
 class Command
 {
   public:
-    Command(std::string newName, std::string newDescription,
+    Command(const std::string &newName, const std::string &newDescription,
             t_voidFunction newMainFunction)
         : name(newName), description(newDescription),
           mainFunction(newMainFunction){};

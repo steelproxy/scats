@@ -89,7 +89,10 @@ class Log
     ///
     /// @brief String constructor, opens log file at provided path.
     /// @param newPath Path to log file.
-    Log(std::string newPath) : level(INFO), file(fmt::output_file(newPath)) {}
+    explicit Log(const std::string &newPath)
+        : level(INFO), file(fmt::output_file(newPath))
+    {
+    }
 
     /// @brief Opens the log for writing.
     /// @param newPath Path to log file.
@@ -130,8 +133,6 @@ class Log
 /// invalid.
 LogLevel LevelToI(std::string level);
 
-extern int curY;
-extern int curX;
 extern Log logger;
 extern std::vector<std::string> preUser;
 

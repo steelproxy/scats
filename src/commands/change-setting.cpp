@@ -7,10 +7,6 @@ void InteractiveChangeSetting()
 {
     quickPrintLog(INFO, "Changing setting...");
 
-    std::string newValue;
-    std::string oldDescription;
-    std::string oldDefault;
-
     std::string targetSection;
     do
     {
@@ -34,9 +30,10 @@ void InteractiveChangeSetting()
         quickPrintLog(ERROR, "Unable to find key!");
         return;
     }
-
     ncOutUsr(targetKey << "="
                        << _iniStructure.get(targetSection).get(targetKey));
+
+    std::string newValue;
     do
     {
         ncOutCmd(targetKey << "=");

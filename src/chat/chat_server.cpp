@@ -116,7 +116,7 @@ class chat_session : public chat_participant,
         do_read_header();
     }
 
-    void deliver(const chat_message &msg)
+    void deliver(const chat_message &msg) override
     {
         bool write_in_progress = !write_msgs_.empty();
         write_msgs_.push_back(msg);

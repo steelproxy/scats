@@ -19,6 +19,9 @@ COMMAND_OBJS := $(patsubst src/%,obj/%,$(COMMAND_OBJS))
 
 all: $(BINDIR)/$(TARGET)
 
+cppclean:
+	cppclean $(SRCS)
+
 $(BINDIR)/scats: $(OBJDIR)/scats.o $(OBJDIR)/chat/chat_client.o $(OBJDIR)/chat/chat_server.o $(COMMAND_OBJS) $(OBJDIR)/log/log.o $(OBJDIR)/setting/setting.o $(OBJDIR)/chatlog/chatlog.o $(OBJDIR)/commandline/commandline.o $(OBJDIR)/hotkey/hotkey.o $(OBJDIR)/statusline/statusline.o $(OBJDIR)/isprint.o
 	mkdir -p $(BINDIR)
 	$(CC) $(CFLAGS) -o $@ $(OBJS)

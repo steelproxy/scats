@@ -158,7 +158,6 @@ int main(int argc, char **argv)
 
         // user prompt
         std::string userInput;
-        userInput = std::string(); // clear std::string
         ncOutCmd("[" << _iniStructure["General"]["userHandle"].c_str()
                      << "]: ");
         commandLine->PrintPrompt();
