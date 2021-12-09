@@ -9,12 +9,10 @@ void InteractiveAddContact()
     quickPrintLog(INFO, "Adding new contact...");
 
     std::string newAlias;
-    do
-    {
+    do {
         ncOutCmd("Alias: ");
         newAlias = GetConsoleInput(false);
-        if (!isPrintStr(newAlias) || _iniStructure.has("contact/" + newAlias))
-        {
+        if (!isPrintStr(newAlias) || _iniStructure.has("contact/" + newAlias)) {
             ncOutUsr("Invalid alias, please enter a new one.");
             continue;
         }
@@ -23,12 +21,10 @@ void InteractiveAddContact()
     SanitizeINIString(newAlias);
 
     std::string newEndpoint;
-    do
-    {
+    do {
         ncOutCmd("Endpoint: ");
         newEndpoint = GetConsoleInput(false);
-        if (!isPrintStr(newEndpoint))
-        {
+        if (!isPrintStr(newEndpoint)) {
             ncOutUsr("Invalid endpoint, please enter a new one.");
             continue;
         }
@@ -39,12 +35,9 @@ void InteractiveAddContact()
     std::string newPort;
     ncOutCmd("Port: ");
     newPort = GetConsoleInput(false);
-    try
-    {
+    try {
         (void)stoi(newPort);
-    }
-    catch (std::exception &e)
-    {
+    } catch (std::exception &e) {
         ncOutUsr("Invalid port! Contact not added.");
         exceptionLog(ERROR, e.what());
         return;
@@ -53,7 +46,7 @@ void InteractiveAddContact()
     SanitizeINIString(newPort);
 
     _iniStructure["contact/" + newAlias]["endpoint"] = newEndpoint;
-    _iniStructure["contact/" + newAlias]["port"] = newPort;
+    _iniStructure["contact/" + newAlias]["port"]     = newPort;
 
     quickPrintLog(INFO, "Added contact.");
 }

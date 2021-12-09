@@ -70,14 +70,7 @@
 ///
 /// @brief Log severity level type.
 ///
-typedef enum
-{
-    VERBOSE,
-    INFO,
-    WARNING,
-    ERROR,
-    SEVERE
-} LogLevel;
+typedef enum { VERBOSE, INFO, WARNING, ERROR, SEVERE } LogLevel;
 
 std::string makeTimestamp();
 
@@ -101,39 +94,39 @@ class Log
     ///
     /// @brief Closes the log file.
     ///
-    void close();
+    void        close();
 
     /// @brief Writes a line to the log.
     /// @param level Severity level of message.
     /// @param message Message to print to log.
     /// @exception "Unable to open file!" Unable to open log file.
-    void writeLine(LogLevel level, const char *func, const int line,
-                   const std::string &message);
+    void        writeLine(LogLevel level, const char *func, const int line,
+                          const std::string &message);
 
     std::string formatLine(LogLevel level, const char *func, const int line,
                            const std::string &message);
     ///
     /// @brief Sets log severity level
     /// @param LogLevel Log severity level.
-    void setLevel(LogLevel newLevel);
+    void        setLevel(LogLevel newLevel);
 
     ///
     /// @brief Truncates log.
     /// @exception "Unable to open file!" Unable to open log file.
 
   private:
-    int level;
+    int          level;
     fmt::ostream file;
-    std::string path;
+    std::string  path;
 };
 
 /// @brief Converts a severity level string into LogLevel type.
 /// @param level Severity level string to be converted.
 /// @return Returns a LogLevel type of the equivalent severity, or INFO if
 /// invalid.
-LogLevel LevelToI(std::string level);
+LogLevel                        LevelToI(std::string level);
 
-extern Log logger;
+extern Log                      logger;
 extern std::vector<std::string> preUser;
 
 #endif

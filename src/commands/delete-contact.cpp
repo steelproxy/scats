@@ -8,15 +8,13 @@ void InteractiveDeleteContact()
     quickPrintLog(INFO, "Deleting contact...");
 
     std::string targetAlias;
-    do
-    {
+    do {
         ncOutCmd("Alias (must be exact): ");
         targetAlias = GetConsoleInput(false);
     } while (targetAlias.empty());
     ncOutUsr("Alias: " << targetAlias);
 
-    if (!_iniStructure.has("contact/" + targetAlias))
-    {
+    if (!_iniStructure.has("contact/" + targetAlias)) {
         quickPrintLog(ERROR, "Contact not found!");
         return;
     }

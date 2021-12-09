@@ -33,8 +33,7 @@ void CommandLine::Redraw(std::string &out, size_t pos, size_t starting)
     wclrtoeol(this->_wCommandLine);
 
     unsigned int startIndex = 0;
-    if (maxX <= (starting + pos))
-    {
+    if (maxX <= (starting + pos)) {
         startIndex = ((starting + pos) - maxX);
     }
 
@@ -43,10 +42,8 @@ void CommandLine::Redraw(std::string &out, size_t pos, size_t starting)
     // print buffer by character and hig
     // character
     for (unsigned int index = startIndex;
-         (index < out.length()) && ((index - startIndex) < maxX); index++)
-    {
-        if (index == static_cast<unsigned int>(pos))
-        {
+         (index < out.length()) && ((index - startIndex) < maxX); index++) {
+        if (index == static_cast<unsigned int>(pos)) {
             // set reverse attr
             quickPrintLog(INFO, "pos=" << index << " char=" << out.at(index));
             quickPrintLog(INFO, std::setw(starting + pos + 1) << "v");
@@ -63,8 +60,7 @@ void CommandLine::Redraw(std::string &out, size_t pos, size_t starting)
     wmove(this->_wCommandLine, 1, starting + pos);
 
     // print highlighted space to simulate cursor
-    if (pos >= out.length())
-    {
+    if (pos >= out.length()) {
         // quickPrintLog(VERBOSE, "simulated cursor");
         wattron(this->_wCommandLine, A_REVERSE);
         waddch(this->_wCommandLine, ' ');
@@ -124,16 +120,14 @@ CommandLine::t_commandMap CommandLine::_newCommands = {
     {"clear", std::make_pair("Clears chat log.", []() { chatLog->Clear(); })},
     {"exit", std::make_pair("Exits.", []() { exit(0); })},
     {"server", std::make_pair("Starts chat server.",
-                              []()
-                              {
+                              []() {
                                   commandLine->Clear();
                                   commandLine->Print("Port: ");
                                   std::string port = commandLine->LineInput();
                                   StartChatServer(port);
                               })},
     {"client", std::make_pair("Starts chat client.",
-                              []()
-                              {
+                              []() {
                                   commandLine->Clear();
                                   commandLine->Print("Host: ");
                                   std::string host = commandLine->LineInput();
@@ -162,26 +156,18 @@ void CommandLine::PrintPrompt()
 void CommandLine::HandleScroll()
 {
     MEVENT event;
-    if (getmouse(&event) == OK)
-    {
+    if (getmouse(&event) == OK) {
         quickLog(VERBOSE, "Got mouse event ok.");
-        if (event.bstate & BUTTON4_PRESSED)
-        {
+        if (event.bstate & BUTTON4_PRESSED) {
             quickLog(VERBOSE, "Got mouse scroll up.");
             chatLog->ScrollUp();
-        }
-        else if (event.bstate & BUTTON5_PRESSED)
-        {
+        } else if (event.bstate & BUTTON5_PRESSED) {
             quickLog(VERBOSE, "Got mouse scroll down.");
             chatLog->ScrollDown();
-        }
-        else
-        {
+        } else {
             return;
         }
-    }
-    else
-    {
+    } else {
         quickLog(ERROR, "Failed to get mouse event.");
         return;
     }
@@ -192,31 +178,26 @@ std::string CommandLine::LineInput()
     std::string lineBuf;
 
     // get starting x position
-    int startingXPos = getcurx(this->_wCommandLine);
+    int         startingXPos = getcurx(this->_wCommandLine);
 
-    int charBuf;
-    int lineBufPos = 0;
+    int         charBuf;
+    int         lineBufPos = 0;
     this->Redraw(lineBuf, lineBufPos, startingXPos);
-    while ((charBuf = wgetch(this->_wCommandLine)) != '\n')
-    {
-        if (hotkeyMan->ProcessKey(charBuf))
-        {
+    while ((charBuf = wgetch(this->_wCommandLine)) != '\n') {
+        if (hotkeyMan->ProcessKey(charBuf)) {
             continue;
         }
 
-        switch (charBuf)
-        {
+        switch (charBuf) {
         case KEY_LEFT:
-            if (lineBufPos > 0)
-            {
+            if (lineBufPos > 0) {
                 lineBufPos--;
                 quickLog(VERBOSE, "Got left. lineBufPos=" << lineBufPos);
             }
             break;
 
         case KEY_RIGHT:
-            if (static_cast<unsigned int>(lineBufPos) < lineBuf.length())
-            {
+            if (static_cast<unsigned int>(lineBufPos) < lineBuf.length()) {
                 lineBufPos++;
                 quickLog(VERBOSE, "Got right. lineBufPos=" << lineBufPos);
             }
@@ -231,8 +212,7 @@ std::string CommandLine::LineInput()
             break;
 
         case __KEY_BACKSPACE:
-            if (lineBufPos > 0 && lineBuf.length() > 0)
-            {
+            if (lineBufPos > 0 && lineBuf.length() > 0) {
                 lineBuf.erase(lineBuf.begin() + (--lineBufPos));
             }
             break;
@@ -243,14 +223,12 @@ std::string CommandLine::LineInput()
             continue;
             break;
 
-        case '\t':
-        {
+        case '\t': {
             // TODO fix segfault for tab, think i solved it lineBuf.erase
             // culprit?
             quickLog(VERBOSE, "got tab.");
 
-            if (lineBuf.size() <= 1 || lineBuf.at(0) != '/')
-            {
+            if (lineBuf.size() <= 1 || lineBuf.at(0) != '/') {
                 continue;
             }
 
@@ -259,11 +237,9 @@ std::string CommandLine::LineInput()
             bool found = false;
             for (std::vector<Command>::iterator _iterator =
                      this->_commands.begin();
-                 _iterator != this->_commands.end(); _iterator++)
-            {
+                 _iterator != this->_commands.end(); _iterator++) {
                 std::string command = _iterator->name;
-                if (command.find(lineBuf, 0) != std::string::npos)
-                {
+                if (command.find(lineBuf, 0) != std::string::npos) {
                     quickLog(VERBOSE, "found command matching query: "
                                           << lineBuf << "~=" << command);
 
@@ -271,12 +247,11 @@ std::string CommandLine::LineInput()
                     lineBuf += '/';
                     lineBuf += command;
                     lineBufPos = lineBuf.length();
-                    found = true;
+                    found      = true;
                     break;
                 }
             }
-            if (!found)
-            {
+            if (!found) {
                 lineBuf.insert(lineBuf.begin(), '/');
             }
             this->Redraw(lineBuf, lineBufPos, startingXPos);
@@ -284,8 +259,7 @@ std::string CommandLine::LineInput()
         }
 
         default:
-            if (isPrintKey(charBuf))
-            {
+            if (isPrintKey(charBuf)) {
                 lineBuf.insert(lineBuf.begin() + lineBufPos++, charBuf);
             }
 
@@ -298,15 +272,12 @@ std::string CommandLine::LineInput()
                                       << lineBufPos << " lineBuf=" << lineBuf);
 
     // execute comand
-    if (lineBuf.length() > 1 && lineBuf.at(0) == '/')
-    {
+    if (lineBuf.length() > 1 && lineBuf.at(0) == '/') {
         std::string lineBufSub = lineBuf.substr(1);
         for (t_commandMap::iterator _iterator = this->_newCommands.begin();
-             _iterator != this->_newCommands.end(); _iterator++)
-        {
+             _iterator != this->_newCommands.end(); _iterator++) {
             std::string commandAlias = _iterator->first;
-            if (lineBufSub == commandAlias)
-            {
+            if (lineBufSub == commandAlias) {
                 quickPrintLog(VERBOSE, "Executing command: " << lineBuf);
                 _iterator->second.second();
             }

@@ -23,7 +23,7 @@ typedef std::deque<chat_message> chat_message_queue;
 class chat_client
 {
   public:
-    chat_client(boost::asio::io_context &io_context,
+    chat_client(boost::asio::io_context                            &io_context,
                 const boost::asio::ip::tcp::resolver::results_type &endpoints)
         : io_context_(io_context), socket_(io_context)
     {
@@ -32,16 +32,13 @@ class chat_client
 
     void write(const chat_message &msg)
     {
-        boost::asio::post(io_context_,
-                          [this, msg]()
-                          {
-                              bool write_in_progress = !write_msgs_.empty();
-                              write_msgs_.push_back(msg);
-                              if (!write_in_progress)
-                              {
-                                  do_write();
-                              }
-                          });
+        boost::asio::post(io_context_, [this, msg]() {
+            bool write_in_progress = !write_msgs_.empty();
+            write_msgs_.push_back(msg);
+            if (!write_in_progress) {
+                do_write();
+            }
+        });
     }
 
     void close()
@@ -53,17 +50,15 @@ class chat_client
     void
     do_connect(const boost::asio::ip::tcp::resolver::results_type &endpoints)
     {
-        boost::asio::async_connect(
-            socket_, endpoints,
-            [this](boost::system::error_code ec, boost::asio::ip::tcp::endpoint)
-            {
-                if (!ec)
-                {
-                    quickPrintLog(INFO, "Connected.");
-                    statusLine->SetConnect(true);
-                    do_read_header();
-                }
-            });
+        boost::asio::async_connect(socket_, endpoints,
+                                   [this](boost::system::error_code ec,
+                                          boost::asio::ip::tcp::endpoint) {
+                                       if (!ec) {
+                                           quickPrintLog(INFO, "Connected.");
+                                           statusLine->SetConnect(true);
+                                           do_read_header();
+                                       }
+                                   });
     }
 
     void do_read_header()
@@ -71,14 +66,10 @@ class chat_client
         boost::asio::async_read(
             socket_,
             boost::asio::buffer(read_msg_.data(), chat_message::header_length),
-            [this](boost::system::error_code ec, std::size_t /*length*/)
-            {
-                if (!ec && read_msg_.decode_header())
-                {
+            [this](boost::system::error_code ec, std::size_t /*length*/) {
+                if (!ec && read_msg_.decode_header()) {
                     do_read_body();
-                }
-                else
-                {
+                } else {
                     quickPrintLog(INFO, "Lost connection.");
                     statusLine->SetConnect(false);
                     socket_.close();
@@ -91,12 +82,9 @@ class chat_client
         boost::asio::async_read(
             socket_,
             boost::asio::buffer(read_msg_.body(), read_msg_.body_length()),
-            [this](boost::system::error_code ec, std::size_t /*length*/)
-            {
-                if (!ec)
-                {
-                    if (read_msg_.body_length() > 0)
-                    {
+            [this](boost::system::error_code ec, std::size_t /*length*/) {
+                if (!ec) {
+                    if (read_msg_.body_length() > 0) {
 
                         char header[28 + 16 + 2];
                         strncpy(header, read_msg_.data(), 28);
@@ -120,9 +108,7 @@ class chat_client
                                                    << " message: " << strMsg);
                     }
                     do_read_header();
-                }
-                else
-                {
+                } else {
                     quickPrintLog(INFO, "Lost connection.");
                     statusLine->SetConnect(false);
                     socket_.close();
@@ -136,18 +122,13 @@ class chat_client
             socket_,
             boost::asio::buffer(write_msgs_.front().data(),
                                 write_msgs_.front().length()),
-            [this](boost::system::error_code ec, std::size_t /*length*/)
-            {
-                if (!ec)
-                {
+            [this](boost::system::error_code ec, std::size_t /*length*/) {
+                if (!ec) {
                     write_msgs_.pop_front();
-                    if (!write_msgs_.empty())
-                    {
+                    if (!write_msgs_.empty()) {
                         do_write();
                     }
-                }
-                else
-                {
+                } else {
                     quickPrintLog(INFO, "Lost connection.");
                     statusLine->SetConnect(false);
                     socket_.close();
@@ -156,29 +137,27 @@ class chat_client
     }
 
   private:
-    boost::asio::io_context &io_context_;
+    boost::asio::io_context     &io_context_;
     boost::asio::ip::tcp::socket socket_;
-    chat_message read_msg_;
-    chat_message_queue write_msgs_;
+    chat_message                 read_msg_;
+    chat_message_queue           write_msgs_;
 };
 
 void StartChatClient(std::string host, std::string port)
 {
-    try
-    {
+    try {
         quickPrintLog(INFO, "Starting client...");
-        boost::asio::io_context io_context;
+        boost::asio::io_context        io_context;
 
         boost::asio::ip::tcp::resolver resolver(io_context);
-        auto endpoints = resolver.resolve(host, port);
-        chat_client c(io_context, endpoints);
+        auto                           endpoints = resolver.resolve(host, port);
+        chat_client                    c(io_context, endpoints);
 
-        std::thread t([&io_context]() { io_context.run(); });
+        std::thread                    t([&io_context]() { io_context.run(); });
 
-        char line[chat_message::max_body_length + 1];
-        std::string user_input;
-        while ((user_input = GetConsoleInput(false)) != "/leave")
-        {
+        char                           line[chat_message::max_body_length + 1];
+        std::string                    user_input;
+        while ((user_input = GetConsoleInput(false)) != "/leave") {
             std::fill_n(line, chat_message::max_body_length, 0);
             std::memcpy(line, user_input.c_str(),
                         (user_input.length() < chat_message::max_body_length)
@@ -195,9 +174,7 @@ void StartChatClient(std::string host, std::string port)
         quickPrintLog(INFO, "Leaving server....");
         c.close();
         t.join();
-    }
-    catch (std::exception &e)
-    {
+    } catch (std::exception &e) {
         exceptionLog(ERROR, e.what());
     }
 }

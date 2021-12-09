@@ -9,10 +9,8 @@ bool isPrintKey(int test)
 
 bool isPrintStr(std::string str)
 {
-    for (size_t index = 0; index < str.length(); index++)
-    {
-        if (!isPrintKey(str.at(index)))
-        {
+    for (size_t index = 0; index < str.length(); index++) {
+        if (!isPrintKey(str.at(index))) {
             return false;
         }
     }

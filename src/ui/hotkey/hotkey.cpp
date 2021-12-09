@@ -6,10 +6,8 @@ HotkeyManager::HotkeyManager() {}
 int HotkeyManager::AddHotkey(int key, t_voidFunction func)
 {
     for (auto iterator = this->_hotkeys.begin();
-         iterator != this->_hotkeys.end(); iterator++)
-    {
-        if (iterator->first == key)
-        {
+         iterator != this->_hotkeys.end(); iterator++) {
+        if (iterator->first == key) {
             quickLog(ERROR, "Hotkey " << key << " already bound.");
             return 1;
         }
@@ -23,10 +21,8 @@ int HotkeyManager::AddHotkey(int key, t_voidFunction func)
 int HotkeyManager::DeleteHotkey(int key)
 {
     for (auto iterator = this->_hotkeys.begin();
-         iterator != this->_hotkeys.end(); iterator++)
-    {
-        if (iterator->first == key)
-        {
+         iterator != this->_hotkeys.end(); iterator++) {
+        if (iterator->first == key) {
             this->_hotkeys.erase(iterator);
             quickLog(INFO, "Hotkey " << key << " erased.");
             return 0;
@@ -41,10 +37,8 @@ int HotkeyManager::DeleteHotkey(int key)
 bool HotkeyManager::ProcessKey(int key)
 {
     for (auto iterator = this->_hotkeys.begin();
-         iterator != this->_hotkeys.end(); iterator++)
-    {
-        if (iterator->first == key)
-        {
+         iterator != this->_hotkeys.end(); iterator++) {
+        if (iterator->first == key) {
             quickLog(INFO, "Hotkey " << key << " executing...");
             iterator->second();
             return true;

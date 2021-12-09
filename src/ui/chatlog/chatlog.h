@@ -28,8 +28,8 @@ class ChatLog
     void Redraw();
 
   private:
-    WINDOW *_wChatLog;
-    size_t _chatHistoryIndex;
+    WINDOW                  *_wChatLog;
+    size_t                   _chatHistoryIndex;
     std::vector<std::string> _chatHistory;
 };
 

@@ -7,13 +7,12 @@
 #include <map>
 #include <uuid/uuid.h>
 
-mINI::INIFile *_iniFile;
+mINI::INIFile     *_iniFile;
 mINI::INIStructure _iniStructure;
 
 // ! deprecated in favor of _defaultMap
 #define GetSet(section, key, def)                                              \
-    if (_iniStructure.get(section).get(key) == "")                             \
-    {                                                                          \
+    if (_iniStructure.get(section).get(key) == "") {                           \
         _iniStructure[section][key] = def;                                     \
     }
 
@@ -26,14 +25,12 @@ bool isNumber(const std::string &s)
 void ApplyDefaults()
 {
     // got rid of GetSet calls
-    for (auto const &it : _defaultMap)
-    {
+    for (auto const &it : _defaultMap) {
         auto const &section = it.first.first;
-        auto const &key = it.first.second;
-        auto const &value = it.second;
+        auto const &key     = it.first.second;
+        auto const &value   = it.second;
 
-        if (_iniStructure.get(section).get(key) == "")
-        {
+        if (_iniStructure.get(section).get(key) == "") {
             _iniStructure[section][key] =
                 _defaultMap.at(std::make_pair(section, key));
         }
@@ -58,8 +55,7 @@ void LoadSettings()
 
     // preuserprint since chatlog hasn't been initialized yet
     preUserPrint(INFO, "Reading settings...");
-    if (!_iniFile->read(_iniStructure))
-    {
+    if (!_iniFile->read(_iniStructure)) {
         preUserPrint(ERROR, "Unable to read settings!");
         throw "Unable to read settings!";
     }
@@ -69,22 +65,15 @@ void LoadSettings()
 
 void SaveSettings()
 {
-    if (preUser.empty())
-    {
+    if (preUser.empty()) {
         quickPrintLog(INFO, "Saving settings...");
-    }
-    else
-    {
+    } else {
         preUserPrint(INFO, "Saving settings...");
     }
-    if (!_iniFile->generate(_iniStructure))
-    {
-        if (preUser.empty())
-        {
+    if (!_iniFile->generate(_iniStructure)) {
+        if (preUser.empty()) {
             quickPrintLog(ERROR, "Unable to save settings!");
-        }
-        else
-        {
+        } else {
             preUserPrint(ERROR, "Unable to save settings!");
         }
     }
@@ -92,14 +81,12 @@ void SaveSettings()
 
 void ListINI(mINI::INIStructure &_targetStructure)
 {
-    for (auto const &it : _targetStructure)
-    {
-        auto const &section = it.first;
+    for (auto const &it : _targetStructure) {
+        auto const &section    = it.first;
         auto const &collection = it.second;
         ncOutUsr("[" << section << "]");
-        for (auto const &it2 : collection)
-        {
-            auto const &key = it2.first;
+        for (auto const &it2 : collection) {
+            auto const &key   = it2.first;
             auto const &value = it2.second;
             ncOutUsr(key << "=" << value);
         }
@@ -116,18 +103,12 @@ const int getInt(std::string section, std::string key)
 
     const int defaultValue =
         std::stoi(_defaultMap.at(std::make_pair(section, key)));
-    if (!isNumber(targetValue) || targetValue == "")
-    {
+    if (!isNumber(targetValue) || targetValue == "") {
         return defaultValue;
-    }
-    else
-    {
-        try
-        {
+    } else {
+        try {
             return std::stoi(targetValue);
-        }
-        catch (std::exception e)
-        {
+        } catch (std::exception e) {
             exceptionLog(ERROR, "Unable to convert value! section="
                                     << section << " key=" << key
                                     << " value=" << targetValue);
@@ -147,8 +128,7 @@ const bool getBool(std::string section, std::string key)
     // return default value
     const std::string &defaultValue =
         _defaultMap.at(std::make_pair(section, key));
-    if (targetValue != "true" && targetValue != "false")
-    {
+    if (targetValue != "true" && targetValue != "false") {
         return (defaultValue == "true") ? true : false;
     }
 
@@ -159,8 +139,7 @@ const bool getBool(std::string section, std::string key)
 bool FileExists(std::string path)
 {
     struct stat buffer;
-    if (stat(path.c_str(), &buffer) == 0)
-    {
+    if (stat(path.c_str(), &buffer) == 0) {
         return true;
     }
 
@@ -170,19 +149,15 @@ bool FileExists(std::string path)
 void SanitizeINIString(std::string &dirtyString)
 {
     std::string cleanString;
-    for (size_t index = 0; index < dirtyString.length(); index++)
-    {
+    for (size_t index = 0; index < dirtyString.length(); index++) {
         if (!isprint(dirtyString[index]) || dirtyString[index] == '[' ||
             dirtyString[index] == ']' || dirtyString[index] == '=' ||
-            dirtyString[index] == '#' || dirtyString[index] == ';')
-        {
-            int keyValue = dirtyString[index];
+            dirtyString[index] == '#' || dirtyString[index] == ';') {
+            int         keyValue    = dirtyString[index];
             std::string keyValueStr = std::to_string(keyValue);
 
             cleanString += '\\' + keyValueStr;
-        }
-        else
-        {
+        } else {
             cleanString += dirtyString[index];
         }
     }

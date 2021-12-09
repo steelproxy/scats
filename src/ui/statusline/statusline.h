@@ -15,22 +15,22 @@ class StatusLine
 
     void *Redraw();
 
-    bool Unread();
-    bool Unread(bool newUnread);
+    bool  Unread();
+    bool  Unread(bool newUnread);
 
-    void SetConnect(bool newConnected);
-    bool GetConnect();
+    void  SetConnect(bool newConnected);
+    bool  GetConnect();
 
-    void Resize();
+    void  Resize();
 
   private:
-    void Clear();
+    void         Clear();
     static void *RedrawHelper(void *context);
 
-    pthread_t _statusLineThread;
-    WINDOW *_wStatusLine;
-    bool _unread;
-    bool _connected;
+    pthread_t    _statusLineThread;
+    WINDOW      *_wStatusLine;
+    bool         _unread;
+    bool         _connected;
 };
 
 extern StatusLine *statusLine;

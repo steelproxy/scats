@@ -23,30 +23,24 @@
 class chat_message
 {
   public:
-    enum
-    {
-        header_length = 28 + 16 + 2
-    };
-    enum
-    {
-        max_body_length = 512
-    };
+    enum { header_length = 28 + 16 + 2 };
+    enum { max_body_length = 512 };
 
     chat_message() : body_length_(0) {}
 
     const char *data() const { return data_; }
 
-    char *data() { return data_; }
+    char       *data() { return data_; }
 
     std::size_t length() const { return header_length + body_length_; }
 
     const char *body() const { return data_ + header_length; }
 
-    char *body() { return data_ + header_length; }
+    char       *body() { return data_ + header_length; }
 
     std::size_t body_length() const { return body_length_; }
 
-    void body_length(std::size_t new_length)
+    void        body_length(std::size_t new_length)
     {
         body_length_ = new_length;
         if (body_length_ > max_body_length)
@@ -60,16 +54,14 @@ class chat_message
         std::string headerStr = header;
         quickLog(VERBOSE, "Header: " << header);
 
-        if (headerStr.find("scats-[", 0) != 0 || headerStr.at(23) != ']')
-        {
+        if (headerStr.find("scats-[", 0) != 0 || headerStr.at(23) != ']') {
             return false;
         }
 
         std::string bodyLenSubStr = headerStr.substr(24);
-        body_length_ = std::atoi(bodyLenSubStr.c_str());
+        body_length_              = std::atoi(bodyLenSubStr.c_str());
         quickLog(VERBOSE, "Body length: " << body_length_);
-        if (body_length_ > max_body_length)
-        {
+        if (body_length_ > max_body_length) {
             body_length_ = 0;
             return false;
         }
@@ -89,7 +81,7 @@ class chat_message
     }
 
   private:
-    char data_[header_length + max_body_length];
+    char        data_[header_length + max_body_length];
     std::size_t body_length_;
 };
 

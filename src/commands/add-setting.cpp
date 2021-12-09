@@ -8,8 +8,7 @@ void InteractiveAddSetting()
     quickPrintLog(INFO, "Adding setting...");
 
     std::string newSection;
-    do
-    {
+    do {
         ncOutCmd("Section: ");
         newSection = GetConsoleInput(false);
     } while (newSection.empty());
@@ -17,8 +16,7 @@ void InteractiveAddSetting()
     SanitizeINIString(newSection);
 
     std::string newKey;
-    do
-    {
+    do {
         ncOutCmd("Key: ");
         newKey = GetConsoleInput(false);
     } while (newKey.empty());
@@ -26,8 +24,7 @@ void InteractiveAddSetting()
     SanitizeINIString(newKey);
 
     std::string newValue;
-    do
-    {
+    do {
         ncOutCmd("Value: ");
         newValue = GetConsoleInput(false);
     } while (newValue.empty());

@@ -23,25 +23,24 @@
 #include <signal.h>
 #include <vector>
 
-WINDOW *wRoot;
-WINDOW *wStatusLine;
+WINDOW                  *wRoot;
+WINDOW                  *wStatusLine;
 
-Log logger("log.txt");
+Log                      logger("log.txt");
 
 // for messages printed before chatlog is initialized
 std::vector<std::string> preUser;
 
-ChatLog *chatLog;
-CommandLine *commandLine;
-StatusLine *statusLine;
-HotkeyManager *hotkeyMan;
+ChatLog                 *chatLog;
+CommandLine             *commandLine;
+StatusLine              *statusLine;
+HotkeyManager           *hotkeyMan;
 
-sigjmp_buf sigintJumpPoint;
+sigjmp_buf               sigintJumpPoint;
 
-void SignalHandler(int sig)
+void                     SignalHandler(int sig)
 {
-    if (sig == SIGINT)
-    {
+    if (sig == SIGINT) {
         quickPrintLog(INFO, "Sigint caught.");
         siglongjmp(sigintJumpPoint, 1);
     }
@@ -65,14 +64,12 @@ int main(int argc, char **argv)
     curs_set(0);
 
     // create log file if necessary
-    if (!FileExists(DEFAULT_LOG_FILE))
-    {
+    if (!FileExists(DEFAULT_LOG_FILE)) {
         std::ofstream logFile;
         preUser.push_back("Log file does not exist!");
         preUser.push_back("Creating log file...");
         logFile.open(DEFAULT_LOG_FILE, std::ios::out);
-        if (logFile.fail())
-        {
+        if (logFile.fail()) {
             preUser.push_back("Unable to create log file!");
         }
         logFile.close();
@@ -80,67 +77,54 @@ int main(int argc, char **argv)
 
     // create settings file if necessary
     bool newSettingFile = false;
-    if (!FileExists(DEFAULT_SETTINGS_FILE))
-    {
+    if (!FileExists(DEFAULT_SETTINGS_FILE)) {
         std::ofstream settingFile;
         newSettingFile = true;
         preUserPrint(WARNING, "Setting database does not exist!");
         preUserPrint(INFO, "Creating setting database...");
         settingFile.open(DEFAULT_SETTINGS_FILE, std::ios::out);
-        if (settingFile.fail())
-        {
+        if (settingFile.fail()) {
             preUserPrint(ERROR, "Unable to create setting database!");
-        }
-        else
-        {
+        } else {
             newSettingFile = true;
         }
         settingFile.close();
     }
 
     // load settings
-    try
-    {
+    try {
         LoadSettings();
-    }
-    catch (const char *msg)
-    {
+    } catch (const char *msg) {
         exceptionLog(ERROR, msg);
     }
 
     // apply settings
-    if (_iniStructure.get("General").get("userHandle").empty())
-    {
+    if (_iniStructure.get("General").get("userHandle").empty()) {
         InteractiveSetUserHandle();
     }
-    if (newSettingFile)
-    {
-        try
-        {
+    if (newSettingFile) {
+        try {
             SaveSettings();
-        }
-        catch (const char *msg)
-        {
+        } catch (const char *msg) {
             preUserPrint(ERROR, "Unable to save settings database!");
             exceptionLog(ERROR, msg);
         }
     }
 
     // setup status lie
-    statusLine = new StatusLine();
+    statusLine  = new StatusLine();
 
     // setup chat log
-    chatLog = new ChatLog();
+    chatLog     = new ChatLog();
 
     // setup hotkey manager
-    hotkeyMan = new HotkeyManager();
+    hotkeyMan   = new HotkeyManager();
 
     // setup command line
     commandLine = new CommandLine();
 
     // print pre log que
-    for (auto message : preUser)
-    {
+    for (auto message : preUser) {
         ncOutUsr(message);
     }
 
@@ -148,8 +132,7 @@ int main(int argc, char **argv)
     quickPrintLog(INFO, "Starting scats...");
 
     // interactive loop
-    for (;;)
-    {
+    for (;;) {
         while (sigsetjmp(sigintJumpPoint, 1) != 0)
             ; // set jump to beginning of loop
 
@@ -168,14 +151,11 @@ int main(int argc, char **argv)
         if (userInput.empty() ||
             userInput.at(0) != '/') // check if input is a command
         {
-            if (/*connectedToServer()*/ !userInput.empty())
-            {
+            if (/*connectedToServer()*/ !userInput.empty()) {
                 /*SendChat(userInput);*/
                 ncOutUsr("[" << _iniStructure["General"]["userHandle"].c_str()
                              << "]: " << userInput);
-            }
-            else
-            {
+            } else {
                 quickPrintLog(ERROR, "Not connected to chat!");
             }
             continue;

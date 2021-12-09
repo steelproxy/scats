@@ -100,7 +100,7 @@ namespace mINI
 namespace INIStringUtil
 {
 const char *const whitespaceDelimiters = " \t\n\r\f\v";
-inline void trim(std::string &str)
+inline void       trim(std::string &str)
 {
     str.erase(str.find_last_not_of(whitespaceDelimiters) + 1);
     str.erase(0, str.find_first_not_of(whitespaceDelimiters));
@@ -108,19 +108,17 @@ inline void trim(std::string &str)
 #ifndef MINI_CASE_SENSITIVE
 inline void toLower(std::string &str)
 {
-    std::transform(str.begin(), str.end(), str.begin(),
-                   [](const char c)
-                   { return static_cast<const char>(std::tolower(c)); });
+    std::transform(str.begin(), str.end(), str.begin(), [](const char c) {
+        return static_cast<const char>(std::tolower(c));
+    });
 }
 #endif
 inline void replace(std::string &str, std::string const &a,
                     std::string const &b)
 {
-    if (!a.empty())
-    {
+    if (!a.empty()) {
         std::size_t pos = 0;
-        while ((pos = str.find(a, pos)) != std::string::npos)
-        {
+        while ((pos = str.find(a, pos)) != std::string::npos) {
             str.replace(pos, a.size(), b);
             pos += b.size();
         }
@@ -136,13 +134,13 @@ const char *const endl = "\n";
 template <typename T> class INIMap
 {
   private:
-    using T_DataIndexMap = std::unordered_map<std::string, std::size_t>;
-    using T_DataItem = std::pair<std::string, T>;
+    using T_DataIndexMap  = std::unordered_map<std::string, std::size_t>;
+    using T_DataItem      = std::pair<std::string, T>;
     using T_DataContainer = std::vector<T_DataItem>;
-    using T_MultiArgs = typename std::vector<std::pair<std::string, T>>;
+    using T_MultiArgs     = typename std::vector<std::pair<std::string, T>>;
 
-    T_DataIndexMap dataIndexMap;
-    T_DataContainer data;
+    T_DataIndexMap     dataIndexMap;
+    T_DataContainer    data;
 
     inline std::size_t setEmpty(std::string &key)
     {
@@ -160,8 +158,7 @@ template <typename T> class INIMap
     INIMap(INIMap const &other)
     {
         std::size_t data_size = other.data.size();
-        for (std::size_t i = 0; i < data_size; ++i)
-        {
+        for (std::size_t i = 0; i < data_size; ++i) {
             auto const &key = other.data[i].first;
             auto const &obj = other.data[i].second;
             data.emplace_back(key, obj);
@@ -175,8 +172,8 @@ template <typename T> class INIMap
 #ifndef MINI_CASE_SENSITIVE
         INIStringUtil::toLower(key);
 #endif
-        auto it = dataIndexMap.find(key);
-        bool hasIt = (it != dataIndexMap.end());
+        auto        it    = dataIndexMap.find(key);
+        bool        hasIt = (it != dataIndexMap.end());
         std::size_t index = (hasIt) ? it->second : setEmpty(key);
         return data[index].second;
     }
@@ -187,8 +184,7 @@ template <typename T> class INIMap
         INIStringUtil::toLower(key);
 #endif
         auto it = dataIndexMap.find(key);
-        if (it == dataIndexMap.end())
-        {
+        if (it == dataIndexMap.end()) {
             return T();
         }
         return T(data[it->second].second);
@@ -208,20 +204,16 @@ template <typename T> class INIMap
         INIStringUtil::toLower(key);
 #endif
         auto it = dataIndexMap.find(key);
-        if (it != dataIndexMap.end())
-        {
+        if (it != dataIndexMap.end()) {
             data[it->second].second = obj;
-        }
-        else
-        {
+        } else {
             dataIndexMap[key] = data.size();
             data.emplace_back(key, obj);
         }
     }
     void set(T_MultiArgs const &multiArgs)
     {
-        for (auto const &it : multiArgs)
-        {
+        for (auto const &it : multiArgs) {
             auto const &key = it.first;
             auto const &obj = it.second;
             set(key, obj);
@@ -234,16 +226,13 @@ template <typename T> class INIMap
         INIStringUtil::toLower(key);
 #endif
         auto it = dataIndexMap.find(key);
-        if (it != dataIndexMap.end())
-        {
+        if (it != dataIndexMap.end()) {
             std::size_t index = it->second;
             data.erase(data.begin() + index);
             dataIndexMap.erase(it);
-            for (auto &it2 : dataIndexMap)
-            {
+            for (auto &it2 : dataIndexMap) {
                 auto &vi = it2.second;
-                if (vi > index)
-                {
+                if (vi > index) {
                     vi--;
                 }
             }
@@ -256,7 +245,7 @@ template <typename T> class INIMap
         data.clear();
         dataIndexMap.clear();
     }
-    std::size_t size() const { return data.size(); }
+    std::size_t    size() const { return data.size(); }
     const_iterator begin() const { return data.begin(); }
     const_iterator end() const { return data.end(); }
 };
@@ -267,8 +256,7 @@ namespace INIParser
 {
 using T_ParseValues = std::pair<std::string, std::string>;
 
-enum class PDataType : char
-{
+enum class PDataType : char {
     PDATA_NONE,
     PDATA_COMMENT,
     PDATA_SECTION,
@@ -281,25 +269,20 @@ inline PDataType parseLine(std::string line, T_ParseValues &parseData)
     parseData.first.clear();
     parseData.second.clear();
     INIStringUtil::trim(line);
-    if (line.empty())
-    {
+    if (line.empty()) {
         return PDataType::PDATA_NONE;
     }
     char firstCharacter = line[0];
-    if (firstCharacter == ';')
-    {
+    if (firstCharacter == ';') {
         return PDataType::PDATA_COMMENT;
     }
-    if (firstCharacter == '[')
-    {
+    if (firstCharacter == '[') {
         auto commentAt = line.find_first_of(';');
-        if (commentAt != std::string::npos)
-        {
+        if (commentAt != std::string::npos) {
             line = line.substr(0, commentAt);
         }
         auto closingBracketAt = line.find_last_of(']');
-        if (closingBracketAt != std::string::npos)
-        {
+        if (closingBracketAt != std::string::npos) {
             auto section = line.substr(1, closingBracketAt - 1);
             INIStringUtil::trim(section);
             parseData.first = section;
@@ -309,14 +292,13 @@ inline PDataType parseLine(std::string line, T_ParseValues &parseData)
     auto lineNorm = line;
     INIStringUtil::replace(lineNorm, "\\=", "  ");
     auto equalsAt = lineNorm.find_first_of('=');
-    if (equalsAt != std::string::npos)
-    {
+    if (equalsAt != std::string::npos) {
         auto key = line.substr(0, equalsAt);
         INIStringUtil::trim(key);
         INIStringUtil::replace(key, "\\=", "=");
         auto value = line.substr(equalsAt + 1);
         INIStringUtil::trim(value);
-        parseData.first = key;
+        parseData.first  = key;
         parseData.second = value;
         return PDataType::PDATA_KEYVALUE;
     }
@@ -327,14 +309,14 @@ inline PDataType parseLine(std::string line, T_ParseValues &parseData)
 class INIReader
 {
   public:
-    using T_LineData = std::vector<std::string>;
+    using T_LineData    = std::vector<std::string>;
     using T_LineDataPtr = std::shared_ptr<T_LineData>;
 
   private:
     std::ifstream fileReadStream;
     T_LineDataPtr lineData;
 
-    T_LineData readFile()
+    T_LineData    readFile()
     {
         std::string fileContents;
         fileReadStream.seekg(0, std::ios::end);
@@ -344,23 +326,19 @@ class INIReader
         fileReadStream.read(&fileContents[0], fileSize);
         fileReadStream.close();
         T_LineData output;
-        if (fileSize == 0)
-        {
+        if (fileSize == 0) {
             return output;
         }
         std::string buffer;
         buffer.reserve(50);
-        for (std::size_t i = 0; i < fileSize; ++i)
-        {
+        for (std::size_t i = 0; i < fileSize; ++i) {
             char &c = fileContents[i];
-            if (c == '\n')
-            {
+            if (c == '\n') {
                 output.emplace_back(buffer);
                 buffer.clear();
                 continue;
             }
-            if (c != '\0' && c != '\r')
-            {
+            if (c != '\0' && c != '\r') {
                 buffer += c;
             }
         }
@@ -372,8 +350,7 @@ class INIReader
     INIReader(std::string const &filename, bool keepLineData = false)
     {
         fileReadStream.open(filename, std::ios::in | std::ios::binary);
-        if (keepLineData)
-        {
+        if (keepLineData) {
             lineData = std::make_shared<T_LineData>();
         }
     }
@@ -381,34 +358,28 @@ class INIReader
 
     bool operator>>(INIStructure &data)
     {
-        if (!fileReadStream.is_open())
-        {
+        if (!fileReadStream.is_open()) {
             return false;
         }
-        T_LineData fileLines = readFile();
-        std::string section;
-        bool inSection = false;
+        T_LineData               fileLines = readFile();
+        std::string              section;
+        bool                     inSection = false;
         INIParser::T_ParseValues parseData;
-        for (auto const &line : fileLines)
-        {
+        for (auto const &line : fileLines) {
             auto parseResult = INIParser::parseLine(line, parseData);
-            if (parseResult == INIParser::PDataType::PDATA_SECTION)
-            {
+            if (parseResult == INIParser::PDataType::PDATA_SECTION) {
                 inSection = true;
                 data[section = parseData.first];
-            }
-            else if (inSection &&
-                     parseResult == INIParser::PDataType::PDATA_KEYVALUE)
-            {
-                auto const &key = parseData.first;
-                auto const &value = parseData.second;
+            } else if (inSection &&
+                       parseResult == INIParser::PDataType::PDATA_KEYVALUE) {
+                auto const &key    = parseData.first;
+                auto const &value  = parseData.second;
                 data[section][key] = value;
             }
-            if (lineData && parseResult != INIParser::PDataType::PDATA_UNKNOWN)
-            {
+            if (lineData &&
+                parseResult != INIParser::PDataType::PDATA_UNKNOWN) {
                 if (parseResult == INIParser::PDataType::PDATA_KEYVALUE &&
-                    !inSection)
-                {
+                    !inSection) {
                     continue;
                 }
                 lineData->emplace_back(line);
@@ -435,46 +406,38 @@ class INIGenerator
 
     bool operator<<(INIStructure const &data)
     {
-        if (!fileWriteStream.is_open())
-        {
+        if (!fileWriteStream.is_open()) {
             return false;
         }
-        if (!data.size())
-        {
+        if (!data.size()) {
             return true;
         }
         auto it = data.begin();
-        for (;;)
-        {
-            auto const &section = it->first;
+        for (;;) {
+            auto const &section    = it->first;
             auto const &collection = it->second;
             fileWriteStream << "[" << section << "]";
-            if (collection.size())
-            {
+            if (collection.size()) {
                 fileWriteStream << INIStringUtil::endl;
                 auto it2 = collection.begin();
-                for (;;)
-                {
+                for (;;) {
                     auto key = it2->first;
                     INIStringUtil::replace(key, "=", "\\=");
                     auto value = it2->second;
                     INIStringUtil::trim(value);
                     fileWriteStream << key << ((prettyPrint) ? " = " : "=")
                                     << value;
-                    if (++it2 == collection.end())
-                    {
+                    if (++it2 == collection.end()) {
                         break;
                     }
                     fileWriteStream << INIStringUtil::endl;
                 }
             }
-            if (++it == data.end())
-            {
+            if (++it == data.end()) {
                 break;
             }
             fileWriteStream << INIStringUtil::endl;
-            if (prettyPrint)
-            {
+            if (prettyPrint) {
                 fileWriteStream << INIStringUtil::endl;
             }
         }
@@ -485,83 +448,68 @@ class INIGenerator
 class INIWriter
 {
   private:
-    using T_LineData = std::vector<std::string>;
+    using T_LineData    = std::vector<std::string>;
     using T_LineDataPtr = std::shared_ptr<T_LineData>;
 
     std::string filename;
 
-    T_LineData getLazyOutput(T_LineDataPtr const &lineData, INIStructure &data,
-                             INIStructure &original)
+    T_LineData  getLazyOutput(T_LineDataPtr const &lineData, INIStructure &data,
+                              INIStructure &original)
     {
-        T_LineData output;
+        T_LineData               output;
         INIParser::T_ParseValues parseData;
-        std::string sectionCurrent;
-        bool parsingSection = false;
-        bool continueToNextSection = false;
-        bool discardNextEmpty = false;
-        bool writeNewKeys = false;
-        std::size_t lastKeyLine = 0;
-        for (auto line = lineData->begin(); line != lineData->end(); ++line)
-        {
-            if (!writeNewKeys)
-            {
+        std::string              sectionCurrent;
+        bool                     parsingSection        = false;
+        bool                     continueToNextSection = false;
+        bool                     discardNextEmpty      = false;
+        bool                     writeNewKeys          = false;
+        std::size_t              lastKeyLine           = 0;
+        for (auto line = lineData->begin(); line != lineData->end(); ++line) {
+            if (!writeNewKeys) {
                 auto parseResult = INIParser::parseLine(*line, parseData);
-                if (parseResult == INIParser::PDataType::PDATA_SECTION)
-                {
-                    if (parsingSection)
-                    {
-                        writeNewKeys = true;
+                if (parseResult == INIParser::PDataType::PDATA_SECTION) {
+                    if (parsingSection) {
+                        writeNewKeys   = true;
                         parsingSection = false;
                         --line;
                         continue;
                     }
                     sectionCurrent = parseData.first;
-                    if (data.has(sectionCurrent))
-                    {
-                        parsingSection = true;
+                    if (data.has(sectionCurrent)) {
+                        parsingSection        = true;
                         continueToNextSection = false;
-                        discardNextEmpty = false;
+                        discardNextEmpty      = false;
                         output.emplace_back(*line);
                         lastKeyLine = output.size();
-                    }
-                    else
-                    {
+                    } else {
                         continueToNextSection = true;
-                        discardNextEmpty = true;
+                        discardNextEmpty      = true;
                         continue;
                     }
-                }
-                else if (parseResult == INIParser::PDataType::PDATA_KEYVALUE)
-                {
-                    if (continueToNextSection)
-                    {
+                } else if (parseResult ==
+                           INIParser::PDataType::PDATA_KEYVALUE) {
+                    if (continueToNextSection) {
                         continue;
                     }
-                    if (data.has(sectionCurrent))
-                    {
-                        auto &collection = data[sectionCurrent];
-                        auto const &key = parseData.first;
-                        auto const &value = parseData.second;
-                        if (collection.has(key))
-                        {
+                    if (data.has(sectionCurrent)) {
+                        auto       &collection = data[sectionCurrent];
+                        auto const &key        = parseData.first;
+                        auto const &value      = parseData.second;
+                        if (collection.has(key)) {
                             auto outputValue = collection[key];
-                            if (value == outputValue)
-                            {
+                            if (value == outputValue) {
                                 output.emplace_back(*line);
-                            }
-                            else
-                            {
+                            } else {
                                 INIStringUtil::trim(outputValue);
                                 auto lineNorm = *line;
                                 INIStringUtil::replace(lineNorm, "\\=", "  ");
                                 auto equalsAt = lineNorm.find_first_of('=');
-                                auto valueAt = lineNorm.find_first_not_of(
-                                    INIStringUtil::whitespaceDelimiters,
-                                    equalsAt + 1);
+                                auto valueAt  = lineNorm.find_first_not_of(
+                                     INIStringUtil::whitespaceDelimiters,
+                                     equalsAt + 1);
                                 std::string outputLine =
                                     line->substr(0, valueAt);
-                                if (prettyPrint && equalsAt + 1 == valueAt)
-                                {
+                                if (prettyPrint && equalsAt + 1 == valueAt) {
                                     outputLine += " ";
                                 }
                                 outputLine += outputValue;
@@ -570,31 +518,23 @@ class INIWriter
                             lastKeyLine = output.size();
                         }
                     }
-                }
-                else
-                {
-                    if (discardNextEmpty && line->empty())
-                    {
+                } else {
+                    if (discardNextEmpty && line->empty()) {
                         discardNextEmpty = false;
-                    }
-                    else if (parseResult != INIParser::PDataType::PDATA_UNKNOWN)
-                    {
+                    } else if (parseResult !=
+                               INIParser::PDataType::PDATA_UNKNOWN) {
                         output.emplace_back(*line);
                     }
                 }
             }
-            if (writeNewKeys || std::next(line) == lineData->end())
-            {
+            if (writeNewKeys || std::next(line) == lineData->end()) {
                 T_LineData linesToAdd;
-                if (data.has(sectionCurrent) && original.has(sectionCurrent))
-                {
-                    auto const &collection = data[sectionCurrent];
+                if (data.has(sectionCurrent) && original.has(sectionCurrent)) {
+                    auto const &collection         = data[sectionCurrent];
                     auto const &collectionOriginal = original[sectionCurrent];
-                    for (auto const &it : collection)
-                    {
+                    for (auto const &it : collection) {
                         auto key = it.first;
-                        if (collectionOriginal.has(key))
-                        {
+                        if (collectionOriginal.has(key)) {
                             continue;
                         }
                         auto value = it.second;
@@ -604,34 +544,28 @@ class INIWriter
                             key + ((prettyPrint) ? " = " : "=") + value);
                     }
                 }
-                if (!linesToAdd.empty())
-                {
+                if (!linesToAdd.empty()) {
                     output.insert(output.begin() + lastKeyLine,
                                   linesToAdd.begin(), linesToAdd.end());
                 }
-                if (writeNewKeys)
-                {
+                if (writeNewKeys) {
                     writeNewKeys = false;
                     --line;
                 }
             }
         }
-        for (auto const &it : data)
-        {
+        for (auto const &it : data) {
             auto const &section = it.first;
-            if (original.has(section))
-            {
+            if (original.has(section)) {
                 continue;
             }
-            if (prettyPrint && output.size() > 0 && !output.back().empty())
-            {
+            if (prettyPrint && output.size() > 0 && !output.back().empty()) {
                 output.emplace_back();
             }
             output.emplace_back("[" + section + "]");
             auto const &collection = it.second;
-            for (auto const &it2 : collection)
-            {
-                auto key = it2.first;
+            for (auto const &it2 : collection) {
+                auto key   = it2.first;
                 auto value = it2.second;
                 INIStringUtil::replace(key, "=", "\\=");
                 INIStringUtil::trim(value);
@@ -651,40 +585,33 @@ class INIWriter
     bool operator<<(INIStructure &data)
     {
         struct stat buf;
-        bool fileExists = (stat(filename.c_str(), &buf) == 0);
-        if (!fileExists)
-        {
+        bool        fileExists = (stat(filename.c_str(), &buf) == 0);
+        if (!fileExists) {
             INIGenerator generator(filename);
             generator.prettyPrint = prettyPrint;
             return generator << data;
         }
-        INIStructure originalData;
+        INIStructure  originalData;
         T_LineDataPtr lineData;
-        bool readSuccess = false;
+        bool          readSuccess = false;
         {
             INIReader reader(filename, true);
-            if ((readSuccess = reader >> originalData))
-            {
+            if ((readSuccess = reader >> originalData)) {
                 lineData = reader.getLines();
             }
         }
-        if (!readSuccess)
-        {
+        if (!readSuccess) {
             return false;
         }
-        T_LineData output = getLazyOutput(lineData, data, originalData);
+        T_LineData    output = getLazyOutput(lineData, data, originalData);
         std::ofstream fileWriteStream(filename,
                                       std::ios::out | std::ios::binary);
-        if (fileWriteStream.is_open())
-        {
-            if (output.size())
-            {
+        if (fileWriteStream.is_open()) {
+            if (output.size()) {
                 auto line = output.begin();
-                for (;;)
-                {
+                for (;;) {
                     fileWriteStream << *line;
-                    if (++line == output.end())
-                    {
+                    if (++line == output.end()) {
                         break;
                     }
                     fileWriteStream << INIStringUtil::endl;
@@ -708,12 +635,10 @@ class INIFile
 
     bool read(INIStructure &data) const
     {
-        if (data.size())
-        {
+        if (data.size()) {
             data.clear();
         }
-        if (filename.empty())
-        {
+        if (filename.empty()) {
             return false;
         }
         INIReader reader(filename);
@@ -721,8 +646,7 @@ class INIFile
     }
     bool generate(INIStructure const &data, bool pretty = false) const
     {
-        if (filename.empty())
-        {
+        if (filename.empty()) {
             return false;
         }
         INIGenerator generator(filename);
@@ -731,8 +655,7 @@ class INIFile
     }
     bool write(INIStructure &data, bool pretty = false) const
     {
-        if (filename.empty())
-        {
+        if (filename.empty()) {
             return false;
         }
         INIWriter writer(filename);

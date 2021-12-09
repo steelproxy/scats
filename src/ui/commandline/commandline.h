@@ -30,23 +30,23 @@ class CommandLine
   public:
     CommandLine();
 
-    void Print(std::string out);
-    void PrintPrompt();
+    void        Print(std::string out);
+    void        PrintPrompt();
     std::string LineInput();
-    void Clear();
-    void Resize();
+    void        Clear();
+    void        Resize();
     typedef std::map<const std::string, std::pair<std::string, t_voidFunction>>
         t_commandMap;
 
   private:
-    void Redraw(std::string &out, size_t pos, size_t starting);
-    void HandleScroll();
+    void    Redraw(std::string &out, size_t pos, size_t starting);
+    void    HandleScroll();
 
     WINDOW *_wCommandLine;
-    size_t _commandHistoryIndex;
+    size_t  _commandHistoryIndex;
     std::vector<std::string> _commandHistory;
-    std::vector<Command> _commands;
-    static t_commandMap _newCommands;
+    std::vector<Command>     _commands;
+    static t_commandMap      _newCommands;
 };
 
 extern CommandLine *commandLine;

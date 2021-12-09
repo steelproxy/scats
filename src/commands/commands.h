@@ -69,7 +69,7 @@ class Command
     std::string name;
     std::string description;
 
-    void Execute() { this->mainFunction(); }
+    void        Execute() { this->mainFunction(); }
 
   private:
     t_voidFunction mainFunction;

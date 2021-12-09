@@ -24,12 +24,11 @@ void StatusLine::Clear()
     mvwhline(this->_wStatusLine, 1, 0, 0, STATUSLINE_X_LEN);
 }
 
-void StatusLine::Resize() { wresize(this->_wStatusLine, 2, getmaxx(stdscr)); }
+void  StatusLine::Resize() { wresize(this->_wStatusLine, 2, getmaxx(stdscr)); }
 
 void *StatusLine::Redraw()
 {
-    for (;;)
-    {
+    for (;;) {
         // clear status line
         this->Clear();
 
@@ -45,17 +44,15 @@ void *StatusLine::Redraw()
         getmaxyx(this->_wStatusLine, maxWinY, maxWinX);
 
         // resize window if necessary
-        if (maxWinY < 2 || (maxWinX - maxTermX) != 0)
-        {
-            if (wresize(this->_wStatusLine, 2, maxTermX) == ERR)
-            {
+        if (maxWinY < 2 || (maxWinX - maxTermX) != 0) {
+            if (wresize(this->_wStatusLine, 2, maxTermX) == ERR) {
                 quickLog(ERROR, "Unable to resize status line window!");
                 return nullptr;
             }
         }
 
         // get user values
-        std::string timestamp = makeTimestamp();
+        std::string timestamp  = makeTimestamp();
         std::string userHandle = _iniStructure.get("General").get("userHandle");
         std::string connectedStr = (_connected) ? "true" : "false";
 
@@ -64,8 +61,7 @@ void *StatusLine::Redraw()
                   timestamp.c_str(), userHandle.c_str(), connectedStr.c_str());
 
         // print this->_unread status
-        if (this->_unread)
-        {
+        if (this->_unread) {
             wprintw(this->_wStatusLine, "  *unread messages*");
         }
 
@@ -75,9 +71,9 @@ void *StatusLine::Redraw()
     }
 }
 
-void StatusLine::SetConnect(bool newConnect) { _connected = newConnect; }
+void  StatusLine::SetConnect(bool newConnect) { _connected = newConnect; }
 
-bool StatusLine::GetConnect() { return _connected; }
+bool  StatusLine::GetConnect() { return _connected; }
 
 void *StatusLine::RedrawHelper(void *context)
 {

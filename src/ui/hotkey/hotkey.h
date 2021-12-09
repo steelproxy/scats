@@ -20,8 +20,8 @@ class HotkeyManager
   public:
     HotkeyManager();
 
-    int AddHotkey(int keycode, t_voidFunction);
-    int DeleteHotkey(int keycode);
+    int  AddHotkey(int keycode, t_voidFunction);
+    int  DeleteHotkey(int keycode);
 
     bool ProcessKey(int keycode);
 

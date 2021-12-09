@@ -8,25 +8,21 @@ void InteractiveChangeSetting()
     quickPrintLog(INFO, "Changing setting...");
 
     std::string targetSection;
-    do
-    {
+    do {
         ncOutCmd("Section: ");
         targetSection = GetConsoleInput(false);
     } while (targetSection.empty());
-    if (!_iniStructure.has(targetSection))
-    {
+    if (!_iniStructure.has(targetSection)) {
         quickPrintLog(ERROR, "Unable to find section!");
         return;
     }
 
     std::string targetKey;
-    do
-    {
+    do {
         ncOutCmd("Key: ");
         targetKey = GetConsoleInput(false);
     } while (targetKey.empty());
-    if (!_iniStructure.get(targetSection).has(targetKey))
-    {
+    if (!_iniStructure.get(targetSection).has(targetKey)) {
         quickPrintLog(ERROR, "Unable to find key!");
         return;
     }
@@ -34,8 +30,7 @@ void InteractiveChangeSetting()
                        << _iniStructure.get(targetSection).get(targetKey));
 
     std::string newValue;
-    do
-    {
+    do {
         ncOutCmd(targetKey << "=");
         newValue = GetConsoleInput(false);
         commandLine->Clear();

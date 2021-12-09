@@ -9,8 +9,7 @@ void InteractiveNuke()
     std::string nukePrompt;
     ncOutCmd("Would you like to delete your user files? (y/n): ");
     nukePrompt = GetConsoleInput(false);
-    if (nukePrompt == "y")
-    {
+    if (nukePrompt == "y") {
         ncOutUsr("Deleting log file...");
         if (remove(DEFAULT_LOG_FILE) != 0) // delete log
         {
